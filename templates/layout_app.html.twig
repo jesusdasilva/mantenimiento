@@ -1,0 +1,9 @@
+{# LAYOUT APP#}
+{% extends "layout.html.twig" %}
+{#CONTENIDO#}
+{% block contenido %}
+    {#NAVBAR#}
+    {% include 'navbar.html.twig' %}
+    {#CONTENIDO_INTERNO#}
+    {% block contenido_app %}{% endblock %}
+{% endblock %}

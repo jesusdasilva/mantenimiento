@@ -1,0 +1,137 @@
+{# LAYOUT APP#}
+{% extends "layout.html.twig" %}
+{#CONTENIDO#}
+{% block contenido %}
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Actividades de Mantenimiento en Estaciones Windows 7 64bits</h3>
+        </div>
+        <div class="panel-body" id="aqui">
+
+        </div>
+      </div>
+
+<div id="tutorial">
+   <div >
+       <div class="bloque">
+           <label>Código</label>
+           <input class="texto" type="text" id="txtCodigo" value="1" />
+       </div>
+       <div class="bloque">
+           <label>Nombre</label>
+           <input class="texto" type="text" id="txtNombre" value="" />
+       </div>
+         <div class="bloque">
+           <label>Precio</label>
+           <input class="texto" type="text" id="txtPrecio" value="" />
+       </div>
+       <div class="bloque">
+           <input value="Agregar" type="button" onclick="Agrega()" />
+       </div>
+       <div style="clear:both"></div>
+   </div>
+
+   <div>
+       <table style="width:400px;" id="tablaProductos">
+           <tr>
+               <th>Código</th>
+               <th>Nombre</th>
+               <th>Precio</th>
+               <th>X</th>
+           </tr>
+       </table>
+   </div>
+</div>
+<script type="text/javascript">
+
+function Agrega(){
+
+    //obtenemos los valores de nuestra caja de texto
+    //nodoAInsertar="<tr>"; //nodo en el cual obtendremos el codigo html nuevo a insertar en la tabla
+
+//nodoAInsertar="";
+    //$(".texto").each(function(){ //selector por clase texto y un each para recorrer elementos
+
+        //nodoAInsertar+="<td>"; //abrimos td
+
+        //nodoAInsertar+=$(this).prop("value"); //obtenemos el valor de la caja de texto
+
+        //nodoAInsertar+="</td>" //cerramos td
+
+        //limpiamos la caja de texto actual
+        //$(this).val("");
+    //});
+
+    //agregamos el botpon para eliminar
+    //nodoAInsertar+="<td><input type='button' value='Eliminar' onclick='Elimina(this)'></td>"
+    //nodoAInsertar+="</tr>" //cerramos el tr
+
+    //por ultimo insertamos el nodo tr a la tabla
+    //$("#aqui").append(nodoAInsertar)
+
+    //ponemos el foco en la caja de texto código
+    //$("#txtCodigo").focus()
+
+    var $num = $("#txtCodigo").val();
+    var $actividadNum = 'actividad'+$num;
+
+    var $nombre = $('#txtNombre').val();
+
+    var $nuevoElemento = $('\
+    <div class="form-group" id= "$actividadNum" >\
+      <label class="col-md-4 control-label" for="checkboxes">'+ $num +'</label>\
+      <div class="col-md-4">\
+        <label class="checkbox-inline" for="checkboxes-1">\
+          <input name="checkboxes" id="checkboxes-1" value="1" type="checkbox">\
+          '+ $nombre +'\
+        </label>\
+      </div>\
+      <a href="#" class="btn btn-default btn-sm active" role="button" data-toggle="modal" data-target="#myModal">\
+      Ayuda<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>\
+      <a href="ellibrodelosbundles-sample.pdf" class="btn btn-default btn-sm active" role="button">\
+      Procedimiento<span class="glyphicon glyphicon-list-alt" aria-hidden="true"> </span></a>\
+      <a href="#" class="btn btn-default btn-sm active" role="button"  onclick="Eliminar($actividadNum)">\
+      Eliminar Tarea<span class="glyphicon glyphicon-list-alt" aria-hidden="true" > </span></a>\
+    </div>\
+    ');
+
+    $nuevoElemento.appendTo('#aqui');
+
+    $("#txtCodigo").val(++$num);
+
+}
+
+
+/*
+var Mensaje = function() {
+  alert('sdgsdg');
+};*/
+
+var Eliminar = function(boton){
+  $(boton).remove();
+
+  var $i=1;
+  $('#aqui label.col-md-4 ').each(function(idx, el ) {
+     $(el).html($i++);
+  });
+
+  $("#txtCodigo").val($i);
+}
+
+
+
+/*function Elimina(NodoBoton){
+
+    //recibimos el botón como parametro y lo transformamos a jquery
+    var botonEliminar=$(NodoBoton);
+
+    //obtenemos el padre tr del boton para asi eliminarlo, el primer padre es td, el segundo es tr
+    var padreTRBoton=$(botonEliminar).parent().parent();
+
+    padreTRBoton.remove();
+
+    //todo esto puede funcionar con esta misma linea "$(NodBoton).parent().parent().remove();"
+}*/
+</script>
+{% endblock %}

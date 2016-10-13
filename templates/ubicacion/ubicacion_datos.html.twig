@@ -1,0 +1,63 @@
+{# ubicacion  DATOS #}
+{% extends  "layout_app.html.twig" %}
+{% block contenido_app %}
+<div id="page-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+{% if editar == TRUE  %}
+      <h1 class="page-header">Modificar UBICACIÓN</h1>
+{% else %}
+      <h1 class="page-header">Nueva UBICACIÓN</h1>
+{% endif %}
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Datos de la ubicación
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-6">
+{% if editar == TRUE  %}
+              <form role="form" action="{{ app.url_generator.generate('ubicacionGuardarActualizar') }}" method="post">
+                <input type="hidden" name="id-ubicacion" id="id-ubicacion" value="{{ idUbicacion }}" />
+                <input type="hidden" name="nombre-ubicacion-h" id="nombre-ubicacion-h" value="{{ nombreUbicacion }}" />
+{% else %}
+              <form role="form" action="{{ app.url_generator.generate('ubicacionGuardarNuevo') }}" method="post">
+{% endif %}
+{#MENSAJE ALERT#}
+{% include 'mensaje_alerta.html.twig' %}
+{# NOMBRE #}
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input required id="nombre-ubicacion" name="nombre-ubicacion" class="form-control" type="text" {% if editar == TRUE %} disabled {% endif %} value="{{ nombreUbicacion }}"   maxlength="20">
+                  <p class="help-block">Introduzca el nombre de la ubicación.</p>
+                </div>
+{# /NOMBRE #}
+{# OBSERVACIONES #}
+                <div class="form-group">
+                  <label>Observaciones</label>
+                  <textarea id="observacion-ubicacion" name="observacion-ubicacion" class="form-control" rows="3">{% if observacionUbicacion is defined %}{{ observacionUbicacion }}{% endif %}</textarea>
+                </div>
+{# /OBSERVACIONES #}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+            <!-- /.col-lg-6 -->
+          </div>
+          <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+      </div>
+      <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+{% endblock %}

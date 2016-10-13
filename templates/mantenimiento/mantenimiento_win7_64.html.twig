@@ -1,0 +1,71 @@
+{#
+ # MANTENIMIENTO WINDOWS 7 64BITS
+ #}
+{###GRUPO POLITICAS DE PDVSA###}
+  <div class="col-md-12 form-group">
+    <label><span class="fa  fa-check-circle-o" aria-hidden="true"></span>&nbsp;Políticas de PDVSA.</label>
+  </div>
+{# 1 REVISION NOMBRE DEL EQUIPO#}
+{% include 'mantenimiento/w7_x64_actividades/01_revision_nombre_equipo.html.twig' %}
+{# 2 APLICAR LAS POLITICAS DE PDVSA#}
+{% include 'mantenimiento/w7_x64_actividades/02_aplicar_politicas_pdvsa.html.twig' %}
+{###GRUPO ESTADO DEL MODO DE HIBERNACIÓN###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Estado del modo de Hibernación</label>
+  </div>
+{# 3 ELIMINAR ARCHIVO DE HIBERNACIÓN #}
+{% include 'mantenimiento/w7_x64_actividades/03_revision_estado_hibernacion.html.twig' %}
+{###GRUPO TAMAÑO Y USO DE MEMORIA VIRTUAL###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Tamaño y Uso de Memoria Virtual</label>
+  </div>
+{# 4 SETEAR LA MEMORIA VIRTUAL A D:\ #}
+{% include 'mantenimiento/w7_x64_actividades/04_setear_memoria_virtual.html.twig' %}
+{# 5 TAMAÑO DE LA MEMORIA VIRTUAL A 10 GB #}
+{% include 'mantenimiento/w7_x64_actividades/05_tamano_memoria_virtual.html.twig' %}
+{###GRUPO RED###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Red.</label>
+  </div>
+{# 6 SUFIJOS DNS CONFIGURADOS #}
+{% include 'mantenimiento/w7_x64_actividades/06_sufijos_dns_configurados.html.twig' %}
+{# 7 SERVIDOR PLCGUA03 MAPEADA EN UNIDAD G #}
+{% include 'mantenimiento/w7_x64_actividades/07_servidor_plcgua03_mapeado_g_appl.html.twig' %}
+{# 8 SERVIDOR PLCGUA03 MAPEADA EN UNIDAD I #}
+{% include 'mantenimiento/w7_x64_actividades/08_servidor_plcgua03_mapeado_i_dataplic.html.twig' %}
+{###GRUPO DISCO###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Disco.</label>
+  </div>
+{# 9 PROGRAMAS INSTALADOS EN LA UNIDAD C #}
+{% include 'mantenimiento/w7_x64_actividades/09_programas_instalados_unidad_c.html.twig' %}
+{# 10 DATOS DEL USUARIO EN LA UNIDAD D #}
+{% include 'mantenimiento/w7_x64_actividades/10_data_usuario_unidad_d.html.twig' %}
+{# 11 INTEGRIDAD DE DISCO DURO #}
+{% include 'mantenimiento/w7_x64_actividades/11_integridad_disco_duro.html.twig' %}
+{###GRUPO DIRECTORIO PARA PERFIL###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Directorio para Perfil.</label>
+  </div>
+{# 12 PERFIL DE USUARIO EN D #}
+{% include 'mantenimiento/w7_x64_actividades/12_perfil_usuario_d.html.twig' %}
+{###GRUPO APLICACIONES ESPECIALIZADAS###}
+  <div class="col-md-12 form-group">
+    <span class="fa fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Aplicaciones especializadas.</label>
+  </div>
+{# 13 LICENCIAS EN VARIABLES DEL SISTEMA #}
+{% include 'mantenimiento/w7_x64_actividades/13_licencias_variables_sistema.html.twig' %}
+{# 14 LICENCIAS EN VARIABLES DEL SISTEMA #}
+{% include 'mantenimiento/w7_x64_actividades/14_licencias_variables_usuario.html.twig' %}
+{# 15 VARIABLES DE ORACLE EN PATH DEL SISTEMA #}
+{% include 'mantenimiento/w7_x64_actividades/15_variables_oracle_path.html.twig' %}
+{###HERRAMIENTAS Y COMPLEMENTOS###}
+  <div class="col-md-12 form-group">
+    <span class="fa  fa-check-circle-o" aria-hidden="true"></span><label>&nbsp;Herramientas y Complementos.</label>
+  </div>
+{# 16 INTALAR .NET 4 #}
+{% include 'mantenimiento/w7_x64_actividades/16_instalar_net_4.html.twig' %}
+{# 17 ACTUALIZAR .NET 4 #}
+{% include 'mantenimiento/w7_x64_actividades/17_update_net_4.html.twig' %}
+{# 18 REVISAR ANTIVIRUS #}
+{% include 'mantenimiento/w7_x64_actividades/18_revisar_antivirus.html.twig' %}

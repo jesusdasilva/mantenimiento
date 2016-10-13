@@ -1,0 +1,51 @@
+{# LOGIN #}
+{% extends "layout.html.twig" %}
+{% block contenido %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="login-panel panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Acceso a la aplicación</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-6">
+              <img class="img-responsive" src="{{ asset('img/soporte5.jpeg') }}" alt="" >
+            </div>
+            <div class="col-md-6" style="padding-top: 40px;">
+              <form role="form" action="{{ app.url_generator.generate('loginVerificar') }}" method="post">
+                <fieldset>
+{% include 'mensaje_alerta.html.twig' %}
+                  <div class="form-group input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input id="usuario-indicador" name="usuario-indicador" type="text" class="form-control" placeholder="Indicador">
+                  </div>
+                  <div class="form-group input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input id="usuario-clave" name="usuario-clave" type="password" class="form-control" placeholder="Clave">
+                  </div>
+                 <!--<a href="#" class="btn btn-lg btn-success btn-block">Ingresar</a> -->
+{# BOTÓN #}
+                 <div class="form-group">
+    <div class="input-group">
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </div>
+    </div>
+               </fieldset>
+             </form>
+            </div>
+           </div>
+         </div>
+         <div class="panel-footer">
+           <p class="text-center text-muted">Control del mantenimiento realizado en las Estaciones de Trabajo Ver. 1.0</p>
+         </div>
+       </div>
+     </div>
+    </div>
+  </div>
+</div>
+<!-- /.row -->
+</div>
+<!-- /.container-->
+{% endblock %}

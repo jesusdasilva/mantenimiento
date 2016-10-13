@@ -1,0 +1,171 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Control del Mantenimiento en las Estaciones de Trabajo Ver 1.0</a>
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">
+<!-- dropdown USUARIO -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="#"><i class="fa fa-user fa-fw"></i>Perfil del Usuario</a>
+                </li>
+                <li><a href="#"><i class="fa fa-gear fa-fw"></i>Configuración</a>
+                </li>
+                <li class="divider"></li>
+                <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Salir</a>
+                </li>
+            </ul>
+        </li>
+<!-- /dropdown USUARIO -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="sidebar-search">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Buscar...">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                    </div>
+                    <!-- /input-group -->
+                </li>
+<!-- INICIO -->
+                <li>
+                    <a href="{{ app.url_generator.generate('inicio') }}"><i class="fa fa-dashboard fa-fw"></i> Inicio </a>
+                </li>
+<!-- /INICIO -->
+<!-- EMPRESAS -->
+                <li>
+                    <a href="#"><i class="fa fa-building fa-fw"></i> Empresas<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ app.url_generator.generate('empresaNuevo') }}">Nueva</a>
+                        </li>
+                        <li>
+                            <a href="{{ app.url_generator.generate('empresaListar') }}">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /EMPRESAS -->
+<!-- GERENCIAS -->
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Gerencias<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ app.url_generator.generate('gerenciaNuevo') }}">Nueva</a>
+                        </li>
+                        <li>
+                            <a href="{{ app.url_generator.generate('gerenciaListar') }}">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /GERENCIAS -->
+<!-- UBICACIONES -->
+                <li>
+                    <a href="#"><i class="fa fa-map-marker fa-fw"></i> Ubicaciones<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ app.url_generator.generate('ubicacionNuevo') }}">Nueva</a>
+                        </li>
+                        <li>
+                            <a href="{{ app.url_generator.generate('ubicacionListar') }}">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /UBICACIONES -->
+<!-- ACTIVIDADES
+                <li>
+                    <a href="#"><i class="fa fa-list-ol  fa-fw"></i> Actividades<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ app.url_generator.generate('actividad') }}">Nueva</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+/ACTIVIDADES -->
+<!-- MANTENIMIENTOS -->
+                <li>
+                  <a href="{{ app.url_generator.generate('mantenimientoMostrar') }}"><i class="fa fa-wrench fa-fw"></i>Mantenimientos</a>
+                </li>
+<!-- /MANTENIMIENTOS -->
+<!-- EQUIPOS -->
+                <li>
+                    <a href="#"><i class="fa fa-desktop fa-fw"></i>Equipos<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="flot.html">Nuevo</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /EQUIPOS -->
+<!-- REPORTES -->
+                <li>
+                    <a href="#"><i class="fa fa-print fa-fw"></i>Reportes<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="flot.html">Exportar CSV</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Total de Estaciones</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Total por Gerencias</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Total por Ubicaciones</a>
+                        </li>
+                        <li>
+                            <a href="morris.html">Total por Empresas</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /REPORTES -->
+<!-- USUARIOS -->
+                <li>
+                    <a href="#"><i class="fa fa-users fa-fw"></i>Usuarios<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="{{ app.url_generator.generate('usuarioNuevo') }}">Nuevo</a>
+                        </li>
+                        <li>
+                            <a href="{{ app.url_generator.generate('usuarioListar') }}">Buscar</a>
+                        </li>
+                    </ul>
+                </li>
+<!-- /USUARIOS -->
+                <li>
+                  <a href="index.html"><i class="fa fa-support fa-fw"></i>Ayuda </a>
+                </li>
+                <li>
+                  <a href="{{ app.url_generator.generate('login') }}"><i class="fa fa-sign-in fa-fw"></i> Salir </a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>
+<!-- /.navbar -->

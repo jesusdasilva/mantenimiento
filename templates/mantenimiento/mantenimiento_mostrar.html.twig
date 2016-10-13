@@ -1,0 +1,74 @@
+{# MANTENIMIENTO MOSTRAR #}
+{% extends  "layout_app.html.twig" %}
+{% block contenido_app %}
+  <div id="page-wrapper">
+    <div class="row">
+  <div class="col-lg-12">
+    <h1 class="page-header">Mantenimientos</h1>
+  </div>
+  <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Listado de Mantenimientos
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+        <!-- nav tabs -->
+          <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#windows-xp-64" role="tab"  data-toggle="tab">
+                <i class="fa fa-windows"></i>&nbsp;Windows XP 64 Bits
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="##windows-7-64" role="tab" data-toggle="tab">
+                <i class="fa fa-windows"></i>&nbsp;Windows 7 64 Bits
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#messages-pills" role="tab" data-toggle="tab">
+                <i class="fa fa-linux"></i>&nbsp;Linux
+              </a>
+            </li>
+            <li>
+              <a href="#settings-pills" role="tab" data-toggle="tab">
+                <i class="fa fa-sun-o"></i>&nbsp;Solaris
+              </a>
+            </li>
+          </ul>
+          <!-- /.Nav tabs -->
+        <div class="tab-content">
+          <div  role="tabpanel" class="tab-pane active" id="windows-xp-64">
+            <h4>Profile Tab</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <div  role="tabpanel" class="tab-pane  fade" id="windows-7-64">
+            <h4>Descripción de la Actividad</h4>
+            <p>Mantenimiento realizado a las estaciones de trabajo que tengan el sistema Operativo Windows 7 de 64 bits. En esta actividad se revisarán si las políticas de PDVSA están aplicadas, el sistema de hibernación esta desabilitado, las aplicaciones y los documentos estan en la unidad correspondiente.</p>
+            {% include 'mantenimiento/mantenimiento_win7_64.html.twig' %}
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="messages-pills">
+            <h4>Messages Tab</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <div  role="tabpanel" class="tab-pane fade" id="settings-pills">
+            <h4>Settings Tab</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+        </div>
+        <!-- /.tab-content -->
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+  <!-- /.col-lg-12 -->
+ </div>
+<!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+{% endblock %}
