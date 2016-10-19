@@ -38,13 +38,13 @@
 {% for registro in ubicaciones %}
                   <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ registro.nombre_ubicacion }}</td>
+                    <td>{{ registro.ubicacion_nombre }}</td>
                     <td>
-                      <a href="{{ app.url_generator.generate('ubicacionBuscar', {'idUbicacion': registro.id_ubicacion}) }}">
+                      <a href="{{ app.url_generator.generate('ubicacionBuscar', {'ubicacionId': registro.ubicacion_id}) }}">
                         <button type="button" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-edit"></span>Modificar</button>
                       </a>
-                      <a href="{{ app.url_generator.generate('ubicacionEliminar', {'idUbicacion': registro.id_ubicacion}) }}" onclick="return confirm_delete();">
+                      <a href="{{ app.url_generator.generate('ubicacionEliminar', {'ubicacionId': registro.ubicacion_id}) }}" onclick="return confirm_delete();">
                         <button type="button" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-trash"></span>Eliminar</button>
                       </a>

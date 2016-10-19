@@ -2,22 +2,18 @@
 /*
  *  CONTROLADOR ubicacionBuscar
  */
-$ubicacion->get('/ubicacion/buscar/{idUbicacion}',function($idUbicacion) use($app){
+$ubicacion->get('/ubicacion/buscar/{ubicacionId}',function($ubicacionId) use($app){
 
   try{
 
-      //SQL
-      $sql = 'SELECT * FROM ubicaciones WHERE id_ubicacion = ? ';
-
-      //BUSCAR ID
-      $registros = $app['db']->fetchAssoc($sql, array($idUbicacion));
+      $registros = $app['ubicacion']->buscarId($ubicacionId);
 
       //MOSTRAR DATOS
       return $app['twig']->render('ubicacion/ubicacion_datos.html.twig',
-        array('idUbicacion'          => $registros['id_ubicacion'],
-              'nombreUbicacion'      => $registros['nombre_ubicacion'],
-              'observacionUbicacion' => $registros['observacion_ubicacion'],
-              'editar'=>TRUE));
+          array('ubicacion_id'          => $registros['ubicacion_id'],
+                'ubicacion_nombre'      => $registros['ubicacion_nombre'],
+                'ubicacion_observacion' => $registros['ubicacion_observacion'],
+                'editar'=>TRUE));
 
   } catch (Exception $e) {
 

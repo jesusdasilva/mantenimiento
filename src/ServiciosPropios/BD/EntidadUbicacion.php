@@ -32,7 +32,7 @@ class EntidadUbicacion{
  /*
  * BUSCAR UNA UBICACIONES POR ID
  */
-  public function buscarId($ubicacionId){
+  public function buscarId($ubicacion_id){
 
     //SQL
     $sql  = " SELECT * ";
@@ -41,7 +41,7 @@ class EntidadUbicacion{
 
     //BUSCAR ID
     $ubicacion = $this->app['db']->fetchAssoc($sql,
-        array($ubicacionId));
+        array($ubicacion_id));
 
     //RETORNAR LOS REGISTROS DE UNA UBICACIÓN
     return $ubicacion;
@@ -49,7 +49,7 @@ class EntidadUbicacion{
   /*
   * BUSCAR UNA UBICACIÓN POR NOMBRE
   */
-  public function buscarNombre($ubicacionNombre){
+  public function buscarNombre($ubicacion_nombre){
 
     //SQL
     $sql  = " SELECT * ";
@@ -58,7 +58,7 @@ class EntidadUbicacion{
 
     //BUSCAR NOMBRE
     $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-        array($ubicacionNombre));
+        array($ubicacion_nombre));
 
     //RETORNAR LOS REGISTROS DE UNA ubicacion
     return $nombreEncontrado;
@@ -67,9 +67,9 @@ class EntidadUbicacion{
   public function Nuevo($registros){
 
       //GUARDAR NUEVO REGISTRO
-      $registrosAfectados = $this->app['db']->insert('mantenimientos_empresas',
-          array('empresa_nombre'     =>$registros['empresa_nombre'],
-                'empresa_observacion'=>$registros['empresa_observacion']));
+      $registrosAfectados = $this->app['db']->insert('mantenimientos_ubicaciones',
+          array('ubicacion_nombre'     =>$registros['ubicacion_nombre'],
+                'ubicacion_observacion'=>$registros['ubicacion_observacion']));
 
       //RETORNAR EL NÚMERO DE REGISTROS INSERTADOS
       return $registrosAfectados;
@@ -80,9 +80,9 @@ class EntidadUbicacion{
   public function actualizar($regitros){
 
     //ACTUALIZAR
-    $registrosAfectados = $this->app['db']->update('mantenimientos_empresas',
-          array('empresa_observacion'=> $regitros['empresa_observacion']),
-          array('empresa_id'=>$regitros['empresa_id']));
+    $registrosAfectados = $this->app['db']->update('mantenimientos_ubicaciones',
+          array('ubicacion_observacion'=> $regitros['ubicacion_observacion']),
+          array('ubicacion_id'         => $regitros['ubicacion_id']));
 
     //RETORNAR EL NÚMERO DE REGISTROS ATUALIZADOS
     return $registrosAfectados;
@@ -90,11 +90,11 @@ class EntidadUbicacion{
   /*
   * ELIMINAR UNA EMPRESA
   */
-  public function eliminar($empresaId){
+  public function eliminar($ubicacion_id){
 
     //ELIMINAR
-    $registroEliminado = $this->app['db']->delete('mantenimientos_empresas',
-        array('empresa_id' => $empresaId));
+    $registroEliminado = $this->app['db']->delete('mantenimientos_ubicaciones',
+        array('ubicacion_id' => $ubicacion_id));
 
     //RETORNAR EL NÚMERO DE REGISTROS ELIMINADOS
     return $registroEliminado;

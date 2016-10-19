@@ -10,36 +10,31 @@ $ubicacion->post('/ubicacion/guardar/actualizar', function(Request $request) use
   try{
 
       //DATOS DEL FORMULARIO
-      $idUbicacion = $request->get('id-ubicacion');
-      $nombreUbicacion = $request->get('nombre-ubicacion-h');
 
-      //VERIFICAR SI SE ENVIÓ EL CAMPO OBSERVACIÓ
-      if($request->get('observacion-ubicacion')){
-        $observacionUbicacion = $request->get('observacion-ubicacion');
-      }else{
-        $observacionUbicacion = NULL;
-      }
+      $registros = array('ubicacion_id'          => $request->get('ubicacion-id'),
+                         'ubicacion_nombre'      => $request->get('ubicacion-nombre-h'),
+                         'ubicacion_observacion' => $request->get('ubicacion-observacion'));
 
       //ACTUALIZAR
-      $registrosAfectados = $app['db']->update('ubicaciones',
-        array('observacion_ubicacion'=> $observacionUbicacion),
-        array('id_ubicacion'=>$idUbicacion));
+      $registrosAfectados = $app['ubicacion']->actualizar($registros);
 
       if($registrosAfectados <= 0){
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('danger',array('message' => 'No se pudo modificar la ubicacion'));
+        $app['session']->getFlashBag()->add('danger',
+            array('message' => 'No se pudo modificar la Ubicacion'));
 
         //REGRESAR AL FORMULARIO DATOS
         return $app['twig']->render('ubicacion/ubicacion_datos.twig',
-          array('idUbicacion'          => $idUbicacion,
-                'nombreUbicacion'      => $nombreUbicacion,
-                'observacionUbicacion' => $observacionUbicacion,
+          array('ubicacion_id'          => $registros[ubicacion_id],
+                'ubicacion_nombre'      => $registros[ubicacion_nombre],
+                'ubicacion_observacion' => $registros[ubicacion_observacion],
                 'editar'=>TRUE));
       }
 
       //MENSAJE
-      $app['session']->getFlashBag()->add('success',array('message' => 'La ubicacion fue modificada'));
+      $app['session']->getFlashBag()->add('success',
+          array('message' => 'La Ubicacion fue modificada'));
 
       //REDIRECCIONAR AL FORMULARIO LISTAR
       return $app->redirect($app['url_generator']->generate('ubicacionListar'));
@@ -48,7 +43,8 @@ $ubicacion->post('/ubicacion/guardar/actualizar', function(Request $request) use
     }catch (Exception $e) {
 
       //MENSAJE
-      $app['session']->getFlashBag()->add('danger',array('message' => $e->getMessage()));
+      $app['session']->getFlashBag()->add('danger',
+          array('message' => $e->getMessage()));
 
       //MOSTRAR MENSAJE ERROR
       return $app['twig']->render('mensaje_error.html.twig');

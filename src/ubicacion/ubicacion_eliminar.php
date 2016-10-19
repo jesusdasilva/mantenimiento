@@ -2,12 +2,13 @@
 /*
  *  CONTROLADOR ubicacionEliminar
  */
-$ubicacion->get('ubicacion/eliminar/{idUbicacion}', function($idUbicacion) use($app){
+$ubicacion->get('ubicacion/eliminar/{ubicacionId}', function($ubicacionId) use($app){
 
   try {
 
       //ELIMINAR
-      $registroEliminado = $app['db']->delete('ubicaciones', array('id_ubicacion' => $idUbicacion));
+      //$registroEliminado = $app['db']->delete('ubicaciones', array('id_ubicacion' => $idUbicacion));
+      $registroEliminado = $app['ubicacion']->eliminar($ubicacionId);
 
       //VERIFICAR QUE SE ELIMINÓ
       if( $registroEliminado <= 0 ){

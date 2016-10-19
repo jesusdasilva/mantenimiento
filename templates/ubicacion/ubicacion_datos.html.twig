@@ -24,8 +24,8 @@
             <div class="col-lg-6">
 {% if editar == TRUE  %}
               <form role="form" action="{{ app.url_generator.generate('ubicacionGuardarActualizar') }}" method="post">
-                <input type="hidden" name="id-ubicacion" id="id-ubicacion" value="{{ idUbicacion }}" />
-                <input type="hidden" name="nombre-ubicacion-h" id="nombre-ubicacion-h" value="{{ nombreUbicacion }}" />
+                <input type="hidden" name="ubicacion-id" id="ubicacion-id" value="{{ ubicacion_id }}" />
+                <input type="hidden" name="ubicacion-nombre-h" id="ubicacion-nombre-h" value="{{ ubicacion_nombre }}" />
 {% else %}
               <form role="form" action="{{ app.url_generator.generate('ubicacionGuardarNuevo') }}" method="post">
 {% endif %}
@@ -34,14 +34,14 @@
 {# NOMBRE #}
                 <div class="form-group">
                   <label>Nombre</label>
-                  <input required id="nombre-ubicacion" name="nombre-ubicacion" class="form-control" type="text" {% if editar == TRUE %} disabled {% endif %} value="{{ nombreUbicacion }}"   maxlength="20">
+                  <input required id="ubicacion-nombre" name="ubicacion-nombre" class="form-control" type="text" {% if editar == TRUE %} disabled {% endif %} value="{{ ubicacion_nombre|default('') }}"   maxlength="50">
                   <p class="help-block">Introduzca el nombre de la ubicación.</p>
                 </div>
 {# /NOMBRE #}
 {# OBSERVACIONES #}
                 <div class="form-group">
                   <label>Observaciones</label>
-                  <textarea id="observacion-ubicacion" name="observacion-ubicacion" class="form-control" rows="3">{% if observacionUbicacion is defined %}{{ observacionUbicacion }}{% endif %}</textarea>
+                  <textarea id="ubicacion-observacion" name="ubicacion-observacion" class="form-control" rows="3">{{ ubicacion_observacion|default('') }}</textarea>
                 </div>
 {# /OBSERVACIONES #}
                 <button type="submit" class="btn btn-primary">Guardar</button>
