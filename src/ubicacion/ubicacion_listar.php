@@ -6,17 +6,12 @@ $ubicacion->get('/ubicacion/listar', function() use ($app) {
 
   try{
 
-      //SQL
-      $sql  = " SELECT * ";
-      $sql .= " FROM ubicaciones ";
-      $sql .= " ORDER BY nombre_ubicacion ";
-
       //BUSCAR ubicacion
-      $ubicaciones = $app['db']->fetchAll($sql);
+      $ubicaciones = $app['ubicacion']->listar();
 
       //ENVIAR DATOS A LA PLANTILLA
       return $app['twig']->render('ubicacion/ubicacion_listado.html.twig',
-        array('ubicaciones'=> $ubicaciones));
+          array('ubicaciones'=> $ubicaciones));
 
     //CAPTURAR ERROR
     }catch (Exception $e) {

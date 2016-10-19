@@ -53,7 +53,7 @@ class EntidadUbicacion{
 
     //SQL
     $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_ubicacion ";
+    $sql .= " FROM mantenimientos_ubicaciones ";
     $sql .= " WHERE ubicacion_nombre = ? ";
 
     //BUSCAR NOMBRE

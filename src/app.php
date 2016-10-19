@@ -50,6 +50,10 @@ $app['empresa'] = function ()  use ($app){
 $app['gerencia'] = function ()  use ($app){
     return new ServiciosPropios\BD\EntidadGerencia($app);
 };
+$app['ubicacion'] = function ()  use ($app){
+    return new ServiciosPropios\BD\EntidadUbicacion($app);
+};
+
 //USUARIOS
 $app['usuario'] = function ()  use ($app){
     return new ServiciosPropios\BD\EntidadUsuario($app);
