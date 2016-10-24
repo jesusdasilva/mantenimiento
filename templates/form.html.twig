@@ -1,0 +1,24 @@
+{# ELEMENTOS DEL FORMULARIO #}
+
+{#INPUT TEXT#}
+{% macro inputText(label,name,value, editar = FALSE, helpBlock = '') %}
+<div class="form-group">
+  <label>{{ label }}</label>
+  <input required id="{{ name }}" name="{{ name }}" class="form-control" type="text"  value="{{ value }}"  maxlength="50" {% if editar == TRUE %} disabled {% endif %} >
+  <p class="help-block">{{ helpBlock }}</p>
+</div>
+{% endmacro %}
+
+{#INPUT TEXTAREA#}
+{% macro inputTextArea(label,name,value, editar = FALSE, helpBlock = '') %}
+<div class="form-group">
+  <label>{{ label }}</label>
+  <textarea id="{{ name }}" name="{{ name }}" class="form-control" rows="3">{{ value }}</textarea>
+  <p class="help-block">{{ helpBlock }}</p>
+</div>
+{% endmacro %}
+
+{#INPUT HIDDEN#}
+{% macro inputHidden(name,value) %}
+<input type="hidden" name="{{ name }}" id="{{ name }}" value="{{ value }}" />
+{% endmacro %}

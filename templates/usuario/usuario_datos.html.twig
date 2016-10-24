@@ -35,10 +35,21 @@
                     <label>Perfil</label>
                     <select id="perfil-id" name="perfil-id" class="form-control">
 {% for valor in perfiles %}
-                      <option value="{{ valor.perfil_id }}" {% if (perfil_id |default('2')) == valor.perfil_id  %} selected {% endif %}>{{valor.perfil_nombre}}</option>
+                      <option  value="{{ valor.perfil_id }}" {% if (perfil_id |default('2')) == valor.perfil_id  %} selected {% endif %}>{{valor.perfil_nombre}}</option>
 {% endfor %}
                     </select>
                   </div>
+
+                  <div class="bs-docs-example">
+                    <select class="selectpicker">
+                      <option data-icon="glyphicon-glass">Mustard</option>
+                      <option data-icon="glyphicon-heart">Ketchup</option>
+                      <option data-icon="glyphicon-film">Relish</option>
+                      <option data-icon="glyphicon-home">Mayonnaise</option>
+                      <option data-icon="glyphicon-print">Barbecue Sauce</option>
+                    </select>
+                  </div>
+
 {# NOMBRE #}
                 <div class="form-group">
                   <label>Nombre</label>
