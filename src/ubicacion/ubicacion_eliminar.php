@@ -2,24 +2,25 @@
 /*
  *  CONTROLADOR ubicacionEliminar
  */
-$ubicacion->get('ubicacion/eliminar/{ubicacionId}', function($ubicacionId) use($app){
+$ubicacion->get('ubicacion/eliminar/{id}', function($id) use($app){
 
   try {
 
       //ELIMINAR
-      //$registroEliminado = $app['db']->delete('ubicaciones', array('id_ubicacion' => $idUbicacion));
-      $registroEliminado = $app['ubicacion']->eliminar($ubicacionId);
+      $registroEliminado = $app['ubicacion']->eliminar($id);
 
       //VERIFICAR QUE SE ELIMINÓ
       if( $registroEliminado <= 0 ){
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('danger',array('message' => 'No se pudo eliminar la ubicacion'));
+        $app['session']->getFlashBag()->add('danger',
+            array('message' => 'No se pudo eliminar la ubicacion'));
 
       }else{
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('success',array('message' => 'Se eliminó con éxito la ubicacion'));
+        $app['session']->getFlashBag()->add('success',
+            array('message' => 'Se eliminó con éxito la ubicacion'));
 
       }
 
@@ -30,7 +31,8 @@ $ubicacion->get('ubicacion/eliminar/{ubicacionId}', function($ubicacionId) use($
     } catch (Exception $e) {
 
       //MENSAJE
-      $app['session']->getFlashBag()->add('danger',array('message' => $e->getMessage()));
+      $app['session']->getFlashBag()->add('danger',
+          array('message' => $e->getMessage()));
 
       //MOSTRAR MENSAJE ERROR
       return $app['twig']->render('mensaje_error.html.twig');

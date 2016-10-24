@@ -2,13 +2,12 @@
 /*
  *  CONTROLADOR gerenciaEliminar
  */
-$empresa->get('gerencia/eliminar/{gerenciaId}', function($gerenciaId) use($app){
+$empresa->get('gerencia/eliminar/{id}', function($id) use($app){
 
   try {
 
       //ELIMINAR
-      $registroEliminado = $app['db']->delete('mantenimientos_gerencias',
-          array('gerencia_id' => $gerenciaId));
+      $registroEliminado = $app['gerencia']->eliminar($id);
 
       //VERIFICAR QUE SE ELIMINÓ
       if( $registroEliminado <= 0 ){

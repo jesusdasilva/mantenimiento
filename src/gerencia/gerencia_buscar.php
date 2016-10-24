@@ -2,12 +2,12 @@
 /*
  *  CONTROLADOR gerenciaBuscar
  */
-$gerencia->get('/gerencia/buscar/{gerenciaId}',function($gerenciaId) use($app){
+$gerencia->get('/gerencia/buscar/{id}',function($id) use($app){
 
   try{
 
       //BUSCAR POR GERENCIA POR ID
-      $registros = $app['gerencia']->buscarId($gerenciaId);
+      $registros = $app['gerencia']->buscarId($id);
 
       //MOSTRAR DATOS
       return $app['twig']->render('gerencia/gerencia_datos.html.twig',

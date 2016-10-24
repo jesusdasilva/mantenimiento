@@ -2,12 +2,12 @@
 /*
  *  CONTROLADOR empresaBuscar
  */
-$empresa->get('/empresa/buscar/{empresaId}',function($empresaId) use($app){
+$empresa->get('/empresa/buscar/{id}',function($id) use($app){
 
   try{
 
       //BUSCAR POR EMPRESA POR ID
-      $registros = $app['empresa']->buscarId($empresaId);
+      $registros = $app['empresa']->buscarId($id);
 
       //MOSTRAR DATOS
       return $app['twig']->render('empresa/empresa_datos.html.twig',

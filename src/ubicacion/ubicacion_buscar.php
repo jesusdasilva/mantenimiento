@@ -2,11 +2,11 @@
 /*
  *  CONTROLADOR ubicacionBuscar
  */
-$ubicacion->get('/ubicacion/buscar/{ubicacionId}',function($ubicacionId) use($app){
+$ubicacion->get('/ubicacion/buscar/{id}',function($id) use($app){
 
   try{
 
-      $registros = $app['ubicacion']->buscarId($ubicacionId);
+      $registros = $app['ubicacion']->buscarId($id);
 
       //MOSTRAR DATOS
       return $app['twig']->render('ubicacion/ubicacion_datos.html.twig',

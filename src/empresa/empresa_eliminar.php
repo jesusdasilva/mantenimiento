@@ -2,12 +2,12 @@
 /*
  *  CONTROLADOR empresaEliminar
  */
-$empresa->get('empresa/eliminar/{empresaId}', function($empresaId) use($app){
+$empresa->get('empresa/eliminar/{id}', function($id) use($app){
 
   try {
 
       //ELIMINAR
-      $registroEliminado = $app['empresa']->eliminar($empresaId);
+      $registroEliminado = $app['empresa']->eliminar($id);
 
       //VERIFICAR QUE SE ELIMINÓ
       if( $registroEliminado <= 0 ){

@@ -1,20 +1,22 @@
 {# ubicacion LISTADO#}
 
+{#LAYOUT DE APLICACIONES#}
 {% extends "layout_app.html.twig" %}
 
 {% block contenido_app %}
 
-{% set tituloModulo = 'Buscar Ubicaciones' %}
-{% set tituloListado = 'Listado de las Ubicaciones' %}
-{% set nombreItem = 'Nombre de la Ubicación' %}
-{% set campos = ubicaciones %}
-{% set campoNombre =  'ubicacion_nombre' %}
-{% set campoId = 'ubicacion_id' %}
-{% set moduloBuscar = 'ubicacionBuscar' %}
-{% set moduloEliminar = 'ubicacionEliminar' %}
-{% set valorGetId = 'ubicacionId' %}
+  {#LISTADO DE LAS UBICACIONES#}
+  {% set tituloModulo = 'Buscar Ubicaciones' %}
+  {#DATA TABLE#}
+  {% set tituloListado  = 'Listado de las Ubicaciones' %}
+  {% set nombreItem     = 'Nombre de la Ubicación' %}
+  {% set campos         =  ubicaciones %}
+  {% set campoNombre    = 'ubicacion_nombre' %}
+  {% set campoId        = 'ubicacion_id' %}
+  {% set moduloBuscar   = 'ubicacionBuscar' %}
+  {% set moduloEliminar = 'ubicacionEliminar' %}
 
-{#PLANTILLA BASE DATOS#}
+  {#PLANTILLA DATA TABLE#}
   {% include 'plantilla_listado.html.twig' %}
 
 {% endblock %}
