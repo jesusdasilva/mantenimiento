@@ -15,9 +15,7 @@ ALTER TABLE ONLY public.usuarios_datos DROP CONSTRAINT usuarios_datos_perfil_id_
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_ubicacion_id_fkey;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_gerencia_id_fkey;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_empresa_id_fkey;
-ALTER TABLE ONLY public.mantenimientos_checklist DROP CONSTRAINT mantenimientos_checklist_equipo_id_fkey;
-ALTER TABLE ONLY public.mantenimientos_checklist DROP CONSTRAINT mantenimientos_checklist_actividad_id_fkey;
-ALTER TABLE ONLY public.mantenimientos_actividades DROP CONSTRAINT mantenimientos_actividades_so_id_fkey;
+ALTER TABLE ONLY public.mantenimiento_checklist DROP CONSTRAINT mantenimiento_checklist_equipo_id_fkey;
 ALTER TABLE ONLY public.usuarios_perfiles DROP CONSTRAINT usuarios_perfiles_pkey;
 ALTER TABLE ONLY public.usuarios_perfiles DROP CONSTRAINT usuarios_perfiles_perfil_nombre_key;
 ALTER TABLE ONLY public.usuarios_datos DROP CONSTRAINT usuarios_datos_usuario_indicador_key;
@@ -27,27 +25,22 @@ ALTER TABLE ONLY public.mantenimientos_ubicaciones DROP CONSTRAINT ubucaciones_n
 ALTER TABLE ONLY public.mantenimientos_gerencias DROP CONSTRAINT pk_gerencias;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_pkey;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_equipo_nombre_key;
-ALTER TABLE ONLY public.mantenimientos_checklist DROP CONSTRAINT mantenimientos_checklist_pkey;
-ALTER TABLE ONLY public.mantenimientos_actividades DROP CONSTRAINT mantenimientos_actividades_pkey;
 ALTER TABLE ONLY public.mantenimientos_gerencias DROP CONSTRAINT gerencias_nombre_key;
 ALTER TABLE ONLY public.mantenimientos_empresas DROP CONSTRAINT empresas_pkey;
 ALTER TABLE ONLY public.mantenimientos_empresas DROP CONSTRAINT empresas_nombre_key;
-ALTER TABLE ONLY public.mantenimientos_sos DROP CONSTRAINT "Sistemas_operativos_pkey";
+ALTER TABLE ONLY public.mantenimiento_checklist DROP CONSTRAINT checklist_pkey;
 ALTER TABLE public.usuarios_perfiles ALTER COLUMN perfil_id DROP DEFAULT;
 ALTER TABLE public.usuarios_datos ALTER COLUMN usuario_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_ubicaciones ALTER COLUMN ubicacion_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_sos ALTER COLUMN so_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_gerencias ALTER COLUMN gerencia_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN ubicacion_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN gerencia_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN empresa_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN equipo_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_empresas ALTER COLUMN empresa_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_checklist ALTER COLUMN actividad_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_checklist ALTER COLUMN equipo_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_checklist ALTER COLUMN checklist_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_actividades ALTER COLUMN so_id DROP DEFAULT;
-ALTER TABLE public.mantenimientos_actividades ALTER COLUMN actividad_id DROP DEFAULT;
+ALTER TABLE public.mantenimiento_checklist ALTER COLUMN checklist_nombre DROP DEFAULT;
+ALTER TABLE public.mantenimiento_checklist ALTER COLUMN equipo_id DROP DEFAULT;
+ALTER TABLE public.mantenimiento_checklist ALTER COLUMN checklist_id DROP DEFAULT;
 DROP VIEW public.vista_usuarios_perfiles;
 DROP SEQUENCE public.usuarios_perfiles_id_seq;
 DROP TABLE public.usuarios_perfiles;
@@ -60,24 +53,17 @@ DROP SEQUENCE public.mantenimientos_equipos_gerencia_id_seq;
 DROP SEQUENCE public.mantenimientos_equipos_equipo_id_seq;
 DROP SEQUENCE public.mantenimientos_equipos_empresa_id_seq;
 DROP TABLE public.mantenimientos_equipos;
-DROP SEQUENCE public.mantenimientos_checklist_equipo_id_seq;
-DROP SEQUENCE public.mantenimientos_checklist_checklist_id_seq;
-DROP SEQUENCE public.mantenimientos_checklist_actividad_id_seq;
-DROP TABLE public.mantenimientos_checklist;
-DROP SEQUENCE public.mantenimientos_actividades_so_id_seq;
-DROP SEQUENCE public.mantenimientos_actividades_actividad_id_seq;
-DROP TABLE public.mantenimientos_actividades;
 DROP SEQUENCE public.gerencias_id_seq;
 DROP TABLE public.mantenimientos_gerencias;
 DROP SEQUENCE public.empresas_id_seq;
 DROP TABLE public.mantenimientos_empresas;
-DROP SEQUENCE public."Sistemas_operativos_so_id_seq";
-DROP TABLE public.mantenimientos_sos;
+DROP SEQUENCE public.checklist_equipo_id_seq;
+DROP SEQUENCE public.checklist_checklist_nombre_seq;
+DROP SEQUENCE public.checklist_checklist_id_seq;
+DROP TABLE public.mantenimiento_checklist;
 DROP DOMAIN public.observacion;
 DROP DOMAIN public.nombre_largo;
 DROP DOMAIN public.nombre_corto;
-DROP EXTENSION adminpack;
-DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: mantenimiento
@@ -93,34 +79,6 @@ ALTER SCHEMA public OWNER TO mantenimiento;
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
-
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 
 
 SET search_path = public, pg_catalog;
@@ -164,29 +122,32 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: mantenimientos_sos; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
+-- Name: mantenimiento_checklist; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
 --
 
-CREATE TABLE mantenimientos_sos (
-    so_id integer NOT NULL,
-    so_nombre nombre_corto NOT NULL
+CREATE TABLE mantenimiento_checklist (
+    checklist_id integer NOT NULL,
+    equipo_id integer NOT NULL,
+    checklist_nombre nombre_largo NOT NULL,
+    checklist_so nombre_corto,
+    checklist_estatus boolean
 );
 
 
-ALTER TABLE mantenimientos_sos OWNER TO mantenimiento;
+ALTER TABLE mantenimiento_checklist OWNER TO mantenimiento;
 
 --
--- Name: TABLE mantenimientos_sos; Type: COMMENT; Schema: public; Owner: mantenimiento
+-- Name: TABLE mantenimiento_checklist; Type: COMMENT; Schema: public; Owner: mantenimiento
 --
 
-COMMENT ON TABLE mantenimientos_sos IS 'Tabla catalogo de los sistemas operativos';
+COMMENT ON TABLE mantenimiento_checklist IS 'Tabla del checlist de Mantenimiento por Sistema Operativo';
 
 
 --
--- Name: Sistemas_operativos_so_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
+-- Name: checklist_checklist_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
 --
 
-CREATE SEQUENCE "Sistemas_operativos_so_id_seq"
+CREATE SEQUENCE checklist_checklist_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -194,13 +155,55 @@ CREATE SEQUENCE "Sistemas_operativos_so_id_seq"
     CACHE 1;
 
 
-ALTER TABLE "Sistemas_operativos_so_id_seq" OWNER TO mantenimiento;
+ALTER TABLE checklist_checklist_id_seq OWNER TO mantenimiento;
 
 --
--- Name: Sistemas_operativos_so_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
+-- Name: checklist_checklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
 --
 
-ALTER SEQUENCE "Sistemas_operativos_so_id_seq" OWNED BY mantenimientos_sos.so_id;
+ALTER SEQUENCE checklist_checklist_id_seq OWNED BY mantenimiento_checklist.checklist_id;
+
+
+--
+-- Name: checklist_checklist_nombre_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
+--
+
+CREATE SEQUENCE checklist_checklist_nombre_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE checklist_checklist_nombre_seq OWNER TO mantenimiento;
+
+--
+-- Name: checklist_checklist_nombre_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
+--
+
+ALTER SEQUENCE checklist_checklist_nombre_seq OWNED BY mantenimiento_checklist.checklist_nombre;
+
+
+--
+-- Name: checklist_equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
+--
+
+CREATE SEQUENCE checklist_equipo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE checklist_equipo_id_seq OWNER TO mantenimiento;
+
+--
+-- Name: checklist_equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
+--
+
+ALTER SEQUENCE checklist_equipo_id_seq OWNED BY mantenimiento_checklist.equipo_id;
 
 
 --
@@ -283,152 +286,6 @@ ALTER TABLE gerencias_id_seq OWNER TO mantenimiento;
 --
 
 ALTER SEQUENCE gerencias_id_seq OWNED BY mantenimientos_gerencias.gerencia_id;
-
-
---
--- Name: mantenimientos_actividades; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
---
-
-CREATE TABLE mantenimientos_actividades (
-    actividad_id integer NOT NULL,
-    actividad_nombre nombre_corto NOT NULL,
-    so_id integer NOT NULL
-);
-
-
-ALTER TABLE mantenimientos_actividades OWNER TO mantenimiento;
-
---
--- Name: TABLE mantenimientos_actividades; Type: COMMENT; Schema: public; Owner: mantenimiento
---
-
-COMMENT ON TABLE mantenimientos_actividades IS 'Tabla catálogo de las actividades de mantenimientos';
-
-
---
--- Name: mantenimientos_actividades_actividad_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
---
-
-CREATE SEQUENCE mantenimientos_actividades_actividad_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE mantenimientos_actividades_actividad_id_seq OWNER TO mantenimiento;
-
---
--- Name: mantenimientos_actividades_actividad_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
---
-
-ALTER SEQUENCE mantenimientos_actividades_actividad_id_seq OWNED BY mantenimientos_actividades.actividad_id;
-
-
---
--- Name: mantenimientos_actividades_so_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
---
-
-CREATE SEQUENCE mantenimientos_actividades_so_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE mantenimientos_actividades_so_id_seq OWNER TO mantenimiento;
-
---
--- Name: mantenimientos_actividades_so_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
---
-
-ALTER SEQUENCE mantenimientos_actividades_so_id_seq OWNED BY mantenimientos_actividades.so_id;
-
-
---
--- Name: mantenimientos_checklist; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
---
-
-CREATE TABLE mantenimientos_checklist (
-    checklist_id integer NOT NULL,
-    equipo_id integer NOT NULL,
-    actividad_id integer NOT NULL,
-    checklist_status boolean
-);
-
-
-ALTER TABLE mantenimientos_checklist OWNER TO mantenimiento;
-
---
--- Name: TABLE mantenimientos_checklist; Type: COMMENT; Schema: public; Owner: mantenimiento
---
-
-COMMENT ON TABLE mantenimientos_checklist IS 'Registro de los mantenimientos';
-
-
---
--- Name: mantenimientos_checklist_actividad_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
---
-
-CREATE SEQUENCE mantenimientos_checklist_actividad_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE mantenimientos_checklist_actividad_id_seq OWNER TO mantenimiento;
-
---
--- Name: mantenimientos_checklist_actividad_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
---
-
-ALTER SEQUENCE mantenimientos_checklist_actividad_id_seq OWNED BY mantenimientos_checklist.actividad_id;
-
-
---
--- Name: mantenimientos_checklist_checklist_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
---
-
-CREATE SEQUENCE mantenimientos_checklist_checklist_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE mantenimientos_checklist_checklist_id_seq OWNER TO mantenimiento;
-
---
--- Name: mantenimientos_checklist_checklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
---
-
-ALTER SEQUENCE mantenimientos_checklist_checklist_id_seq OWNED BY mantenimientos_checklist.checklist_id;
-
-
---
--- Name: mantenimientos_checklist_equipo_id_seq; Type: SEQUENCE; Schema: public; Owner: mantenimiento
---
-
-CREATE SEQUENCE mantenimientos_checklist_equipo_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE mantenimientos_checklist_equipo_id_seq OWNER TO mantenimiento;
-
---
--- Name: mantenimientos_checklist_equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
---
-
-ALTER SEQUENCE mantenimientos_checklist_equipo_id_seq OWNED BY mantenimientos_checklist.equipo_id;
 
 
 --
@@ -547,7 +404,7 @@ ALTER SEQUENCE mantenimientos_equipos_ubicacion_id_seq OWNED BY mantenimientos_e
 
 CREATE TABLE mantenimientos_ubicaciones (
     ubicacion_id integer NOT NULL,
-    ubicacion_nombre nombre_corto NOT NULL,
+    ubicacion_nombre nombre_largo NOT NULL,
     ubicacion_observacion observacion
 );
 
@@ -694,38 +551,24 @@ COMMENT ON VIEW vista_usuarios_perfiles IS 'Vista con los datos del usuario y el
 
 
 --
--- Name: actividad_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
---
-
-ALTER TABLE ONLY mantenimientos_actividades ALTER COLUMN actividad_id SET DEFAULT nextval('mantenimientos_actividades_actividad_id_seq'::regclass);
-
-
---
--- Name: so_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
---
-
-ALTER TABLE ONLY mantenimientos_actividades ALTER COLUMN so_id SET DEFAULT nextval('mantenimientos_actividades_so_id_seq'::regclass);
-
-
---
 -- Name: checklist_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN checklist_id SET DEFAULT nextval('mantenimientos_checklist_checklist_id_seq'::regclass);
+ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN checklist_id SET DEFAULT nextval('checklist_checklist_id_seq'::regclass);
 
 
 --
 -- Name: equipo_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN equipo_id SET DEFAULT nextval('mantenimientos_checklist_equipo_id_seq'::regclass);
+ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN equipo_id SET DEFAULT nextval('checklist_equipo_id_seq'::regclass);
 
 
 --
--- Name: actividad_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
+-- Name: checklist_nombre; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN actividad_id SET DEFAULT nextval('mantenimientos_checklist_actividad_id_seq'::regclass);
+ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN checklist_nombre SET DEFAULT nextval('checklist_checklist_nombre_seq'::regclass);
 
 
 --
@@ -771,13 +614,6 @@ ALTER TABLE ONLY mantenimientos_gerencias ALTER COLUMN gerencia_id SET DEFAULT n
 
 
 --
--- Name: so_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
---
-
-ALTER TABLE ONLY mantenimientos_sos ALTER COLUMN so_id SET DEFAULT nextval('"Sistemas_operativos_so_id_seq"'::regclass);
-
-
---
 -- Name: ubicacion_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
@@ -799,17 +635,31 @@ ALTER TABLE ONLY usuarios_perfiles ALTER COLUMN perfil_id SET DEFAULT nextval('u
 
 
 --
--- Name: Sistemas_operativos_so_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
+-- Name: checklist_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('"Sistemas_operativos_so_id_seq"', 1, false);
+SELECT pg_catalog.setval('checklist_checklist_id_seq', 1, false);
+
+
+--
+-- Name: checklist_checklist_nombre_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
+--
+
+SELECT pg_catalog.setval('checklist_checklist_nombre_seq', 1, false);
+
+
+--
+-- Name: checklist_equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
+--
+
+SELECT pg_catalog.setval('checklist_equipo_id_seq', 1, false);
 
 
 --
 -- Name: empresas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('empresas_id_seq', 3, true);
+SELECT pg_catalog.setval('empresas_id_seq', 4, true);
 
 
 --
@@ -820,50 +670,9 @@ SELECT pg_catalog.setval('gerencias_id_seq', 2, true);
 
 
 --
--- Data for Name: mantenimientos_actividades; Type: TABLE DATA; Schema: public; Owner: mantenimiento
+-- Data for Name: mantenimiento_checklist; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
-
-
---
--- Name: mantenimientos_actividades_actividad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
---
-
-SELECT pg_catalog.setval('mantenimientos_actividades_actividad_id_seq', 1, false);
-
-
---
--- Name: mantenimientos_actividades_so_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
---
-
-SELECT pg_catalog.setval('mantenimientos_actividades_so_id_seq', 1, false);
-
-
---
--- Data for Name: mantenimientos_checklist; Type: TABLE DATA; Schema: public; Owner: mantenimiento
---
-
-
-
---
--- Name: mantenimientos_checklist_actividad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
---
-
-SELECT pg_catalog.setval('mantenimientos_checklist_actividad_id_seq', 1, false);
-
-
---
--- Name: mantenimientos_checklist_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
---
-
-SELECT pg_catalog.setval('mantenimientos_checklist_checklist_id_seq', 1, false);
-
-
---
--- Name: mantenimientos_checklist_equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
---
-
-SELECT pg_catalog.setval('mantenimientos_checklist_equipo_id_seq', 1, false);
 
 
 --
@@ -871,7 +680,8 @@ SELECT pg_catalog.setval('mantenimientos_checklist_equipo_id_seq', 1, false);
 --
 
 INSERT INTO mantenimientos_empresas VALUES (2, 'PETROPIAR', 'Empresa Mixta');
-INSERT INTO mantenimientos_empresas VALUES (3, 'PETROMONAGAS', 'Empresa Mixta');
+INSERT INTO mantenimientos_empresas VALUES (3, 'PETROMONAGAS', 'Empresa Mixta sfsdf');
+INSERT INTO mantenimientos_empresas VALUES (4, 'PETROMIRANDA', 'empresa mixta');
 
 
 --
@@ -912,26 +722,23 @@ SELECT pg_catalog.setval('mantenimientos_equipos_ubicacion_id_seq', 1, false);
 -- Data for Name: mantenimientos_gerencias; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
-INSERT INTO mantenimientos_gerencias VALUES (2, 'ESTUDIOS INTEGRADOS', 'gerencia de estudios integrados ');
-
-
---
--- Data for Name: mantenimientos_sos; Type: TABLE DATA; Schema: public; Owner: mantenimiento
---
-
+INSERT INTO mantenimientos_gerencias VALUES (2, 'ESTUDIOS INTEGRADOS', 'gerencia de estudios integrados  jhjhjk');
 
 
 --
 -- Data for Name: mantenimientos_ubicaciones; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
+INSERT INTO mantenimientos_ubicaciones VALUES (17, 'DF DFG DF', 'f dgf gdfg');
+INSERT INTO mantenimientos_ubicaciones VALUES (18, 'RTERTERT', 'ret ret erter t');
+INSERT INTO mantenimientos_ubicaciones VALUES (19, '34534 345 3', '');
 
 
 --
 -- Name: ubucaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('ubucaciones_id_seq', 1, false);
+SELECT pg_catalog.setval('ubucaciones_id_seq', 20, true);
 
 
 --
@@ -967,11 +774,11 @@ SELECT pg_catalog.setval('usuarios_perfiles_id_seq', 3, true);
 
 
 --
--- Name: Sistemas_operativos_pkey; Type: CONSTRAINT; Schema: public; Owner: mantenimiento; Tablespace: 
+-- Name: checklist_pkey; Type: CONSTRAINT; Schema: public; Owner: mantenimiento; Tablespace: 
 --
 
-ALTER TABLE ONLY mantenimientos_sos
-    ADD CONSTRAINT "Sistemas_operativos_pkey" PRIMARY KEY (so_id);
+ALTER TABLE ONLY mantenimiento_checklist
+    ADD CONSTRAINT checklist_pkey PRIMARY KEY (checklist_id);
 
 
 --
@@ -996,22 +803,6 @@ ALTER TABLE ONLY mantenimientos_empresas
 
 ALTER TABLE ONLY mantenimientos_gerencias
     ADD CONSTRAINT gerencias_nombre_key UNIQUE (gerencia_nombre);
-
-
---
--- Name: mantenimientos_actividades_pkey; Type: CONSTRAINT; Schema: public; Owner: mantenimiento; Tablespace: 
---
-
-ALTER TABLE ONLY mantenimientos_actividades
-    ADD CONSTRAINT mantenimientos_actividades_pkey PRIMARY KEY (actividad_id);
-
-
---
--- Name: mantenimientos_checklist_pkey; Type: CONSTRAINT; Schema: public; Owner: mantenimiento; Tablespace: 
---
-
-ALTER TABLE ONLY mantenimientos_checklist
-    ADD CONSTRAINT mantenimientos_checklist_pkey PRIMARY KEY (checklist_id);
 
 
 --
@@ -1087,27 +878,11 @@ ALTER TABLE ONLY usuarios_perfiles
 
 
 --
--- Name: mantenimientos_actividades_so_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mantenimiento
+-- Name: mantenimiento_checklist_equipo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimientos_actividades
-    ADD CONSTRAINT mantenimientos_actividades_so_id_fkey FOREIGN KEY (so_id) REFERENCES mantenimientos_sos(so_id);
-
-
---
--- Name: mantenimientos_checklist_actividad_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mantenimiento
---
-
-ALTER TABLE ONLY mantenimientos_checklist
-    ADD CONSTRAINT mantenimientos_checklist_actividad_id_fkey FOREIGN KEY (actividad_id) REFERENCES mantenimientos_actividades(actividad_id);
-
-
---
--- Name: mantenimientos_checklist_equipo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mantenimiento
---
-
-ALTER TABLE ONLY mantenimientos_checklist
-    ADD CONSTRAINT mantenimientos_checklist_equipo_id_fkey FOREIGN KEY (equipo_id) REFERENCES mantenimientos_equipos(equipo_id);
+ALTER TABLE ONLY mantenimiento_checklist
+    ADD CONSTRAINT mantenimiento_checklist_equipo_id_fkey FOREIGN KEY (equipo_id) REFERENCES mantenimientos_equipos(equipo_id);
 
 
 --
