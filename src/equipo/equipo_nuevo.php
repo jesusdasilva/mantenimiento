@@ -8,8 +8,7 @@ $equipo->get('/equipo/nuevo', function() use ($app) {
      /*
      *ABRIR FORMULARIO DE DATOS EN BLANCO
      */
-    return $app['twig']->render('equipo/equipo_nuevo_elegir_mantenimiento.html.twig',
-        array ('editar' => FALSE));
+    return $app['twig']->render('equipo/equipo_nuevo_elegir_mantenimiento.html.twig');
 
 })
 ->bind('equipoNuevoElegirMantenimiento');

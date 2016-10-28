@@ -1,4 +1,8 @@
 {% extends "layout_app.html.twig" %}
+
+{#MACROS#}
+{% import "form.html.twig" as form %}
+
 {% block contenido_app %}
 <div id="page-wrapper">
   <div class="row">
@@ -18,20 +22,10 @@
           <div class="row">
             <div class="col-lg-6">
               <form role="form" action="" method="post">
-
-                  <div class="form-group">
-
-                  <div class="bs-docs-example">
-                    <select class="selectpicker">
-                      <option data-icon="fa fa-windows">&nbsp;Windows XP 64 Bits</option>
-                      <option data-icon="fa fa-windows">&nbsp;Windows 7 64 Bits</option>
-                      <option data-icon="fa fa-linux">&nbsp;Linux</option>
-                      <option data-icon="fa fa-sun-o">&nbsp;Linux</option>
-                    </select>
-                  </div>
-                </div>
-
-
+                {# NOMBRE #}
+                {{ form.inputText('Nombre del Equipo','equipo-nombre','',FALSE,'Introduzca el nombre del equipo') }}
+                {#SELECT SO#}
+                {{ form.selectSO() }}
                 <button type="submit" class="btn btn-primary">Crear</button>
               </form>
             </div>
