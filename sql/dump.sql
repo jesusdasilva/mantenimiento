@@ -15,7 +15,7 @@ ALTER TABLE ONLY public.usuarios_datos DROP CONSTRAINT usuarios_datos_perfil_id_
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_ubicacion_id_fkey;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_gerencia_id_fkey;
 ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_equipos_empresa_id_fkey;
-ALTER TABLE ONLY public.mantenimiento_checklist DROP CONSTRAINT mantenimiento_checklist_equipo_id_fkey;
+ALTER TABLE ONLY public.mantenimientos_checklist DROP CONSTRAINT mantenimiento_checklist_equipo_id_fkey;
 ALTER TABLE ONLY public.usuarios_perfiles DROP CONSTRAINT usuarios_perfiles_pkey;
 ALTER TABLE ONLY public.usuarios_perfiles DROP CONSTRAINT usuarios_perfiles_perfil_nombre_key;
 ALTER TABLE ONLY public.usuarios_datos DROP CONSTRAINT usuarios_datos_usuario_indicador_key;
@@ -28,7 +28,7 @@ ALTER TABLE ONLY public.mantenimientos_equipos DROP CONSTRAINT mantenimientos_eq
 ALTER TABLE ONLY public.mantenimientos_gerencias DROP CONSTRAINT gerencias_nombre_key;
 ALTER TABLE ONLY public.mantenimientos_empresas DROP CONSTRAINT empresas_pkey;
 ALTER TABLE ONLY public.mantenimientos_empresas DROP CONSTRAINT empresas_nombre_key;
-ALTER TABLE ONLY public.mantenimiento_checklist DROP CONSTRAINT checklist_pkey;
+ALTER TABLE ONLY public.mantenimientos_checklist DROP CONSTRAINT checklist_pkey;
 ALTER TABLE public.usuarios_perfiles ALTER COLUMN perfil_id DROP DEFAULT;
 ALTER TABLE public.usuarios_datos ALTER COLUMN usuario_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_ubicaciones ALTER COLUMN ubicacion_id DROP DEFAULT;
@@ -38,9 +38,9 @@ ALTER TABLE public.mantenimientos_equipos ALTER COLUMN gerencia_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN empresa_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_equipos ALTER COLUMN equipo_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_empresas ALTER COLUMN empresa_id DROP DEFAULT;
-ALTER TABLE public.mantenimiento_checklist ALTER COLUMN checklist_nombre DROP DEFAULT;
-ALTER TABLE public.mantenimiento_checklist ALTER COLUMN equipo_id DROP DEFAULT;
-ALTER TABLE public.mantenimiento_checklist ALTER COLUMN checklist_id DROP DEFAULT;
+ALTER TABLE public.mantenimientos_checklist ALTER COLUMN checklist_nombre DROP DEFAULT;
+ALTER TABLE public.mantenimientos_checklist ALTER COLUMN equipo_id DROP DEFAULT;
+ALTER TABLE public.mantenimientos_checklist ALTER COLUMN checklist_id DROP DEFAULT;
 DROP VIEW public.vista_usuarios_perfiles;
 DROP SEQUENCE public.usuarios_perfiles_id_seq;
 DROP TABLE public.usuarios_perfiles;
@@ -60,25 +60,47 @@ DROP TABLE public.mantenimientos_empresas;
 DROP SEQUENCE public.checklist_equipo_id_seq;
 DROP SEQUENCE public.checklist_checklist_nombre_seq;
 DROP SEQUENCE public.checklist_checklist_id_seq;
-DROP TABLE public.mantenimiento_checklist;
+DROP TABLE public.mantenimientos_checklist;
 DROP DOMAIN public.observacion;
 DROP DOMAIN public.nombre_largo;
 DROP DOMAIN public.nombre_corto;
+DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: mantenimiento
+-- Name: mantenimientoDB; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE "mantenimientoDB" IS 'Base de datos del sistema de mantenimiento de Estaciones de Trabajo de PDVSA';
+
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA public;
 
 
-ALTER SCHEMA public OWNER TO mantenimiento;
+ALTER SCHEMA public OWNER TO postgres;
 
 --
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: mantenimiento
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
 
 COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
@@ -122,10 +144,10 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: mantenimiento_checklist; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
+-- Name: mantenimientos_checklist; Type: TABLE; Schema: public; Owner: mantenimiento; Tablespace: 
 --
 
-CREATE TABLE mantenimiento_checklist (
+CREATE TABLE mantenimientos_checklist (
     checklist_id integer NOT NULL,
     equipo_id integer NOT NULL,
     checklist_nombre nombre_largo NOT NULL,
@@ -134,13 +156,13 @@ CREATE TABLE mantenimiento_checklist (
 );
 
 
-ALTER TABLE mantenimiento_checklist OWNER TO mantenimiento;
+ALTER TABLE mantenimientos_checklist OWNER TO mantenimiento;
 
 --
--- Name: TABLE mantenimiento_checklist; Type: COMMENT; Schema: public; Owner: mantenimiento
+-- Name: TABLE mantenimientos_checklist; Type: COMMENT; Schema: public; Owner: mantenimiento
 --
 
-COMMENT ON TABLE mantenimiento_checklist IS 'Tabla del checlist de Mantenimiento por Sistema Operativo';
+COMMENT ON TABLE mantenimientos_checklist IS 'Tabla del checlist de Mantenimiento por Sistema Operativo';
 
 
 --
@@ -161,7 +183,7 @@ ALTER TABLE checklist_checklist_id_seq OWNER TO mantenimiento;
 -- Name: checklist_checklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
 --
 
-ALTER SEQUENCE checklist_checklist_id_seq OWNED BY mantenimiento_checklist.checklist_id;
+ALTER SEQUENCE checklist_checklist_id_seq OWNED BY mantenimientos_checklist.checklist_id;
 
 
 --
@@ -182,7 +204,7 @@ ALTER TABLE checklist_checklist_nombre_seq OWNER TO mantenimiento;
 -- Name: checklist_checklist_nombre_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
 --
 
-ALTER SEQUENCE checklist_checklist_nombre_seq OWNED BY mantenimiento_checklist.checklist_nombre;
+ALTER SEQUENCE checklist_checklist_nombre_seq OWNED BY mantenimientos_checklist.checklist_nombre;
 
 
 --
@@ -203,7 +225,7 @@ ALTER TABLE checklist_equipo_id_seq OWNER TO mantenimiento;
 -- Name: checklist_equipo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: mantenimiento
 --
 
-ALTER SEQUENCE checklist_equipo_id_seq OWNED BY mantenimiento_checklist.equipo_id;
+ALTER SEQUENCE checklist_equipo_id_seq OWNED BY mantenimientos_checklist.equipo_id;
 
 
 --
@@ -554,21 +576,21 @@ COMMENT ON VIEW vista_usuarios_perfiles IS 'Vista con los datos del usuario y el
 -- Name: checklist_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN checklist_id SET DEFAULT nextval('checklist_checklist_id_seq'::regclass);
+ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN checklist_id SET DEFAULT nextval('checklist_checklist_id_seq'::regclass);
 
 
 --
 -- Name: equipo_id; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN equipo_id SET DEFAULT nextval('checklist_equipo_id_seq'::regclass);
+ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN equipo_id SET DEFAULT nextval('checklist_equipo_id_seq'::regclass);
 
 
 --
 -- Name: checklist_nombre; Type: DEFAULT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimiento_checklist ALTER COLUMN checklist_nombre SET DEFAULT nextval('checklist_checklist_nombre_seq'::regclass);
+ALTER TABLE ONLY mantenimientos_checklist ALTER COLUMN checklist_nombre SET DEFAULT nextval('checklist_checklist_nombre_seq'::regclass);
 
 
 --
@@ -638,7 +660,7 @@ ALTER TABLE ONLY usuarios_perfiles ALTER COLUMN perfil_id SET DEFAULT nextval('u
 -- Name: checklist_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('checklist_checklist_id_seq', 1, false);
+SELECT pg_catalog.setval('checklist_checklist_id_seq', 36, true);
 
 
 --
@@ -659,20 +681,38 @@ SELECT pg_catalog.setval('checklist_equipo_id_seq', 1, false);
 -- Name: empresas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('empresas_id_seq', 4, true);
+SELECT pg_catalog.setval('empresas_id_seq', 5, true);
 
 
 --
 -- Name: gerencias_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('gerencias_id_seq', 2, true);
+SELECT pg_catalog.setval('gerencias_id_seq', 3, true);
 
 
 --
--- Data for Name: mantenimiento_checklist; Type: TABLE DATA; Schema: public; Owner: mantenimiento
+-- Data for Name: mantenimientos_checklist; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
+INSERT INTO mantenimientos_checklist VALUES (19, 4, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (20, 4, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (21, 4, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (22, 4, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (23, 4, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (24, 4, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (25, 4, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (26, 4, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (27, 4, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (28, 4, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (29, 4, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (30, 4, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (31, 4, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (32, 4, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (33, 4, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (34, 4, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (35, 4, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (36, 4, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
 
 
 --
@@ -682,12 +722,14 @@ SELECT pg_catalog.setval('gerencias_id_seq', 2, true);
 INSERT INTO mantenimientos_empresas VALUES (2, 'PETROPIAR', 'Empresa Mixta');
 INSERT INTO mantenimientos_empresas VALUES (3, 'PETROMONAGAS', 'Empresa Mixta sfsdf');
 INSERT INTO mantenimientos_empresas VALUES (4, 'PETROMIRANDA', 'empresa mixta');
+INSERT INTO mantenimientos_empresas VALUES (5, 'NINGUNA', '');
 
 
 --
 -- Data for Name: mantenimientos_equipos; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
+INSERT INTO mantenimientos_equipos VALUES (4, NULL, NULL, 5, 3, 'WWWW', NULL, 21, NULL);
 
 
 --
@@ -701,7 +743,7 @@ SELECT pg_catalog.setval('mantenimientos_equipos_empresa_id_seq', 1, false);
 -- Name: mantenimientos_equipos_equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('mantenimientos_equipos_equipo_id_seq', 1, false);
+SELECT pg_catalog.setval('mantenimientos_equipos_equipo_id_seq', 4, true);
 
 
 --
@@ -723,31 +765,29 @@ SELECT pg_catalog.setval('mantenimientos_equipos_ubicacion_id_seq', 1, false);
 --
 
 INSERT INTO mantenimientos_gerencias VALUES (2, 'ESTUDIOS INTEGRADOS', 'gerencia de estudios integrados  jhjhjk');
+INSERT INTO mantenimientos_gerencias VALUES (3, 'NINGUNA', '');
 
 
 --
 -- Data for Name: mantenimientos_ubicaciones; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
-INSERT INTO mantenimientos_ubicaciones VALUES (17, 'DF DFG DF', 'f dgf gdfg');
-INSERT INTO mantenimientos_ubicaciones VALUES (18, 'RTERTERT', 'ret ret erter t');
-INSERT INTO mantenimientos_ubicaciones VALUES (19, '34534 345 3', '');
+INSERT INTO mantenimientos_ubicaciones VALUES (21, 'NINGUNA', '');
+INSERT INTO mantenimientos_ubicaciones VALUES (22, 'EDIFICIO CBP, PISO 1, ALA SUR', 'Edificio Centro Bahia de Pozuelos');
 
 
 --
 -- Name: ubucaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('ubucaciones_id_seq', 20, true);
+SELECT pg_catalog.setval('ubucaciones_id_seq', 22, true);
 
 
 --
 -- Data for Name: usuarios_datos; Type: TABLE DATA; Schema: public; Owner: mantenimiento
 --
 
-INSERT INTO usuarios_datos VALUES ('FDGS DFG', 'dfgdfg', 'e10adc3949ba59abbe56e057f20f883e', 'df dfgdfgdfgd', 18, 3);
 INSERT INTO usuarios_datos VALUES ('JESÚS MANUEL DASILVA BARRETO', 'dasilvajm', '202cb962ac59075b964b07152d234b70', 'Usuario desarrollador de la aplicación', 19, 1);
-INSERT INTO usuarios_datos VALUES ('PEPE PPQWEQ', 'pepe', 'e10adc3949ba59abbe56e057f20f883e', 'xcascda', 21, 2);
 
 
 --
@@ -777,7 +817,7 @@ SELECT pg_catalog.setval('usuarios_perfiles_id_seq', 3, true);
 -- Name: checklist_pkey; Type: CONSTRAINT; Schema: public; Owner: mantenimiento; Tablespace: 
 --
 
-ALTER TABLE ONLY mantenimiento_checklist
+ALTER TABLE ONLY mantenimientos_checklist
     ADD CONSTRAINT checklist_pkey PRIMARY KEY (checklist_id);
 
 
@@ -881,7 +921,7 @@ ALTER TABLE ONLY usuarios_perfiles
 -- Name: mantenimiento_checklist_equipo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mantenimiento
 --
 
-ALTER TABLE ONLY mantenimiento_checklist
+ALTER TABLE ONLY mantenimientos_checklist
     ADD CONSTRAINT mantenimiento_checklist_equipo_id_fkey FOREIGN KEY (equipo_id) REFERENCES mantenimientos_equipos(equipo_id);
 
 
@@ -918,12 +958,12 @@ ALTER TABLE ONLY usuarios_datos
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: mantenimiento
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM mantenimiento;
-GRANT ALL ON SCHEMA public TO mantenimiento;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 

@@ -63,6 +63,16 @@ class EntidadUbicacion{
     //RETORNAR LOS REGISTROS DE UNA ubicacion
     return $nombreEncontrado;
   }
+  /*
+  *BUSCAR NOMBRE Y TRAER ID
+  */
+  public function buscarNombreTaerId($ubicacion_nombre){
+
+    $registros = $this->buscarNombre($ubicacion_nombre);
+
+    return $registros['ubicacion_id'];
+
+  }
 
   public function Nuevo($registros){
 

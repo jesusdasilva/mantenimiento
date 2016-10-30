@@ -49,7 +49,7 @@ class EntidadEmpresa{
   /*
   * BUSCAR UNA EMPRESA POR NOMBRE
   */
-  public function buscarNombre($empresaNombre){
+  public function buscarNombre($empresa_nombre){
 
     //SQL
     $sql  = " SELECT * ";
@@ -58,10 +58,20 @@ class EntidadEmpresa{
 
     //BUSCAR NOMBRE
     $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-        array($empresaNombre));
+        array($empresa_nombre));
 
     //RETORNAR LOS REGISTROS DE UNA EMPRESA
     return $nombreEncontrado;
+  }
+  /*
+  *BUSCAR NOMBRE Y TRAER ID
+  */
+  public function buscarNombreTaerId($empresa_nombre){
+
+    $registros = $this->buscarNombre($empresa_nombre);
+
+    return $registros['empresa_id'];
+
   }
 
   public function Nuevo($registros){

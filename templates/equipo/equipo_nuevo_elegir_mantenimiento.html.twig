@@ -21,8 +21,8 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-6">
-              <form role="form" action="" method="post">
                 {# NOMBRE #}
+                <form role="form" action="{{ app.url_generator.generate('equipoNuevoRegistarMantenimiento') }}" method="post">
                 {{ form.inputText('Nombre del Equipo','equipo-nombre','',FALSE,'Introduzca el nombre del equipo') }}
                 {#SELECT SO#}
                 {{ form.selectSO() }}

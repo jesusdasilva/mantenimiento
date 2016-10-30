@@ -457,6 +457,7 @@ return array(
     'Psr\\Log\\Test\\DummyTest' => $vendorDir . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
     'Psr\\Log\\Test\\LoggerInterfaceTest' => $vendorDir . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
     'ServiciosPropios\\BD\\EntidadEmpresa' => $baseDir . '/src/ServiciosPropios/BD/EntidadEmpresa.php',
+    'ServiciosPropios\\BD\\EntidadEquipo' => $baseDir . '/src/ServiciosPropios/BD/EntidadEquipo.php',
     'ServiciosPropios\\BD\\EntidadGerencia' => $baseDir . '/src/ServiciosPropios/BD/EntidadGerencia.php',
     'ServiciosPropios\\BD\\EntidadPerfil' => $baseDir . '/src/ServiciosPropios/BD/EntidadPerfil.php',
     'ServiciosPropios\\BD\\EntidadUbicacion' => $baseDir . '/src/ServiciosPropios/BD/EntidadUbicacion.php',

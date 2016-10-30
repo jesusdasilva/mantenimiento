@@ -30,10 +30,11 @@ $app->mount('/', include __DIR__.'/../src/empresa/empresa_index.php');
 $app->mount('/', include __DIR__.'/../src/gerencia/gerencia_index.php');
 //UBICACIÓN
 $app->mount('/', include __DIR__.'/../src/ubicacion/ubicacion_index.php');
-//EQUIPO
-$app->mount('/', include __DIR__.'/../src/equipo/equipo_index.php');
 //MANTENIMIENTO
 $app->mount('/', include __DIR__.'/../src/mantenimiento/mantenimiento_index.php');
+//EQUIPO
+$app->mount('/', include __DIR__.'/../src/equipo/equipo_index.php');
+
 //USUARIO
 $app->mount('/', include __DIR__.'/../src/usuario/usuario_index.php');
 

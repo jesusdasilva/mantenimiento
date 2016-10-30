@@ -76,12 +76,12 @@
 {% macro selectSO() %}
 <div class="form-group">
 <div class="bs-docs-example">
-  <select class="selectpicker">
-    <option data-icon="fa fa-windows">&nbsp;Windows XP 32 Bits</option>
-    <option data-icon="fa fa-windows">&nbsp;Windows XP 64 Bits</option>
-    <option data-icon="fa fa-windows">&nbsp;Windows 7 64 Bits</option>
-    <option data-icon="fa fa-linux">&nbsp;Linux</option>
-    <option data-icon="fa fa-sun-o">&nbsp;Solaris</option>
+  <select id="equipo-so" name="equipo-so" class="selectpicker">
+    <option data-icon="fa fa-windows" value="Windows XP 32bits">&nbsp;Windows XP 32 Bits</option>
+    <option data-icon="fa fa-windows" value="Windows XP 64bits">&nbsp;Windows XP 64 Bits</option>
+    <option data-icon="fa fa-windows" value="Windows 7 64bits">&nbsp;Windows 7 64 Bits</option>
+    <option data-icon="fa fa-linux"   value="Linux">&nbsp;Linux</option>
+    <option data-icon="fa fa-sun-o"   value="Solaris">&nbsp;Solaris</option>
   </select>
   <p class="help-block">Selecciones el Sistema Operativo</p>
 </div>

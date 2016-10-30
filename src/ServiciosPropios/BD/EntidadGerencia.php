@@ -49,7 +49,7 @@ class EntidadGerencia{
   /*
   * BUSCAR UNA GERENCIA POR NOMBRE
   */
-  public function buscarNombre($gerenciaNombre){
+  public function buscarNombre($gerencia_nombre){
 
     //SQL
     $sql  = " SELECT * ";
@@ -58,11 +58,22 @@ class EntidadGerencia{
 
     //BUSCAR NOMBRE
     $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-        array($gerenciaNombre));
+        array($gerencia_nombre));
 
     //RETORNAR LOS REGISTROS DE UNA GERENCIA
     return $nombreEncontrado;
   }
+  /*
+  *BUSCAR NOMBRE Y TRAER ID
+  */
+  public function buscarNombreTaerId($gerencia_nombre){
+
+    $registros = $this->buscarNombre($gerencia_nombre);
+
+    return $registros['gerencia_id'];
+
+  }
+
 
   public function Nuevo($registros){
 

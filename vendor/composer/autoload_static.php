@@ -715,6 +715,7 @@ class ComposerStaticInitd8f675aec09caa8fbdb7d987f51a117a
         'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'ServiciosPropios\\BD\\EntidadEmpresa' => __DIR__ . '/../..' . '/src/ServiciosPropios/BD/EntidadEmpresa.php',
+        'ServiciosPropios\\BD\\EntidadEquipo' => __DIR__ . '/../..' . '/src/ServiciosPropios/BD/EntidadEquipo.php',
         'ServiciosPropios\\BD\\EntidadGerencia' => __DIR__ . '/../..' . '/src/ServiciosPropios/BD/EntidadGerencia.php',
         'ServiciosPropios\\BD\\EntidadPerfil' => __DIR__ . '/../..' . '/src/ServiciosPropios/BD/EntidadPerfil.php',
         'ServiciosPropios\\BD\\EntidadUbicacion' => __DIR__ . '/../..' . '/src/ServiciosPropios/BD/EntidadUbicacion.php',

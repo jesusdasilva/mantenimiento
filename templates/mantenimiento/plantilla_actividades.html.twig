@@ -4,6 +4,10 @@
     <p>{{numero}}</p>
   </div>
   <div class="col-md-6">
+    {% if actividad_value is defined  %}
+    <input name="{{checkboxes_id}}"  id="{{checkboxes_id}}" value="{{checkbox_value}}" type="checkbox">
+    <input type="hidden" name="{{actividad_id}}" id="{{actividad_id}}" value="{{actividad_value}}" />
+    {% endif %}
     <p>{{titulo}}</p>
   </div>
   <div class="col-md-3">
@@ -29,6 +33,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>{#/.modal-content#}
+  </div>{#/.modal-dialog#}
+</div>{#/.modal#}
