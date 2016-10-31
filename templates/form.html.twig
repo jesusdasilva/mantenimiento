@@ -23,6 +23,18 @@
 <input type="hidden" name="{{ name }}" id="{{ name }}" value="{{ value }}" />
 {% endmacro %}
 
+{#SELECT#}
+{% macro select(label,name) %}
+<div class="form-group">
+  <label>{{ label,name }}</label>
+  <select id="{{ name }}" name="{{ name }}" class="form-control">
+    {% for valor in perfiles %}
+      <option  value="{{ valor.perfil_id }}" {% if (perfil_id |default('2')) == valor.perfil_id  %} selected {% endif %}>{{valor.perfil_nombre}}</option>
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
 {#DATA TABLE MOSTRANDO SÓLO EL NOMBRE DEL CAMPO#}
 {% macro dataTable(tituloListado,nombreItem,campos,campoNombre,campoId,moduloBuscar,moduloEliminar) %}
 <div class="row">
