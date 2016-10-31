@@ -57,8 +57,13 @@ $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
       //$app['session']->getFlashBag()->add('success',
       //    array('message' => 'La Empresa fue incluida'));
 
+      //LISTADO DE UBICACIONES
+      $ubicaciones = $app['ubicacion']->listar();
+
       //REDIRECCIONAR AL FORMULARIO LISTAR
-      return $app['twig']->render('equipo/equipo_nuevo_registrar_mantenimiento.html.twig');
+      return $app['twig']->render('equipo/equipo_nuevo_registrar_mantenimiento.html.twig',
+          array('equipo_nombre' => $registros['equipo_nombre'],
+                'ubicaciones' => $ubicaciones ));
 
     //CAPTURAR ERROR
     }catch (Exception $e) {

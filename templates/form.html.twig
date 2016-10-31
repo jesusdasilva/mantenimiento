@@ -24,12 +24,14 @@
 {% endmacro %}
 
 {#SELECT#}
-{% macro select(label,name) %}
+{% macro select(label,name,catalogo,campoId,campoNombre,registroSelected = '') %}
 <div class="form-group">
-  <label>{{ label,name }}</label>
+  <label>{{ label }}</label>
   <select id="{{ name }}" name="{{ name }}" class="form-control">
-    {% for valor in perfiles %}
-      <option  value="{{ valor.perfil_id }}" {% if (perfil_id |default('2')) == valor.perfil_id  %} selected {% endif %}>{{valor.perfil_nombre}}</option>
+    {% for valor in catalogo %}
+      <option  value="{{ valor['campoId'] }}" {% if (registroSelected |default('1')) ==  valor['campoId']  %} selected {% endif %}>
+        {{ valor['campoNombre'] }}
+      </option>
     {% endfor %}
   </select>
 </div>
