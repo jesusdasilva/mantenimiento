@@ -1,9 +1,28 @@
-{#NAVTABS USUARO#}
+{#NAVTABS USUARIO#}
 
-{#MACROS#}
-{% import "form.html.twig" as form %}
-
-<h4>Datos del Usuario</h4>
-
-{# NOMBRE #}
-{{ form.inputText('Nombre de Usuario','equipo-usuario-nombre','',FALSE,'Introduzca el nombre del equipo') }}
+{#NOMBRE Y APELLIDO DEL USUARIO#}
+{{ form.inputText('Nombre de Usuario',
+                  'equipo-usuario-nombre',
+                   registrosEquipo.equipo_usuario_nombre,
+                   FALSE,
+                  'Nombre y Apellido del usuario') }}
+{#INDICADOR#}
+{{ form.inputText('Indicador',
+                  'equipo-usuario-indicador',
+                   registrosEquipo.equipo_usuario_indicador,
+                   FALSE,
+                  'Indicador PDVSA') }}
+{#EMPRESA#}
+{{ form.select('Empresa',
+               'empresa',
+                empresas,
+               'empresa_id',
+               'empresa_nombre',
+               registrosEquipo.empresa_id) }}
+{#GERENCIA#}
+{{ form.select('Gerencia',
+               'gerencia',
+                gerencias,
+               'gerencia_id',
+               'gerencia_nombre',
+               registrosEquipo.gerencia_id) }}

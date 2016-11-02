@@ -29,8 +29,8 @@
   <label>{{ label }}</label>
   <select id="{{ name }}" name="{{ name }}" class="form-control">
     {% for valor in catalogo %}
-      <option  value="{{ valor['campoId'] }}" {% if (registroSelected |default('1')) ==  valor['campoId']  %} selected {% endif %}>
-        {{ valor['campoNombre'] }}
+      <option  value="{{ valor[campoId] }}" {% if (registroSelected |default('1')) ==  valor[campoId]  %} selected {% endif %}>
+        {{ valor[campoNombre] }}
       </option>
     {% endfor %}
   </select>

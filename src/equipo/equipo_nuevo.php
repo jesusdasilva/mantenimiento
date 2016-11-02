@@ -23,19 +23,23 @@ $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
   try{
 
       //DATOS DEL FORMULARIO
-      $registros = array('equipo_nombre' => mb_strtoupper($request->get('equipo-nombre'),'utf-8'),
-                         'equipo_so'     => $request->get('equipo-so'),
-                         'empresa_id'    => $app['empresa']->buscarNombreTaerId('NINGUNA'),
-                         'gerencia_id'   => $app['gerencia']->buscarNombreTaerId('NINGUNA'),
-                         'ubicacion_id'  => $app['ubicacion']->buscarNombreTaerId('NINGUNA'));
+      $registrosEquipo = array('equipo_nombre' => mb_strtoupper($request->get('equipo-nombre'),'utf-8'),
+                               'equipo_usuario_nombre' => '',
+                               'equipo_usuario_indicador' => '',
+                               'equipo_etiqueta' => '',
+                               'equipo_observacion' => '',
+                               'equipo_so'     => $request->get('equipo-so'),
+                               'empresa_id'    => $app['empresa']->buscarNombreTaerId('NINGUNA'),
+                               'gerencia_id'   => $app['gerencia']->buscarNombreTaerId('NINGUNA'),
+                               'ubicacion_id'  => $app['ubicacion']->buscarNombreTaerId('NINGUNA'));
 
       //BUSCAR NOMBRE DEL EQUIPO
-      $nombreEncontrado = $app['equipo']->buscarNombre($registros['equipo_nombre']);
+      $nombreEncontrado = $app['equipo']->buscarNombre($registrosEquipo['equipo_nombre']);
 
       if(!$nombreEncontrado){//NO ESTA REPETIDO EL NOMBRE
 
         //GUARDAR EQUIPO Y ACTIVIDADES
-        $registrosAfectados = $app['equipo']->nuevo($registros);
+        $registrosAfectados = $app['equipo']->nuevo($registrosEquipo);
 
         //VERIFICAR QUE SE GUARDÓ
         if($registrosAfectados <= 0)
@@ -50,20 +54,26 @@ $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
 
         //REENVIAR AL FORMULÁRIO DATOS
         return $app['twig']->render('equipo/equipo_nuevo_elegir_mantenimiento.twig',
-            array('equipo_nombre' => $registros['equipo_nombre']));
+            array('equipo_nombre' => $registrosEquipo['equipo_nombre']));
       }
 
       //MENSAJE
       //$app['session']->getFlashBag()->add('success',
       //    array('message' => 'La Empresa fue incluida'));
 
-      //LISTADO DE UBICACIONES
+      //LISTADO DE LAS UBICACIONES
       $ubicaciones = $app['ubicacion']->listar();
+      //LISTADOR DE LAS EMPRESA
+      $empresas = $app['empresa']->listar();
+      //LISTADOR DE LAS GERENCIAS
+      $gerencias = $app['gerencia']->listar();
 
       //REDIRECCIONAR AL FORMULARIO LISTAR
       return $app['twig']->render('equipo/equipo_nuevo_registrar_mantenimiento.html.twig',
-          array('equipo_nombre' => $registros['equipo_nombre'],
-                'ubicaciones' => $ubicaciones ));
+          array('registrosEquipo' => $registrosEquipo,
+                'ubicaciones'     => $ubicaciones,
+                'empresas'        => $empresas,
+                'gerencias'       => $gerencias));
 
     //CAPTURAR ERROR
     }catch (Exception $e) {
