@@ -4,19 +4,31 @@
     <p>{{numero}}</p>
   </div>
   <div class="col-md-6">
-    {% if actividad_value is defined  %}
-    <input name="{{checkboxes_id}}"  id="{{checkboxes_id}}" value="{{checkbox_value}}" type="checkbox">
-    <input type="hidden" name="{{actividad_id}}" id="{{actividad_id}}" value="{{actividad_value}}" />
+    {% if registrosEquipo is defined  %}
+      <label class="checkbox-inline" for="{{checkboxes_id}}">
+        <input name="{{checkboxes_id}}" id="{{checkboxes_id}}" value="{{checkbox_value}}" type="checkbox">
+        {{titulo}}
+      </label>
+    {% else %}
+      <p>{{titulo}}</p>
     {% endif %}
-    <p>{{titulo}}</p>
   </div>
   <div class="col-md-3">
+  {% if registrosEquipo is not defined  %}
     <a href="#" class="btn btn-info btn-sm active" role="button" data-toggle="modal" data-target="#{{id}}">
       Ayuda&nbsp;<span class="fa fa-question" aria-hidden="true"></span>
     </a>
     <a href="{{ asset(pdf) }}" class="btn btn-warning btn-sm active" role="button">
       Procedimiento&nbsp;<span class="fa fa-file-pdf-o" aria-hidden="true"></span>
     </a>
+  {% else %}
+  <a href="#" class="btn btn-info btn-sm active" role="button" data-toggle="modal" data-target="#{{id}}">
+    <span class="fa fa-question" aria-hidden="true"></span>
+  </a>
+  <a href="{{ asset(pdf) }}" class="btn btn-warning btn-sm active" role="button">
+    <span class="fa fa-file-pdf-o" aria-hidden="true"></span>
+  </a>
+  {% endif %}
   </div>
 </div>
 {# MENSAJE MODAL #}
