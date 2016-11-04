@@ -1,0 +1,26 @@
+{# EQUIPO LISTADO#}
+
+{#LAYOUT DE APLICACIONES#}
+{% extends "layout_app.html.twig" %}
+
+{% block contenido_app %}
+
+  {#LISTADO DE LOS EQUIPOS#}
+  {% set tituloModulo = 'Buscar Equipos' %}
+  {#DATA TABLE#}
+  {% set tituloListado  = 'Listado de los Equipos' %}
+  {% set nombreItem1    = 'Equipo' %}
+  {% set nombreItem2    = 'Empresa' %}
+  {% set nombreItem3    = 'Sistema Operativo' %}
+  {% set campos         =  equipos %}
+  {% set campoNombre1   = 'equipo_nombre' %}
+  {% set campoNombre2   = 'empresa_nombre' %}
+  {% set campoNombre3   = 'checklist_so' %}
+  {% set campoId        = 'equipo_id' %}
+  {% set moduloBuscar   = 'empresaBuscar' %}
+  {% set moduloEliminar = 'empresaEliminar' %}
+
+  {#PLANTILLA DATA TABLE#}
+  {% include 'equipo/equipo_plantilla_listado.html.twig' %}
+
+{% endblock %}

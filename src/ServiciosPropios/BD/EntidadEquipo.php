@@ -14,7 +14,9 @@ class EntidadEquipo{
   public function __construct(Application $app){
     $this->app = $app;
   }
-
+ /*
+ *CREAR UN NUEVO EQUIPO E INCLUIRLE TODAS SUS ACTIVIDADES EN BLANCO
+ */
   public function Nuevo($registros){
 
     //GUARDAR DATOS DEL EQUIPO
@@ -24,7 +26,7 @@ class EntidadEquipo{
               'gerencia_id'   => $registros['gerencia_id'],
               'ubicacion_id'  => $registros['ubicacion_id']));
 
-    //VERIFICAR QUE SE GUARDÓ EL EQUIPO          
+    //VERIFICAR QUE SE GUARDÓ EL EQUIPO
     if($registrosAfectados > 0){
 
       //ELEGIR SISTEMA OPERATIVO
@@ -68,7 +70,7 @@ class EntidadEquipo{
       return $registrosAfectados;
   }
   /*
-  *ACTIVIDADES PARA WINDOWS XP 32 BITS
+  *CATÁLOGO DE ACTIVIDADES PARA WINDOWS XP 32 BITS
   */
   private function actividadesWXP32(){
     return array( '1' =>  'Revisión del nombre del equipo.',
@@ -132,6 +134,22 @@ class EntidadEquipo{
 
     return $registros['equipo_id'];
   }
+  /*
+  * LISTADO DE TODOS LOS EQUIPOS
+  */
+   public function listar(){
+
+     //SQL
+     $sql  = " SELECT equipo_id,equipo_nombre,empresa_nombre,checklist_so ";
+     $sql .= " FROM vista_equipos ";
+     $sql .= " ORDER BY equipo_nombre ";
+
+     //BUSCAR TODAS LOS EQUIPOS
+     $equipos = $this->app['db']->fetchAll($sql);
+
+     //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
+     return $equipos;
+   }
 
 
 

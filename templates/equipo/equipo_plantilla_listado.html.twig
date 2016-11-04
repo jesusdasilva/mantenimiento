@@ -1,0 +1,28 @@
+{#PLANTILLA BASE PARA EL LISTADO
+  DE LOS MÓDULOS EMPRESA, GERENCIA, UBICACIÓN
+#}
+
+{#MACROS#}
+{% import "form.html.twig" as form %}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{tituloModulo}}</h1>{#TÍTULO DEL MÓDULO#}
+        </div>
+    </div>
+    {#MENSAJE#}
+    {% include 'mensaje_alerta.html.twig' %}
+    {#DATA TABLE#}
+    {{ form.dataTable3(tituloListado,
+                       nombreItem1,
+                       nombreItem2,
+                       nombreItem3,
+                       campos,
+                       campoNombre1,
+                       campoNombre2,
+                       campoNombre3,
+                       campoId,
+                       moduloBuscar,
+                       moduloEliminar) }}
+</div>{#/.page-wrapper#}
