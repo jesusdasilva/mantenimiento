@@ -42,6 +42,7 @@ ALTER TABLE public.mantenimientos_checklist ALTER COLUMN checklist_nombre DROP D
 ALTER TABLE public.mantenimientos_checklist ALTER COLUMN equipo_id DROP DEFAULT;
 ALTER TABLE public.mantenimientos_checklist ALTER COLUMN checklist_id DROP DEFAULT;
 DROP VIEW public.vista_usuarios_perfiles;
+DROP VIEW public.vista_equipos;
 DROP SEQUENCE public.usuarios_perfiles_id_seq;
 DROP TABLE public.usuarios_perfiles;
 DROP SEQUENCE public.usuarios_datos_id_seq;
@@ -64,10 +65,11 @@ DROP TABLE public.mantenimientos_checklist;
 DROP DOMAIN public.observacion;
 DROP DOMAIN public.nombre_largo;
 DROP DOMAIN public.nombre_corto;
+DROP EXTENSION adminpack;
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
--- Name: mantenimientoDB; Type: COMMENT; Schema: -; Owner: postgres
+-- Name: mantenimientoDB; Type: COMMENT; Schema: -; Owner: mantenimiento
 --
 
 COMMENT ON DATABASE "mantenimientoDB" IS 'Base de datos del sistema de mantenimiento de Estaciones de Trabajo de PDVSA';
@@ -101,6 +103,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 
 
 SET search_path = public, pg_catalog;
@@ -547,6 +563,27 @@ ALTER SEQUENCE usuarios_perfiles_id_seq OWNED BY usuarios_perfiles.perfil_id;
 
 
 --
+-- Name: vista_equipos; Type: VIEW; Schema: public; Owner: mantenimiento
+--
+
+CREATE VIEW vista_equipos AS
+ SELECT equipos.equipo_id,
+    equipos.equipo_nombre,
+    empresas.empresa_nombre,
+    gerencias.gerencia_nombre,
+    ubicaciones.ubicacion_nombre,
+    checklist.checklist_so
+   FROM ((((mantenimientos_equipos equipos
+     JOIN mantenimientos_empresas empresas ON ((equipos.empresa_id = empresas.empresa_id)))
+     JOIN mantenimientos_gerencias gerencias ON ((equipos.gerencia_id = gerencias.gerencia_id)))
+     JOIN mantenimientos_ubicaciones ubicaciones ON ((equipos.ubicacion_id = ubicaciones.ubicacion_id)))
+     JOIN mantenimientos_checklist checklist ON ((equipos.equipo_id = checklist.equipo_id)))
+  GROUP BY equipos.equipo_id, equipos.equipo_nombre, empresas.empresa_nombre, gerencias.gerencia_nombre, ubicaciones.ubicacion_nombre, checklist.checklist_so;
+
+
+ALTER TABLE vista_equipos OWNER TO mantenimiento;
+
+--
 -- Name: vista_usuarios_perfiles; Type: VIEW; Schema: public; Owner: mantenimiento
 --
 
@@ -660,7 +697,7 @@ ALTER TABLE ONLY usuarios_perfiles ALTER COLUMN perfil_id SET DEFAULT nextval('u
 -- Name: checklist_checklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('checklist_checklist_id_seq', 36, true);
+SELECT pg_catalog.setval('checklist_checklist_id_seq', 378, true);
 
 
 --
@@ -713,6 +750,348 @@ INSERT INTO mantenimientos_checklist VALUES (33, 4, 'Variables de Oracle en el P
 INSERT INTO mantenimientos_checklist VALUES (34, 4, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
 INSERT INTO mantenimientos_checklist VALUES (35, 4, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
 INSERT INTO mantenimientos_checklist VALUES (36, 4, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (37, 5, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (38, 5, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (39, 5, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (40, 5, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (41, 5, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (42, 5, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (43, 5, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (44, 5, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (45, 5, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (46, 5, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (47, 5, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (48, 5, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (49, 5, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (50, 5, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (51, 5, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (52, 5, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (53, 5, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (54, 5, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (55, 6, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (56, 6, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (57, 6, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (58, 6, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (59, 6, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (60, 6, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (61, 6, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (62, 6, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (63, 6, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (64, 6, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (65, 6, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (66, 6, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (67, 6, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (68, 6, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (69, 6, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (70, 6, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (71, 6, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (72, 6, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (73, 7, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (74, 7, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (75, 7, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (76, 7, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (77, 7, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (78, 7, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (79, 7, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (80, 7, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (81, 7, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (82, 7, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (83, 7, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (84, 7, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (85, 7, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (86, 7, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (87, 7, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (88, 7, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (89, 7, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (90, 7, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (91, 8, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (92, 8, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (93, 8, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (94, 8, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (95, 8, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (96, 8, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (97, 8, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (98, 8, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (99, 8, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (100, 8, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (101, 8, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (102, 8, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (103, 8, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (104, 8, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (105, 8, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (106, 8, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (107, 8, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (108, 8, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (109, 9, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (110, 9, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (111, 9, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (112, 9, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (113, 9, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (114, 9, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (115, 9, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (116, 9, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (117, 9, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (118, 9, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (119, 9, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (120, 9, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (121, 9, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (122, 9, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (123, 9, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (124, 9, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (125, 9, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (126, 9, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (127, 10, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (128, 10, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (129, 10, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (130, 10, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (131, 10, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (132, 10, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (133, 10, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (134, 10, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (135, 10, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (136, 10, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (137, 10, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (138, 10, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (139, 10, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (140, 10, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (141, 10, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (142, 10, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (143, 10, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (144, 10, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (145, 11, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (146, 11, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (147, 11, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (148, 11, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (149, 11, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (150, 11, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (151, 11, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (152, 11, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (153, 11, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (154, 11, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (155, 11, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (156, 11, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (157, 11, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (158, 11, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (159, 11, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (160, 11, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (161, 11, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (162, 11, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (163, 12, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (164, 12, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (165, 12, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (166, 12, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (167, 12, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (168, 12, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (169, 12, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (170, 12, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (171, 12, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (172, 12, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (173, 12, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (174, 12, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (175, 12, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (176, 12, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (177, 12, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (178, 12, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (179, 12, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (180, 12, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (181, 13, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (182, 13, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (183, 13, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (184, 13, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (185, 13, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (186, 13, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (187, 13, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (188, 13, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (189, 13, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (190, 13, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (191, 13, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (192, 13, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (193, 13, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (194, 13, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (195, 13, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (196, 13, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (197, 13, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (198, 13, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (199, 14, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (200, 14, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (201, 14, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (202, 14, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (203, 14, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (204, 14, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (205, 14, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (206, 14, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (207, 14, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (208, 14, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (209, 14, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (210, 14, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (211, 14, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (212, 14, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (213, 14, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (214, 14, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (215, 14, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (216, 14, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (217, 15, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (218, 15, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (219, 15, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (220, 15, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (221, 15, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (222, 15, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (223, 15, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (224, 15, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (225, 15, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (226, 15, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (227, 15, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (228, 15, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (229, 15, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (230, 15, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (231, 15, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (232, 15, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (233, 15, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (234, 15, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (235, 16, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (236, 16, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (237, 16, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (238, 16, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (239, 16, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (240, 16, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (241, 16, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (242, 16, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (243, 16, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (244, 16, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (245, 16, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (246, 16, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (247, 16, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (248, 16, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (249, 16, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (250, 16, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (251, 16, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (252, 16, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (253, 17, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (254, 17, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (255, 17, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (256, 17, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (257, 17, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (258, 17, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (259, 17, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (260, 17, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (261, 17, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (262, 17, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (263, 17, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (264, 17, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (265, 17, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (266, 17, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (267, 17, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (268, 17, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (269, 17, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (270, 17, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (271, 18, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (272, 18, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (273, 18, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (274, 18, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (275, 18, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (276, 18, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (277, 18, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (278, 18, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (279, 18, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (280, 18, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (281, 18, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (282, 18, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (283, 18, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (284, 18, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (285, 18, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (286, 18, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (287, 18, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (288, 18, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (289, 19, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (290, 19, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (291, 19, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (292, 19, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (293, 19, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (294, 19, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (295, 19, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (296, 19, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (297, 19, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (298, 19, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (299, 19, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (300, 19, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (301, 19, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (302, 19, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (303, 19, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (304, 19, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (305, 19, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (306, 19, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (307, 20, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (308, 20, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (309, 20, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (310, 20, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (311, 20, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (312, 20, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (313, 20, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (314, 20, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (315, 20, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (316, 20, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (317, 20, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (318, 20, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (319, 20, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (320, 20, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (321, 20, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (322, 20, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (323, 20, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (324, 20, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (325, 21, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (326, 21, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (327, 21, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (328, 21, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (329, 21, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (330, 21, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (331, 21, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (332, 21, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (333, 21, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (334, 21, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (335, 21, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (336, 21, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (337, 21, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (338, 21, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (339, 21, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (340, 21, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (341, 21, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (342, 21, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (343, 22, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (344, 22, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (345, 22, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (346, 22, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (347, 22, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (348, 22, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (349, 22, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (350, 22, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (351, 22, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (352, 22, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (353, 22, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (354, 22, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (355, 22, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (356, 22, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (357, 22, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (358, 22, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (359, 22, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (360, 22, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (361, 23, 'Revisión del nombre del equipo.', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (362, 23, 'Aplicar las políticas de PDVSA', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (363, 23, 'Revisión del Estado de Hibernación del equipo', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (364, 23, 'Setear la memoria virtual a la unidad D:', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (365, 23, 'Tamaño de la memoria Virtual a 10 GB', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (366, 23, 'Sufijos DNS configurado', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (367, 23, 'Servidor PLCGUA03 mapeada en unidad G:ppl', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (368, 23, 'Servidor PLCGUA03 mapeada en unidad I:dataplic', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (369, 23, 'Programas instalados en la unidad C', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (370, 23, 'Data de usuario en Unidad D', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (371, 23, 'Integridad del Disco Duro', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (372, 23, 'Perfil de usuarios en D:Users', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (373, 23, 'Licencias en Variables de Sistemas', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (374, 23, 'Licencias en Variables de Usuario', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (375, 23, 'Variables de Oracle en el Path del Sistema', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (376, 23, 'Instalar Microsoft Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (377, 23, 'Actualizar el Framenwork NET 4', 'Windows XP 32bits', false);
+INSERT INTO mantenimientos_checklist VALUES (378, 23, 'Revisar el estado del Antivirus', 'Windows XP 32bits', false);
 
 
 --
@@ -730,6 +1109,26 @@ INSERT INTO mantenimientos_empresas VALUES (5, 'NINGUNA', '');
 --
 
 INSERT INTO mantenimientos_equipos VALUES (4, NULL, NULL, 5, 3, 'WWWW', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (5, NULL, NULL, 5, 3, 'DDDD', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (6, NULL, NULL, 5, 3, 'QQQQ', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (7, NULL, NULL, 5, 3, 'RRRRRRRRRR', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (8, NULL, NULL, 5, 3, 'FFFFFFFFFFF', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (9, NULL, NULL, 5, 3, 'FFFFFFFFUUU', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (10, NULL, NULL, 5, 3, 'YYYYYYYYY', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (11, NULL, NULL, 5, 3, 'ERWER', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (12, NULL, NULL, 5, 3, 'ZZZZZZZZ', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (13, NULL, NULL, 5, 3, 'OOOO', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (14, NULL, NULL, 5, 3, 'JJJJJJJJJJJJJHHHHHHH', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (15, NULL, NULL, 5, 3, 'QWER', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (16, NULL, NULL, 5, 3, 'QWERF', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (17, NULL, NULL, 5, 3, 'WERT', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (18, NULL, NULL, 5, 3, 'KKKK', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (19, NULL, NULL, 5, 3, 'UUUU', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (20, NULL, NULL, 5, 3, 'TUTRUT', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (21, NULL, NULL, 5, 3, 'YUYTU', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (22, NULL, NULL, 5, 3, 'EWRWER', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (23, NULL, NULL, 5, 3, 'SDFSDF', NULL, 21, NULL);
+INSERT INTO mantenimientos_equipos VALUES (24, NULL, NULL, 5, 3, '', NULL, 21, NULL);
 
 
 --
@@ -743,7 +1142,7 @@ SELECT pg_catalog.setval('mantenimientos_equipos_empresa_id_seq', 1, false);
 -- Name: mantenimientos_equipos_equipo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('mantenimientos_equipos_equipo_id_seq', 4, true);
+SELECT pg_catalog.setval('mantenimientos_equipos_equipo_id_seq', 24, true);
 
 
 --
@@ -774,13 +1173,14 @@ INSERT INTO mantenimientos_gerencias VALUES (3, 'NINGUNA', '');
 
 INSERT INTO mantenimientos_ubicaciones VALUES (21, 'NINGUNA', '');
 INSERT INTO mantenimientos_ubicaciones VALUES (22, 'EDIFICIO CBP, PISO 1, ALA SUR', 'Edificio Centro Bahia de Pozuelos');
+INSERT INTO mantenimientos_ubicaciones VALUES (23, 'EDIFICIO CBP, TORRE CD, PISO 3, ALA NORTE.', '');
 
 
 --
 -- Name: ubucaciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mantenimiento
 --
 
-SELECT pg_catalog.setval('ubucaciones_id_seq', 22, true);
+SELECT pg_catalog.setval('ubucaciones_id_seq', 23, true);
 
 
 --
