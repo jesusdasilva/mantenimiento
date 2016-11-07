@@ -29,6 +29,14 @@ class EntidadGerencia{
     //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
     return $gerencias;
   }
+  /*
+  *NÚMERO TOTAL DE GERENCIAS
+  */
+  public function cantidad(){
+
+    return count($this->listar());
+
+  }
  /*
  * BUSCAR UNA GERENCIA POR ID
  */

@@ -1,0 +1,11 @@
+{#CUADRO DETALLE GERENCIAS#}
+
+  {#DETALLE#}
+  {% set color  = 'yellow' %}
+  {% set titulo = 'Gerencias' %}
+  {% set icono  = 'bar-chart-o'%}
+  {% set total  =  totalGerencias %}
+  {% set link   =  app.url_generator.generate('gerenciaListar') %}
+
+  {#PLANTILLA DETALLE#}
+  {% include 'inicio/incio_plantilla_detalle.html.twig' %}

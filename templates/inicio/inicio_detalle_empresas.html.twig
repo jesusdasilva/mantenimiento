@@ -1,0 +1,11 @@
+{#CUADRO DETALLE EMPRESAS#}
+
+  {#DETALLE#}
+  {% set color  = 'green' %}
+  {% set titulo = 'Empresas' %}
+  {% set icono  = 'tasks' %}
+  {% set total  =  totalEmpresas %}
+  {% set link   =  app.url_generator.generate('empresaListar') %}
+
+  {#PLANTILLA DETALLE#}
+  {% include 'inicio/incio_plantilla_detalle.html.twig' %}

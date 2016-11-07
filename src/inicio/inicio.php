@@ -6,12 +6,13 @@ $inicio->get('/inicio', function() use ($app) {
 
   try{
 
-    //LISTAR TODOS LOS EQUIPOS
-    $equipos = $app['equipo']->listar();
-
     //MOSTAR LA PÁGINA DE INICIO
-    return $app['twig']->render('inicio/inicio.twig',
-        array('equipos' => $equipos));
+    return $app['twig']->render('inicio/inicio.html.twig',
+        array('equipos' => $app['equipo']->listar(),
+              'totalEquipos'     => $app['equipo']->getCantidad(),
+              'totalEmpresas'    => $app['empresa']->cantidad(),
+              'totalGerencias'   => $app['gerencia']->cantidad(),
+              'totalUbicaciones' => $app['ubicacion']->cantidad()));
 
   //CAPTURAR ERROR
   }catch (Exception $e) {

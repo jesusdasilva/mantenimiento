@@ -29,6 +29,14 @@ class EntidadEmpresa{
     //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
     return $empresas;
   }
+  /*
+  *NÚMERO TOTAL DE EMPRESA
+  */
+  public function cantidad(){
+
+    return count($this->listar());
+
+  }
  /*
  * BUSCAR UNA EMPRESA POR ID
  */

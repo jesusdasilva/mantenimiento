@@ -10,6 +10,7 @@ use ServiciosPropios\BD\EntidadEquipo;
 class EntidadEquipo{
 
   private $app;
+  private $totalEquipos = 0;
 
   public function __construct(Application $app){
     $this->app = $app;
@@ -148,10 +149,21 @@ class EntidadEquipo{
      //BUSCAR TODAS LOS EQUIPOS
      $equipos = $this->app['db']->fetchAll($sql);
 
+     //GUARDAR NÚMERO TOTAL DE EQUIPOS
+     $this->totalEquipos = count($equipos);
+
      //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
      return $equipos;
-   }
 
+   }
+   /*
+   *NUMERO TOTAL DE EQUIPOS
+   */
+   public function getCantidad(){
+
+     return $this->totalEquipos;
+
+   }
 
 
 }

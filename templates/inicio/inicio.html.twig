@@ -1,0 +1,26 @@
+{#PLANTILLA DE INICIO #}
+{% extends "layout_app.html.twig" %}
+{% block contenido_app %}
+    <div id="wrapper">
+        <div id="page-wrapper">
+          {#TITULO#}
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header">Inicio</h1>
+            </div>{#/.col-lg-12#}
+          </div>{#/.row#}
+          {#/.TITULO#}
+            <div class="row">{#CUADROS#}
+                {#CUADRO TOTAL ESTACIONES#}
+                {% include 'inicio/inicio_detalle_estaciones.html.twig' %}
+                {#CUADRO TOTAL EMPRESAS#}
+                {% include 'inicio/inicio_detalle_empresas.html.twig' %}
+                {#CUADRO TOTAL GERENCIAS#}
+                {% include 'inicio/inicio_detalle_gerencias.html.twig' %}
+                {#CUADRO TOTAL UBICACIONES#}
+                {% include 'inicio/inicio_detalle_ubicaciones.html.twig' %}
+            </div>{#/.row#}
+           {% include 'inicio/inicio_tabla_resumen.html.twig' %}
+        </div>{#/.page-wrapper#}
+ </div>
+{% endblock %}

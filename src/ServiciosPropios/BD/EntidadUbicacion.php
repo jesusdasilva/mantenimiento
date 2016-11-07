@@ -29,6 +29,14 @@ class EntidadUbicacion{
     //RETORNAR LOS REGISTROS DE TODAS LAS UBICACIONES
     return $ubicaciones;
   }
+  /*
+  *NÚMERO TOTAL DE GERENCIAS
+  */
+  public function cantidad(){
+
+    return count($this->listar());
+
+  }
  /*
  * BUSCAR UNA UBICACIONES POR ID
  */

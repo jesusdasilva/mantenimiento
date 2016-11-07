@@ -1,0 +1,11 @@
+{#CUADRO DETALLE ESTACIONES#}
+
+  {#DETALLE#}
+  {% set color  = 'primary' %}
+  {% set titulo = 'Estaciones' %}
+  {% set icono  = 'desktop' %}
+  {% set total  =  totalEquipos %}
+  {% set link   =  app.url_generator.generate('equipoListar') %}
+
+  {#PLANTILLA DETALLE#}
+  {% include 'inicio/incio_plantilla_detalle.html.twig' %}

@@ -1,0 +1,11 @@
+{#CUADRO DETALLE UBICACIONES#}
+
+  {#DETALLE#}
+  {% set color  = 'red' %}
+  {% set titulo = 'Ubicaciones' %}
+  {% set icono  = 'map-marker'%}
+  {% set total  =  totalUbicaciones %}
+  {% set link   =  app.url_generator.generate('ubicacionListar') %}
+
+  {#PLANTILLA DETALLE#}
+  {% include 'inicio/incio_plantilla_detalle.html.twig' %}

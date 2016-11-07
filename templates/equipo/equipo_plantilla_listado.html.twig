@@ -1,6 +1,4 @@
-{#PLANTILLA BASE PARA EL LISTADO
-  DE LOS MÓDULOS EMPRESA, GERENCIA, UBICACIÓN
-#}
+{#PLANTILLA LISTADO DE EQUIPOS#}
 
 {#MACROS#}
 {% import "form.html.twig" as form %}
@@ -14,15 +12,6 @@
     {#MENSAJE#}
     {% include 'mensaje_alerta.html.twig' %}
     {#DATA TABLE#}
-    {{ form.dataTable3(tituloListado,
-                       nombreItem1,
-                       nombreItem2,
-                       nombreItem3,
-                       campos,
-                       campoNombre1,
-                       campoNombre2,
-                       campoNombre3,
-                       campoId,
-                       moduloBuscar,
-                       moduloEliminar) }}
+    {{ form.dataTable3(tituloListado,nombreItem1,nombreItem2,nombreItem3,campos,campoNombre1,
+                       campoNombre2,campoNombre3,campoId,moduloBuscar,moduloEliminar) }}
 </div>{#/.page-wrapper#}
