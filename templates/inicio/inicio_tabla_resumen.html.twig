@@ -1,0 +1,18 @@
+{#TABLA RESUMEN#}
+
+  {#DATA TABLE#}
+  {% set tituloListado  = 'Resumen del mantenimiento realizado' %}
+  {% set nombreItem1    = 'Equipo' %}
+  {% set nombreItem2    = 'Empresa' %}
+  {% set nombreItem3    = 'Gerencia' %}
+  {% set nombreItem4    = 'Ubicación' %}
+  {% set nombreItem5    = 'Sistema Operativo' %}
+  {% set campos         =  equipos %}
+  {% set campoNombre1   = 'equipo_nombre' %}
+  {% set campoNombre2   = 'empresa_nombre' %}
+  {% set campoNombre3   = 'gerencia_nombre' %}
+  {% set campoNombre4   = 'ubicacion_nombre' %}
+  {% set campoNombre5   = 'checklist_so' %}
+
+  {#PLANTILLA DATA TABLE#}
+  {% include 'inicio/inicio_plantilla_tabla_resumen.html.twig' %}

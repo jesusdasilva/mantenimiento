@@ -1,0 +1,24 @@
+{#PLANTILLA PARA LA TABLA RESUMEN#}
+
+{#MACROS#}
+{% import "form.html.twig" as form %}
+
+<div class="row">
+  <div class="col-lg-12">
+<!-- Bar Chart Example  -->
+        <div class="panel panel-default">
+          <!-- /.panel-heading -->
+            <div class="panel-body">
+              {{ form.dataTable5(tituloListado,nombreItem1,nombreItem2,nombreItem3,nombreItem4,
+                                 nombreItem5,campos,campoNombre1,campoNombre2,campoNombre3,
+                                 campoNombre4,campoNombre5) }}
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+<!-- /Bar Chart Example  -->
+    </div>
+    <!-- /.col-lg-8 -->
+</div>
+<!-- /.row -->

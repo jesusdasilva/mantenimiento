@@ -140,7 +140,8 @@ class EntidadEquipo{
    public function listar(){
 
      //SQL
-     $sql  = " SELECT equipo_id,equipo_nombre,empresa_nombre,checklist_so ";
+     //$sql  = " SELECT equipo_id,equipo_nombre,empresa_nombre,checklist_so ";
+     $sql  = " SELECT * ";
      $sql .= " FROM vista_equipos ";
      $sql .= " ORDER BY equipo_nombre ";
 
