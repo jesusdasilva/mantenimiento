@@ -1,7 +1,7 @@
 <?php
 /*
-*CONTROLADOR PRINCIPAL EMPRESA
-*/
+ * CONTROLADOR PRINCIPAL EMPRESA
+ */
 
 //CREAR EL OBJETO
 $empresa = $app['controllers_factory'];

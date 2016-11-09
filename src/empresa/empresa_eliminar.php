@@ -4,40 +4,24 @@
  */
 $empresa->get('empresa/eliminar/{id}', function($id) use($app){
 
-  try {
+  if($app['empresa']->eliminar($id)){
 
-      //ELIMINAR
-      $registroEliminado = $app['empresa']->eliminar($id);
+    //MENSAJE
+    $app['session']->getFlashBag()->add('success',
+        array('message' => $app['empresa']->getMensaje()));
 
-      //VERIFICAR QUE SE ELIMINÓ
-      if( $registroEliminado <= 0 ){
+    //REDIRECCIONAR AL LISTADO
+    return $app->redirect($app['url_generator']->generate('empresaListar'));
 
-        //MENSAJE
-        $app['session']->getFlashBag()->add('danger',
-            array('message' => 'No se pudo eliminar la Empresa'));
-
-      }else{
-
-        //MENSAJE
-        $app['session']->getFlashBag()->add('success',
-            array('message' => 'Se eliminó con éxito la Empresa'));
-
-      }
-
-      //REDIRECCIONAR AL LISTADO
-      return $app->redirect($app['url_generator']->generate('empresaListar'));
-
-    //CAPTURAR ERROR
-    } catch (Exception $e) {
+  }else{
 
       //MENSAJE
       $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
+          array('message' => $app['empresa']->getMensaje()));
 
       //MOSTRAR MENSAJE ERROR
       return $app['twig']->render('mensaje_error.html.twig');
 
     }
-
 })
 ->bind('empresaEliminar');

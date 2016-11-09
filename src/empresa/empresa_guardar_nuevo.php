@@ -7,14 +7,12 @@
 
 $empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
 
-  try{
-
       //DATOS DEL FORMULARIO
-      $registros = array('empresa_nombre'     => mb_strtoupper($request->get('empresa-nombre'),'utf-8'),
-                         'empresa_observacion'=>$request->get('empresa-observacion'));
+      $registros = ['empresa_nombre'      => mb_strtoupper($request->get('empresa-nombre'),'utf-8'),
+                    'empresa_observacion' => $request->get('empresa-observacion')];
 
       //BUSCAR NOMBRE DE EMPRESA
-      $nombreEncontrado = $app['empresa']->buscarNombre($registros['empresa_nombre']);
+      $nombreEncontrado = $app['empresa']->buscar(array('nombre'=>$registros['empresa_nombre']));
 
       if(!$nombreEncontrado){//NO ESTA REPETIDO EL NOMBRE
 

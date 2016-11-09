@@ -1,40 +1,23 @@
 <?php
 /*
- *  CONTROLADOR empresaBuscar
+ * CONTROLADOR empresaBuscar
  */
 $empresa->get('/empresa/buscar/{id}',function($id) use($app){
 
-  try{
+  if($app['empresa']->buscar(array('id' => $id))){
 
-      //BUSCAR POR EMPRESA POR ID
-      $registros = $app['empresa']->buscarId($id);
+    //MOSTRAR DATOS
+    return $app['twig']->render('empresa/empresa_datos.html.twig',
+          array('empresa_id'          => $app['empresa']->getID(),
+                'empresa_nombre'      => $app['empresa']->getNombre(),
+                'empresa_observacion' => $app['empresa']->getObservacion(),
+                'editar' => TRUE));
 
-      if($app['empresa']->buscarId($id)){
+  }else{
 
-        //MOSTRAR DATOS
-        return $app['twig']->render('empresa/empresa_datos.html.twig',
-            array('empresa_id' => $app['empresa']->getID();
-        $app['empresa']->getNombre();
-        $app['empresa']->getObservacion();
-
-      }else{
-
-        throw new Exception('Error al buscar id');
-
-      }
-
-      //MOSTRAR DATOS
-      return $app['twig']->render('empresa/empresa_datos.html.twig',
-          array('empresa_id'          =>$registros['empresa_id'],
-                'empresa_nombre'      =>$registros['empresa_nombre'],
-                'empresa_observacion' =>$registros['empresa_observacion'],
-                'editar'=>TRUE));
-
-  } catch (Exception $e) {
-
-    //MENSAJE
+   //MENSAJE
     $app['session']->getFlashBag()->add('danger',
-        array('message' => $e->getMessage()));
+        array('message' => $this->getMessage()));
 
     //MOSTRAR MENSAJE ERROR
     return $app['twig']->render('mensaje_error.html.twig');

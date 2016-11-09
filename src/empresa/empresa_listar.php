@@ -2,29 +2,23 @@
 /*
  *  CONTROLADOR empresaListar
  */
-
 $empresa->get('/empresa/listar', function() use ($app) {
 
-  try{
+  if($app['empresa']->listar()){
 
-      //BUSCAR TODAS LA EMPRESAS
-      $empresas = $app['empresa']->listar();
+    //ENVIAR DATOS AL FORMULARIO
+    return $app['twig']->render('empresa/empresa_listado.html.twig',
+        array('empresas'=> $app['empresa']->getTodas()));
 
-      //ENVIAR DATOS A LA PLANTILLA
-      return $app['twig']->render('empresa/empresa_listado.html.twig',
-          array('empresas'=> $empresas));
+  }else{
 
-    //CAPTURAR ERROR
-    }catch (Exception $e) {
+    //MENSAJE
+    $app['session']->getFlashBag()->add('danger',
+      array('message' => $app['empresa']->getMessage()));
 
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
-
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
-
-    }
+    //MOSTRAR MENSAJE ERROR
+    return $app['twig']->render('mensaje_error.html.twig');
+  }
 
 })
 ->bind('empresaListar');
