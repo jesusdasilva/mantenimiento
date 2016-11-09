@@ -10,6 +10,9 @@ class EntidadEmpresa{
 
   private $app;
 
+  //private $id,$nombre,$observacion;
+  private $empresa;
+
   public function __construct(Application $app){
     $this->app = $app;
   }
@@ -42,17 +45,30 @@ class EntidadEmpresa{
  */
   public function buscarId($empresaId){
 
-    //SQL
-    $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_empresas ";
-    $sql .= " WHERE empresa_id = ? ";
+    try{
 
-    //BUSCAR ID
-    $empresa = $this->app['db']->fetchAssoc($sql,
-        array($empresaId));
+      //SQL
+      $sql  = " SELECT empresa_id          AS id, ";
+      $sql .= "        empresa_nombre      AS nombre, ";
+      $sql .= "        empresa_observacion AS observacion ";
+      $sql .= " FROM mantenimientos_empresas ";
+      $sql .= " WHERE empresa_id = ? ";
 
-    //RETORNAR LOS REGISTROS DE UNA EMPRESA
-    return $empresa;
+      //BUSCAR
+      $regitros = $this->app['db']->fetchAssoc($sql,
+          array($empresaId));
+
+      foreach ($registros as $key => $value ){
+        $this->empresa[$key] = $value;
+      }
+
+      return true;
+
+    }catch(Exception $e){
+
+      return false;
+    }
+
   }
   /*
   * BUSCAR UNA EMPRESA POR NOMBRE

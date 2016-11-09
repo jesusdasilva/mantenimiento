@@ -9,6 +9,20 @@ $empresa->get('/empresa/buscar/{id}',function($id) use($app){
       //BUSCAR POR EMPRESA POR ID
       $registros = $app['empresa']->buscarId($id);
 
+      if($app['empresa']->buscarId($id)){
+
+        //MOSTRAR DATOS
+        return $app['twig']->render('empresa/empresa_datos.html.twig',
+            array('empresa_id' => $app['empresa']->getID();
+        $app['empresa']->getNombre();
+        $app['empresa']->getObservacion();
+
+      }else{
+
+        throw new Exception('Error al buscar id');
+
+      }
+
       //MOSTRAR DATOS
       return $app['twig']->render('empresa/empresa_datos.html.twig',
           array('empresa_id'          =>$registros['empresa_id'],
