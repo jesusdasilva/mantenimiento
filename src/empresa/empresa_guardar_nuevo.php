@@ -1,6 +1,6 @@
 <?php
 /*
- *  CONTROLADOR empresaGuardarNuevo
+ * CONTROLADOR empresaGuardarNuevo
  */
  use Symfony\Component\HttpFoundation\Request ;
  use Symfony\Component\HttpFoundation\Response;
@@ -11,23 +11,20 @@ $empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
       $registros = ['empresa_nombre'      => mb_strtoupper($request->get('empresa-nombre'),'utf-8'),
                     'empresa_observacion' => $request->get('empresa-observacion')];
 
-      //BUSCAR NOMBRE DE EMPRESA
-      $nombreEncontrado = $app['empresa']->buscar(array('nombre'=>$registros['empresa_nombre']));
+      if($app['empresa']->nuevo($registros)){
 
-      if(!$nombreEncontrado){//NO ESTA REPETIDO EL NOMBRE
+        //MENSAJE
+        $app['session']->getFlashBag()->add('success',
+            array('message' => $app['empresa']->getMensaje()));
 
-        //GUARDAR NUEVA EMPRESAS
-        $registrosAfectados = $app['empresa']->nuevo($registros);
+        //REDIRECCIONAR AL FORMULARIO LISTAR
+        return $app->redirect($app['url_generator']->generate('empresaListar'));
 
-        //VERIFICAR QUE SE GUARDÓ LA EMPRESA
-        if($registrosAfectados <= 0)
-          throw new Exception('Error, No se pudo ingresar la Empresa.');
-
-      }else{//NOMBRE REPETIDO
+      }else{
 
         //MENSAJE
         $app['session']->getFlashBag()->add('danger',
-            array('message' => 'La Empresa se encuentra repetida'));
+            array('message' => $app['empresa']->getMensaje()));
 
         //REENVIAR AL FORMULÁRIO DATOS
         return $app['twig']->render('empresa/empresa_datos.html.twig',
@@ -36,12 +33,7 @@ $empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
                   'editar' => FALSE));
       }
 
-      //MENSAJE
-      $app['session']->getFlashBag()->add('success',
-          array('message' => 'La Empresa fue incluida'));
 
-      //REDIRECCIONAR AL FORMULARIO LISTAR
-      return $app->redirect($app['url_generator']->generate('empresaListar'));
 
     //CAPTURAR ERROR
     }catch (Exception $e) {

@@ -17,40 +17,12 @@ class EntidadEmpresa{
   public function __construct(Application $app){
     $this->app = $app;
   }
- /*
- * LISTADO DE TODAS LAS EMPRESAS
- */
-  public function listar(){
-
-    try{
-
-      //SQL
-      $sql  = ' SELECT * ';
-      $sql .= ' FROM vista_empresas ';
-
-      //BUSCAR TODAS LAS EMPRESAS
-      $this->empresas = $this->app['db']->fetchAll($sql);
-
-      return TRUE;
-
-    }catch(Exception $e){
-
-      //MENSAJE ERROR
-      $this->mensaje = $e->getMessage();
-
-      return FALSE;
-    }
-
-  }
-    //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
-    return $empresas;
-  }
   /*
   *NÚMERO TOTAL DE EMPRESA
   */
   public function cantidad(){
 
-    return count($this->listar());
+    return count($this->buscar());
 
   }
  /*
@@ -83,23 +55,6 @@ class EntidadEmpresa{
 
   }
   /*
-  * BUSCAR UNA EMPRESA POR NOMBRE
-  */
-  public function buscarNombre($empresa_nombre){
-
-    //SQL
-    $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_empresas ";
-    $sql .= " WHERE empresa_nombre = ? ";
-
-    //BUSCAR NOMBRE
-    $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-        array($empresa_nombre));
-
-    //RETORNAR LOS REGISTROS DE UNA EMPRESA
-    return $nombreEncontrado;
-  }
-  /*
   *BUSCAR NOMBRE Y TRAER ID
   */
   public function buscarNombreTaerId($empresa_nombre){
@@ -114,48 +69,31 @@ class EntidadEmpresa{
 
     try{
 
-      //BUSCAR NOMBRE REPETIDO
-      if(!$this->buscar(array('nombre' => $registros['nombre_empresa']) AND !$this->error ){
+      //BUSCAR NOMBRE
+      if($this->buscar(array('nombre' =>$registros['nombre']))){
+        if(isset($this->empresa['nombre'])){
 
-        //GUARDAR NUEVO REGISTRO
-        $registrosAfectados = $this->app['db']->insert('mantenimientos_empresas',
-            array('empresa_nombre'     =>$registros['empresa_nombre'],
-                  'empresa_observacion'=>$registros['empresa_observacion']));
+          //GUARDAR NUEVO REGISTRO
+          $registrosAfectados = $this->app['db']->insert('mantenimientos_empresas',
+              array('empresa_nombre'     =>$registros['empresa_nombre'],
+                    'empresa_observacion'=>$registros['empresa_observacion']));
 
-        $this->mensaje = 'La Empresa fué agregada con éxito';
-        return TRUE;
+          $this->mensaje = 'La Empresa fué agregada con éxito';
+
+          return TRUE;
+
+        }else{
+          throw new Exception('El nombre de la Empresa se encuentra repetido');
+        }
       }else{
-        return FALSE;
-     }
-    }catch(Exception $e){
+        throw new Exception('Error al buscar el nombre');
+      }
 
+    }catch(Exception $e){
+      $this->mensaje = $e->getMessage();
+      return FALSE;
     }
 
-
-      //RETORNAR EL NÚMERO DE REGISTROS INSERTADOS
-      return $registrosAfectados;
-  }
-  /*
-  * BUSCAR NOMBRE REPETIDO
-  */
-  private function nombreRepetido($empresa_nombre){
-
-      //SQL
-      $sql = 'SELECT COUNT(empresa_nombre) ';
-      $sql.= 'WHERE vista_empresa = ? ';
-
-      //BUSCAR
-      $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-          array($empresa_nombre));
-
-      if($nombreEncontrado){
-
-        $this->mensaje = 'El nombre de la Empresa se encuentra repetido',
-        return TRUE;
-
-      }else{
-        return FALSE;
-      }
   }
   /*
   * ACTUALIZAR UNA EMPRESA
@@ -189,7 +127,7 @@ class EntidadEmpresa{
 
       }else{
 
-        //ERROR AL ELIMINAR LA EMPRESA
+        //ERROR
         throw new Exception('No se pudo eliminar la Empresa');
 
       }
@@ -200,9 +138,6 @@ class EntidadEmpresa{
 
     }
 
-
-    //RETORNAR EL NÚMERO DE REGISTROS ELIMINADOS
-    return $registroEliminado;
   }
   /*
   *BUSCAR $app['empresa']->buscar(array('id'=> $id));
@@ -241,14 +176,14 @@ class EntidadEmpresa{
 
       //BUSCAR
       $this->empresa = $this->app['db']->fetchAssoc($sql);
+      return TRUE;
+
     }
 
-      return TRUE;
     }catch(Exception $e){
 
       //MENSAJE DE ERROR
       $this->message = $e->getMessage();
-
       return FALSE;
     }
   }

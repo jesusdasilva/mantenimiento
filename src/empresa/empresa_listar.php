@@ -4,7 +4,7 @@
  */
 $empresa->get('/empresa/listar', function() use ($app) {
 
-  if($app['empresa']->listar()){
+  if($app['empresa']->buscar()){
 
     //ENVIAR DATOS AL FORMULARIO
     return $app['twig']->render('empresa/empresa_listado.html.twig',
@@ -18,6 +18,7 @@ $empresa->get('/empresa/listar', function() use ($app) {
 
     //MOSTRAR MENSAJE ERROR
     return $app['twig']->render('mensaje_error.html.twig');
+
   }
 
 })
