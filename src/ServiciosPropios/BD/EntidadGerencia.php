@@ -81,7 +81,21 @@ class EntidadGerencia{
     return $registros['gerencia_id'];
 
   }
+  /*
+  * BUSCAR NOMBRE Y TRAER EL ID
+  * $app['gerencia']->buscarNombreTraerId($nombre_gerencia);
+  */
+  public function buscarNombreTraerId($gerencia_nombre){
 
+    if($this->buscar(array('empresa_nombre' => $nombre))){
+        return TRUE;
+    }else{
+      $this->mensaje = "El id $empresa_nombre no se encuentra en la BD",
+      return FALSE;
+
+    }
+
+  }
 
   public function Nuevo($registros){
 

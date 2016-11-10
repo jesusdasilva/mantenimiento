@@ -21,7 +21,7 @@ $equipo->get('/equipo/nuevo', function() use ($app) {
 $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
 
   try{
-
+    
       //DATOS DEL FORMULARIO
       $registrosEquipo = array('equipo_nombre' => mb_strtoupper($request->get('equipo-nombre'),'utf-8'),
                                'equipo_usuario_nombre' => '',

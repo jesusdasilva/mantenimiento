@@ -4,7 +4,7 @@
  */
  use Symfony\Component\HttpFoundation\Request ;
  use Symfony\Component\HttpFoundation\Response;
-use ServiciosPropios\BD\EntidadGerencia;
+ use ServiciosPropios\BD\EntidadGerencia;
 
 $gerencia->post('/gerencia/guardar/nuevo', function(Request $request) use ($app) {
 

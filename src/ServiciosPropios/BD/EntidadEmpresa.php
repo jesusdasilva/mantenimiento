@@ -10,7 +10,7 @@ class EntidadEmpresa{
 
   private $app;
 
-  private $empresa = array();
+  private $registros = array();
   private $mensaje = '';
   private $error = FALSE;
 
@@ -28,7 +28,7 @@ class EntidadEmpresa{
  /*
  * BUSCAR UNA EMPRESA POR ID
  */
-  public function buscarId($id){
+ public function buscarId($id){
 
     try{
 
@@ -57,46 +57,61 @@ class EntidadEmpresa{
   /*
   *BUSCAR NOMBRE Y TRAER ID
   */
-  public function buscarNombreTaerId($empresa_nombre){
+  public function buscarNombreTaerId2($empresa_nombre){
 
     $registros = $this->buscarNombre($empresa_nombre);
 
     return $registros['empresa_id'];
 
   }
+  /*
+  * BUSCAR NOMBRE Y TRAER EL ID
+  * $app['empresa']->buscarNombreTraerId($nombre_empresa);
+  */
+  public function buscarNombreTraerId($empresa_nombre){
 
-  public function Nuevo($registros){
-
-    try{
-
-      //BUSCAR NOMBRE
-      if($this->buscar(array('nombre' =>$registros['nombre']))){
-        if(isset($this->empresa['nombre'])){
-
-          //GUARDAR NUEVO REGISTRO
-          $registrosAfectados = $this->app['db']->insert('mantenimientos_empresas',
-              array('empresa_nombre'     =>$registros['empresa_nombre'],
-                    'empresa_observacion'=>$registros['empresa_observacion']));
-
-          $this->mensaje = 'La Empresa fué agregada con éxito';
-
-          return TRUE;
-
-        }else{
-          throw new Exception('El nombre de la Empresa se encuentra repetido');
-        }
-      }else{
-        throw new Exception('Error al buscar el nombre');
-      }
-
-    }catch(Exception $e){
-      $this->mensaje = $e->getMessage();
+    if($this->buscar(array('empresa_nombre' => $nombre))){
+        return TRUE;
+    }else{
+      $this->mensaje = "El id $empresa_nombre no se encuentra en la BD",
       return FALSE;
+
     }
 
   }
   /*
+  * AGREGAR UNA NUEVA EMPRESA
+  * $app['empresa']->nuevo($campo);
+  */
+  public function nuevo($campos){
+
+    //BUSCAR NOMBRE
+    if($this->buscar(array('empresa_nombre' =>$campos['empresa_nombre']))){
+
+      $this->mensaje = 'La Empresa se encuentra repetida';
+
+      return FALSE;
+
+    }else{
+
+      //GUARDAR NUEVO REGISTRO
+      $registrosAfectados = $this->app['db']->insert('mantenimientos_empresas',
+          array('empresa_nombre'     =>$campos['empresa_nombre'],
+                'empresa_observacion'=>$campos['empresa_observacion']));
+
+      //VERIFICAR QUE SE AGREGÓ LA EMPRESA
+      if($registrosAfectados > 0){
+        $this->mensaje = 'La Empresa fué agregada con éxito';
+        return TRUE;
+      }else{
+        $this->mensaje ='Error  al incluir la empresa';
+        return FALSE;
+      }
+    }
+  }
+  /*
   * ACTUALIZAR UNA EMPRESA
+  * $app['empresa']->actualizar($registros),
   */
   public function actualizar($regitros){
 
@@ -105,50 +120,47 @@ class EntidadEmpresa{
           array('empresa_observacion'=> $regitros['empresa_observacion']),
           array('empresa_id'=>$regitros['empresa_id']));
 
-    //RETORNAR EL NÚMERO DE REGISTROS ATUALIZADOS
-    return $registrosAfectados;
+    if($registrosAfectados > 0 ){
+
+      $this->mensaje = 'La Empresa fué actualizada';
+      return TRUE;
+    }else{
+      $this->mensaje = 'La Empresa no pudo ser actualizada';
+      return FALSE;
+    }
   }
   /*
   * ELIMINAR UNA EMPRESA
+  * $app['empresa']->eliminar($id);
   */
   public function eliminar($id){
 
-    try{
+    //ELIMINAR
+    $registroEliminado = $this->app['db']->delete('mantenimientos_empresas',
+        array('empresa_id' => $id));
 
-      //ELIMINAR
-      $registroEliminado = $this->app['db']->delete('mantenimientos_empresas',
-          array('empresa_id' => $id));
+    if($registroEliminado > 0){
 
-      if($registroEliminado > 0){
+       $this->mensaje = 'Se eliminó con éxito la Empresa';
+       return TRUE;
 
-         //MENSAJE
-         $this->mensaje = 'Se eliminó con éxito la Empresa';
-         return TRUE;
+    }else{
 
-      }else{
-
-        //ERROR
-        throw new Exception('No se pudo eliminar la Empresa');
-
-      }
-    }catch(Exception $e){
-
-      $this->mensaje = $e->getMensaje();
+      $this->mensaje = 'No se pudo eliminar la Empresa';
       return FALSE;
-
     }
 
   }
   /*
-  *BUSCAR $app['empresa']->buscar(array('id'=> $id));
+  * BUSCAR EMPRESA
+  * $app['empresa']->buscar(array('campo'=> $valor));
   */
   public function buscar($condicion = array()){
-    try{
 
       //SQL BASE
-      $sql  = " SELECT empresa_id          AS id, ";
-      $sql .= "        empresa_nombre      AS nombre, ";
-      $sql .= "        empresa_observacion AS observacion ";
+      $sql  = " SELECT empresa_id, ";
+      $sql .= "        empresa_nombre, ";
+      $sql .= "        empresa_observacion ";
       $sql .= " FROM mantenimientos_empresas ";
 
       if(empty($condicion)){
@@ -156,54 +168,50 @@ class EntidadEmpresa{
         //CAMBIAR LA TABLA
         $sql = str_replace('mantenimientos','vista',$sql);
         //BUSCAR TODAS LAS EMPRESAS
-        $this->empresas = $this->app['db']->fetchAll($sql);
+        $this->registros = $this->app['db']->fetchAll($sql);
 
       }else{
 
         switch ($condicion) {
-          case (isset($condicion['id'])):{
-            $sql .= " WHERE empresa_id = ".$condicion['id'];
+          case (isset($condicion['empresa_id'])):{
+            $sql .= " WHERE empresa_id = '".$condicion['empresa_id']."'";
             break;
           }
-          case (isset($condicion['nombre'])):{
-            $sql .= " WHERE empresa_nombre =".$condicion['nombre'];
+          case (isset($condicion['empresa_nombre'])):{
+            $sql .= " WHERE empresa_nombre = '".$condicion['empresa_nombre']."'";
             break;
           }
           default:
             # code...
             break;
-      }
+        }
 
       //BUSCAR
-      $this->empresa = $this->app['db']->fetchAssoc($sql);
-      return TRUE;
+      $this->registros = $this->app['db']->fetchAssoc($sql);
 
     }
 
-    }catch(Exception $e){
+    if(empty($this->registros)) return FALSE;
+    else return TRUE;
 
-      //MENSAJE DE ERROR
-      $this->message = $e->getMessage();
-      return FALSE;
-    }
   }
   /*
   *CAMPO ID
   */
   public function getId(){
-    return $this->empresa['id'];
+    return $this->registros['empresa_id'];
   }
   /*
   *GET NOMBRE
   */
   public function getNombre(){
-    return $this->empresa['nombre'];
+    return $this->registros['empresa_nombre'];
   }
   /*
   *GET OBSERVACION
   */
   public function getObservacion(){
-    return $this->empresa['observacion'];
+    return $this->registros['empresa_observacion'];
   }
   /*
   *GET MENSAJE
@@ -215,8 +223,7 @@ class EntidadEmpresa{
   *GET TODAS LAS EMPRESAS
   */
   public function getTodas(){
-    return $this->empresas;
+    return $this->registros;
   }
-  public function catalogo(){}
 
 }

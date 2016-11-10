@@ -11,13 +11,77 @@ class EntidadEquipo{
 
   private $app;
   private $totalEquipos = 0;
+  private $registros;
 
   public function __construct(Application $app){
     $this->app = $app;
   }
+  /*
+  * BUSCAR EQUIPO
+  */
+  public function buscar($condicion = array()){
+
+      //SQL BASE
+      $sql  = " SELECT * ";
+      $sql .= " FROM mantenimientos_equipos ";
+
+      if(empty($condicion)){
+
+        //CAMBIAR LA TABLA
+        $sql = str_replace('mantenimientos','vista',$sql);
+        //BUSCAR TODOS LOS EQUIPOS
+        $this->registros = $this->app['db']->fetchAll($sql);
+
+      }else{
+
+        switch ($condicion) {
+          case (isset($condicion['equipo_id'])):{
+            $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."'";
+            break;
+          }
+          case (isset($condicion['equipo_nombre'])):{
+            $sql .= " WHERE equipo_nombre = '".$condicion['equipo_nombre']."'";
+            break;
+          }
+          default:
+            # code...
+            break;
+        }
+
+      //BUSCAR
+      $this->registros = $this->app['db']->fetchAssoc($sql);
+
+    }
+
+    if(empty($this->registros)) return FALSE;
+    else return TRUE;
+
+  }
  /*
  *CREAR UN NUEVO EQUIPO E INCLUIRLE TODAS SUS ACTIVIDADES EN BLANCO
  */
+  public function nuevo($campos){
+
+    //BUSCAR equipo_nombre REPETIDO
+    if($this->buscar(array('equipo_nombre'=>$campos['equipo_nombre']))){
+      //EQUIPO REPETIDO
+      $this->mensaje = 'El nombre del Equipo se encuentra repetido';
+      return FALSE;
+    }else{
+        //BUSCAR ID DE EMPRESA NINGUNA
+        if($app['empresa']->buscarNombreTraerId('NINGUNA')){
+          $this->registros['empresa_id']=$app['empresa']->getid();
+          //BUSCAR ID DE GERENCIA NINGUNA
+          if($app['gerencia']->buscarNombreTraerId('NINGUNA')){
+
+          }
+        }else{
+          $this->mensaje = $app['empresa']->getMensaje();
+          return FALSE;
+        }
+    }
+  }
+
   public function Nuevo($registros){
 
     //GUARDAR DATOS DEL EQUIPO

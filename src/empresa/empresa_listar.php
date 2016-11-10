@@ -14,7 +14,7 @@ $empresa->get('/empresa/listar', function() use ($app) {
 
     //MENSAJE
     $app['session']->getFlashBag()->add('danger',
-      array('message' => $app['empresa']->getMessage()));
+      array('message' => $app['empresa']->getMensaje()));
 
     //MOSTRAR MENSAJE ERROR
     return $app['twig']->render('mensaje_error.html.twig');
