@@ -10,76 +10,129 @@ class EntidadGerencia{
 
   private $app;
 
+  private $registros = [];
+  private $mensaje = '';
+
   public function __construct(Application $app){
     $this->app = $app;
   }
- /*
- * LISTADO DE TODAS LAS GERENCIAS
- */
-  public function listar(){
+  /*
+  * BUSCAR GERENCIA
+  * $app['gerencia']->buscar(array('campo'=> $valor));
+  */
+  public function buscar($condicion = array()){
 
-    //SQL
-    $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_gerencias ";
-    $sql .= " ORDER BY gerencia_nombre ";
+      //SQL BASE
+      $sql  = " SELECT gerencia_id, ";
+      $sql .= "        gerencia_nombre, ";
+      $sql .= "        gerencia_observacion ";
+      $sql .= " FROM mantenimientos_gerencias ";
 
-    //BUSCAR TODAS LAS GERENCIAS
-    $gerencias = $this->app['db']->fetchAll($sql);
+      if(empty($condicion)){
 
-    //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
-    return $gerencias;
+        //CAMBIAR LA TABLA
+        $sql = str_replace('mantenimientos','vista',$sql);
+        //BUSCAR TODAS LAS gerenciaS
+        $this->registros = $this->app['db']->fetchAll($sql);
+
+      }else{
+
+        switch ($condicion) {
+          case (isset($condicion['gerencia_id'])):{
+            $sql .= " WHERE gerencia_id = '".$condicion['gerencia_id']."'";
+            break;
+          }
+          case (isset($condicion['gerencia_nombre'])):{
+            $sql .= " WHERE gerencia_nombre = '".$condicion['gerencia_nombre']."'";
+            break;
+          }
+          default:
+            # code...
+            break;
+        }
+
+      //BUSCAR
+      $this->registros = $this->app['db']->fetchAssoc($sql);
+
+    }
+
+    return (empty($this->registros)) ? FALSE : TRUE;
+
   }
   /*
-  *NÚMERO TOTAL DE GERENCIAS
+  * AGREGAR UNA NUEVA GERENCIA
+  * $app['gerencia']->nuevo($campo);
   */
-  public function cantidad(){
-
-    return count($this->listar());
-
-  }
- /*
- * BUSCAR UNA GERENCIA POR ID
- */
-  public function buscarId($gerenciaId){
-
-    //SQL
-    $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_gerencias ";
-    $sql .= " WHERE gerencia_id = ? ";
-
-    //BUSCAR ID
-    $gerencia = $this->app['db']->fetchAssoc($sql,
-        array($gerenciaId));
-
-    //RETORNAR LOS REGISTROS DE UNA GERENCIA
-    return $gerencia;
-  }
-  /*
-  * BUSCAR UNA GERENCIA POR NOMBRE
-  */
-  public function buscarNombre($gerencia_nombre){
-
-    //SQL
-    $sql  = " SELECT * ";
-    $sql .= " FROM mantenimientos_gerencias ";
-    $sql .= " WHERE gerencia_nombre = ? ";
+  public function nuevo($campos){
 
     //BUSCAR NOMBRE
-    $nombreEncontrado = $this->app['db']->fetchAssoc($sql,
-        array($gerencia_nombre));
+    if($this->buscar(['gerencia_nombre'=>$campos['gerencia_nombre']])){
 
-    //RETORNAR LOS REGISTROS DE UNA GERENCIA
-    return $nombreEncontrado;
+      $this->mensaje = 'La Gerencia se encuentra repetida';
+
+      return FALSE;
+
+    }else{
+
+      //GUARDAR NUEVO REGISTRO
+      $registrosAfectados = $this->app['db']->insert('mantenimientos_gerencias',
+          ['gerencia_nombre'     =>$campos['gerencia_nombre'],
+           'gerencia_observacion'=>$campos['gerencia_observacion']]);
+
+      //VERIFICAR QUE SE AGREGÓ LA gerencia
+      if($registrosAfectados > 0){
+        $this->mensaje = 'La Gerencia fué agregada con éxito';
+        return TRUE;
+      }else{
+        $this->mensaje ='Error al incluir la Gerencia';
+        return FALSE;
+      }
+    }
   }
   /*
-  *BUSCAR NOMBRE Y TRAER ID
+  * ACTUALIZAR UNA gerencia
+  * $app['gerencia']->actualizar($registros),
   */
-  public function buscarNombreTaerId($gerencia_nombre){
+  public function actualizar($regitros){
 
-    $registros = $this->buscarNombre($gerencia_nombre);
+    //ACTUALIZAR
+    $registrosAfectados = $this->app['db']->update('mantenimientos_gerencias',
+          ['gerencia_observacion'=>$regitros['gerencia_observacion']],
+          ['gerencia_id'=>$regitros['gerencia_id']]);
 
-    return $registros['gerencia_id'];
+    if($registrosAfectados > 0 ){
+      $this->mensaje = 'La gerencia fué actualizada';
+      return TRUE;
+    }else{
+      $this->mensaje = 'La gerencia no pudo ser actualizada';
+      return FALSE;
+    }
+  }
+  /*
+  * ELIMINAR UNA gerencia
+  * $app['gerencia']->eliminar($id);
+  */
+  public function eliminar($id){
 
+    //ELIMINAR
+    $registroEliminado = $this->app['db']->delete('mantenimientos_gerencias',
+        ['gerencia_id'=>$id]);
+
+    if($registroEliminado > 0){
+       $this->mensaje = 'Se eliminó con éxito la Gerencia';
+       return TRUE;
+    }else{
+      $this->mensaje = 'No se pudo eliminar la Gerencia';
+      return FALSE;
+    }
+
+  }
+  /*
+  * NÚMERO TOTAL DE GERENCIAS
+  * $app['gerencia']->cantidad();
+  */
+  public function cantidad(){
+    return ($this->buscar()) ? count($this->registros) : 0;
   }
   /*
   * BUSCAR NOMBRE Y TRAER EL ID
@@ -87,52 +140,48 @@ class EntidadGerencia{
   */
   public function buscarNombreTraerId($gerencia_nombre){
 
-    if($this->buscar(array('empresa_nombre' => $nombre))){
+    if($this->buscar(['gerencia_nombre'=>$nombre])){
         return TRUE;
     }else{
-      $this->mensaje = "El id $empresa_nombre no se encuentra en la BD",
+      $this->mensaje = "El id $gerencia_nombre no se encuentra en la BD";
       return FALSE;
-
     }
 
   }
-
-  public function Nuevo($registros){
-
-      //GUARDAR NUEVO REGISTRO
-      $registrosAfectados = $this->app['db']->insert('mantenimientos_gerencias',
-          array('gerencia_nombre'     =>$registros['gerencia_nombre'],
-                'gerencia_observacion'=>$registros['gerencia_observacion']));
-
-      //RETORNAR EL NÚMERO DE REGISTROS INSERTADOS
-      return $registrosAfectados;
+  /*
+  * CAMPO ID
+  * $app['gerencia']->getId();
+  */
+  public function getId(){
+    return $this->registros['gerencia_id'];
   }
   /*
-  * ACTUALIZAR UNA GERENCIA
+  * GET NOMBRE
+  * $app['gerencia']->getNombre();
   */
-  public function actualizar($regitros){
-
-    //ACTUALIZAR
-    $registrosAfectados = $this->app['db']->update('mantenimientos_gerencias',
-          array('gerencia_observacion'=> $regitros['gerencia_observacion']),
-          array('gerencia_id'=>$regitros['gerencia_id']));
-
-    //RETORNAR EL NÚMERO DE REGISTROS ATUALIZADOS
-    return $registrosAfectados;
+  public function getNombre(){
+    return $this->registros['gerencia_nombre'];
   }
   /*
-  * ELIMINAR UNA GERENCIA
+  * GET OBSERVACION
+  * $app['gerencia']->getObservacion();
   */
-  public function eliminar($gerenciaId){
-
-    //ELIMINAR
-    $registroEliminado = $this->app['db']->delete('mantenimientos_gerencias',
-        array('gerencia_id' => $gerenciaId));
-
-    //RETORNAR EL NÚMERO DE REGISTROS ELIMINADOS
-    return $registroEliminado;
+  public function getObservacion(){
+    return $this->registros['gerencia_observacion'];
   }
-
-  public function catalogo(){}
+  /*
+  * GET MENSAJE
+  * $app['gerencia']->getMensaje();
+  */
+  public function getMensaje(){
+    return $this->mensaje;
+  }
+  /*
+  * GET TODAS LAS GERENCIAS
+  * $app['gerencia']->getTodas();
+  */
+  public function getTodas(){
+    return $this->registros;
+  }
 
 }

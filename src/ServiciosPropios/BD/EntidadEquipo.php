@@ -59,8 +59,8 @@ class EntidadEquipo{
   }
  /*
  *CREAR UN NUEVO EQUIPO E INCLUIRLE TODAS SUS ACTIVIDADES EN BLANCO
- */
-  public function nuevo($campos){
+ *
+  public function nuevo2($campos){
 
     //BUSCAR equipo_nombre REPETIDO
     if($this->buscar(array('equipo_nombre'=>$campos['equipo_nombre']))){
@@ -81,7 +81,7 @@ class EntidadEquipo{
         }
     }
   }
-
+*/
   public function Nuevo($registros){
 
     //GUARDAR DATOS DEL EQUIPO

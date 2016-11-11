@@ -4,14 +4,14 @@
  */
 $empresa->get('/empresa/buscar/{id}',function($id) use($app){
 
-  if($app['empresa']->buscar(array('empresa_id' => $id))){
+  if($app['empresa']->buscar(['empresa_id'=>$id])){
 
     //MOSTRAR DATOS
     return $app['twig']->render('empresa/empresa_datos.html.twig',
-          array('empresa_id'          => $app['empresa']->getId(),
-                'empresa_nombre'      => $app['empresa']->getNombre(),
-                'empresa_observacion' => $app['empresa']->getObservacion(),
-                'editar' => TRUE));
+        ['empresa_id'          => $app['empresa']->getId(),
+         'empresa_nombre'      => $app['empresa']->getNombre(),
+         'empresa_observacion' => $app['empresa']->getObservacion(),
+         'editar' => TRUE]);
 
   }else{
 

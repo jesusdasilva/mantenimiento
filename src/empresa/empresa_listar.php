@@ -6,15 +6,15 @@ $empresa->get('/empresa/listar', function() use ($app) {
 
   if($app['empresa']->buscar()){
 
-    //ENVIAR DATOS AL FORMULARIO
+    //ENVIAR DATOS A LA PLANTILLA
     return $app['twig']->render('empresa/empresa_listado.html.twig',
-        array('empresas'=> $app['empresa']->getTodas()));
+        ['empresas'=>$app['empresa']->getTodas()]);
 
   }else{
 
     //MENSAJE
     $app['session']->getFlashBag()->add('danger',
-      array('message' => $app['empresa']->getMensaje()));
+        ['message'=>$app['empresa']->getMensaje()]);
 
     //MOSTRAR MENSAJE ERROR
     return $app['twig']->render('mensaje_error.html.twig');

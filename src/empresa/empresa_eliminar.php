@@ -8,7 +8,7 @@ $empresa->get('empresa/eliminar/{id}', function($id) use($app){
 
     //MENSAJE
     $app['session']->getFlashBag()->add('success',
-        array('message' => $app['empresa']->getMensaje()));
+        ['message'=>$app['empresa']->getMensaje()]);
 
     //REDIRECCIONAR AL LISTADO
     return $app->redirect($app['url_generator']->generate('empresaListar'));
@@ -17,7 +17,7 @@ $empresa->get('empresa/eliminar/{id}', function($id) use($app){
 
       //MENSAJE
       $app['session']->getFlashBag()->add('danger',
-          array('message' => $app['empresa']->getMensaje()));
+          ['message'=>$app['empresa']->getMensaje()]);
 
       //MOSTRAR MENSAJE ERROR
       return $app['twig']->render('mensaje_error.html.twig');

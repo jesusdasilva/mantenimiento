@@ -16,7 +16,7 @@ $empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
 
     //MENSAJE
     $app['session']->getFlashBag()->add('success',
-        array('message' => $app['empresa']->getMensaje()));
+        ['message' => $app['empresa']->getMensaje()]);
 
     //REDIRECCIONAR AL FORMULARIO LISTAR
     return $app->redirect($app['url_generator']->generate('empresaListar'));
@@ -25,13 +25,13 @@ $empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
 
       //MENSAJE
       $app['session']->getFlashBag()->add('danger',
-          array('message' => $app['empresa']->getMensaje()));
+          ['message' => $app['empresa']->getMensaje()]);
 
       //REENVIAR AL FORMULÁRIO DATOS
       return $app['twig']->render('empresa/empresa_datos.html.twig',
-          array('empresa_nombre'      => $campos['empresa_nombre'],
-                'empresa_observacion' => $campos['empresa_observacion'],
-                'editar' => FALSE));
+          ['empresa_nombre'      => $campos['empresa_nombre'],
+           'empresa_observacion' => $campos['empresa_observacion'],
+           'editar' => FALSE]);
       }
 
 })

@@ -4,26 +4,21 @@
  */
 $gerencia->get('/gerencia/listar', function() use ($app) {
 
-  try{
+  if($app['gerencia']->buscar()){
 
-      //BUSCAR GERENCIA
-      $gerencias = $app['gerencia']->listar();
+    //ENVIAR DATOS A LA PLANTILLA
+    return $app['twig']->render('gerencia/gerencia_listado.html.twig',
+        ['gerencias'=>$app['gerencia']->getTodas()]);
 
-      //ENVIAR DATOS A LA PLANTILLA
-      return $app['twig']->render('gerencia/gerencia_listado.html.twig',
-          array('gerencias'=> $gerencias));
+  }else{
 
-    //CAPTURAR ERROR
-    }catch (Exception $e) {
+    //MENSAJE
+    $app['session']->getFlashBag()->add('danger',
+        ['message'=>$app['gerencia']->getMensaje()]);
 
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
-
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
-
-    }
+    //MOSTRAR MENSAJE ERROR
+    return $app['twig']->render('mensaje_error.html.twig');
+  }
 
 })
 ->bind('gerenciaListar');
