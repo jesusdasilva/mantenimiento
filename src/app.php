@@ -29,41 +29,45 @@ $app->register(new FormServiceProvider());
 
 $app['twig'] = $app->extend('twig', function ($twig, $app) {
     // add custom globals, filters, tags, ...
-
     return $twig;
 });
 
-$app->register(new Silex\Provider\DoctrineServiceProvider(),array(
-  'db.options'=>array('driver'   => 'pdo_pgsql',
-                      'host'     => 'localhost',
-                      'dbname'   => 'mantenimientoDB',
-                      'user'     => 'mantenimiento',
-                      'password' => '123',
-                      'charset'  => 'utf8'
-                ),
-));
+//CONFIGURACIÓN DE BASE DE DATOS
+$app->register(new Silex\Provider\DoctrineServiceProvider(), [
+    'db.options'=> [
+        'driver'   => 'pdo_pgsql',
+        'host'     => 'localhost',
+        'dbname'   => 'mantenimientoDB',
+        'user'     => 'mantenimiento',
+        'password' => '123',
+        'charset'  => 'utf8',
+        ],
+    ]);
 
-//ServiciosPropios
-$app['empresa'] = function ()  use ($app){
+//SERVICIOS PROPIOS
+$app['empresa'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadEmpresa($app);
 };
-$app['gerencia'] = function ()  use ($app){
+
+$app['gerencia'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadGerencia($app);
 };
-$app['ubicacion'] = function ()  use ($app){
+
+$app['ubicacion'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadUbicacion($app);
 };
-$app['equipo'] = function ()  use ($app){
+
+$app['equipo'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadEquipo($app);
 };
 
 //USUARIOS
-$app['usuario'] = function ()  use ($app){
+$app['usuario'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadUsuario($app);
 };
-$app['perfil'] = function ()  use ($app){
+
+$app['perfil'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadPerfil($app);
 };
-
 
 return $app;

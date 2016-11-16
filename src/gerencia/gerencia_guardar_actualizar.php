@@ -1,54 +1,50 @@
 <?php
-/*
- *  CONTROLADOR gerenciaGuardarActualizar
- */
- use Symfony\Component\HttpFoundation\Request ;
- use Symfony\Component\HttpFoundation\Response;
 
-$gerencia->post('/gerencia/guardar/actualizar', function(Request $request) use ($app) {
+//CONTROLADOR gerenciaGuardarActualizar
 
-  try{
+use Symfony\Component\HttpFoundation\Request ;
+use Symfony\Component\HttpFoundation\Response;
 
-      //DATOS DEL FORMULARIO
-      $registros = array('gerencia_id'          => $request->get('gerencia-id'),
-                         'gerencia_nombre'      => $request->get('gerencia-nombre-h'),
-                         'gerencia_observacion' => $request->get('gerencia-observacion'));
+$gerencia->post('/gerencia/guardar/actualizar', function (Request $request) use ($app) {
 
+    //DATOS DEL FORMULARIO, gerencia_nombre_h ES PORQUE NO SE ENVIA EL VALOR CUANDO ESTA BLOQUEADO
+    $campos = [
+        'gerencia_id'          => $request->get('gerencia-id'),
+        'gerencia_nombre'      => $request->get('gerencia-nombre_h'),
+        'gerencia_observacion' => $request->get('gerencia-observacion'),
+    ];
 
-      $registrosAfectados = $app['gerencia']->actualizar($registros);
-
-      if($registrosAfectados <= 0){
+    if ($app['gerencia']->actualizar($campos)) {
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('danger',
-            array('message' => 'No se pudo modificar la Gerencia'));
+        $app['session']->getFlashBag()->add(
+            'success', [
+                'message' => $app['gerencia']->getMensaje(),
+            ]
+        );
+
+        //REDIRECCIONAR AL FORMULARIO LISTAR
+        return $app->redirect($app['url_generator']->generate('gerenciaListar'));
+
+    } else {
+
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['gerencia']->getMensaje(),
+            ]
+        );
 
         //REGRESAR AL FORMULARIO DATOS
-        return $app['twig']->render('gerencia/gerencia_datos.twig',
-            array('gerencia_id'          => $registros['gerencia_id'],
-                  'gerencia_nombre'      => $registros['gerencia_nombre'],
-                  'gerencia_observacion' => $registros['gerencia_observacion'],
-                  'editar'=>TRUE));
-      }
-
-      //MENSAJE
-      $app['session']->getFlashBag()->add('success',
-          array('message' => 'La Gerencia fue modificada'));
-
-      //REDIRECCIONAR AL FORMULARIO LISTAR
-      return $app->redirect($app['url_generator']->generate('gerenciaListar'));
-
-    //CAPTURAR ERROR
-    }catch (Exception $e) {
-
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
-
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
+        return $app['twig']->render(
+            'gerencia/gerencia_datos.html.twig', [
+                'gerencia_id'          => $campos['gerencia_id'],
+                'gerencia_nombre'      => $campos['gerencia_nombre'],
+                'gerencia_observacion' => $campos['gerencia_observacion'],
+                'editar' => TRUE,
+            ]
+        );
 
     }
-
 })
 ->bind('gerenciaGuardarActualizar');

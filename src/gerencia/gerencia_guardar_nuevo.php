@@ -1,62 +1,50 @@
 <?php
-/*
- *  CONTROLADOR empresaGuardarNuevo
- */
- use Symfony\Component\HttpFoundation\Request ;
- use Symfony\Component\HttpFoundation\Response;
- use ServiciosPropios\BD\EntidadGerencia;
 
-$gerencia->post('/gerencia/guardar/nuevo', function(Request $request) use ($app) {
+//CONTROLADOR empresaGuardarNuevo
 
-  try{
+use Symfony\Component\HttpFoundation\Request ;
+use Symfony\Component\HttpFoundation\Response;
 
-      //DATOS DEL FORMULARIO
-      $registros = array('gerencia_nombre'=> mb_strtoupper($request->get('gerencia-nombre'),'utf-8'),
-                         'gerencia_observacion' => $request->get('gerencia-observacion'));
+$gerencia->post('/gerencia/guardar/nuevo', function (Request $request) use ($app) {
 
-      //BUSCAR NOMBRE DE GERENCIA
-      $nombreEncontrado = $app['gerencia']->buscarNombre($registros['gerencia_nombre']);
+    //DATOS DEL FORMULARIO
+    $campos = [
+        'gerencia_nombre'      => mb_strtoupper($request->get('gerencia-nombre'),'utf-8'),
+        'gerencia_observacion' => $request->get('gerencia-observacion'),
+    ];
 
-      if(!$nombreEncontrado){//NO ESTA REPETIDO EL NOMBRE
-
-        //GUARDAR GERENCIA
-        $registrosAfectados = $app['gerencia']->nuevo($registros);
-
-        //VERIFICAR QUE SE GUARDÓ LA GERENCIA
-        if($registrosAfectados <= 0)
-          throw new Exception('Error, No se pudo ingresar la Gerencia.');
-
-      }else{//NOMBRE REPETIDO
+    if ($app['gerencia']->nuevo($campos)) {
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('danger',
-            array('message' => 'La Gerencia se encuentra repetida'));
+        $app['session']->getFlashBag()->add(
+            'success', [
+               'message' => $app['gerencia']->getMensaje(),
+            ]
+        );
+
+        //REDIRECCIONAR AL FORMULARIO LISTAR
+        return $app->redirect($app['url_generator']->generate('gerenciaListar'));
+
+    } else {
+
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['gerencia']->getMensaje(),
+            ]
+        );
 
         //REENVIAR AL FORMULÁRIO DATOS
-        return $app['twig']->render('gerencia/gerencia_datos.html.twig',
-            array('gerencia_nombre'      => $registros['gerencia_nombre'],
-                  'gerencia_observacion' => $registros['gerencia_observacion'],
-                  'editar' => FALSE));
-      }
-
-      //MENSAJE
-      $app['session']->getFlashBag()->add('success',
-          array('message' => 'La Gerencia fue incluida'));
-
-      //REDIRECCIONAR AL FORMULARIO LISTAR
-      return $app->redirect($app['url_generator']->generate('gerenciaListar'));
-
-    //CAPTURAR ERROR
-    }catch (Exception $e) {
-
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
-
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
-
+        return $app['twig']->render(
+            'gerencia/gerencia_datos.html.twig', [
+                'gerencia_nombre'      => $campos['gerencia_nombre'],
+                'gerencia_observacion' => $campos['gerencia_observacion'],
+                'editar' => FALSE,
+             ]
+        );
+        
     }
+
 
 })
 ->bind('gerenciaGuardarNuevo');

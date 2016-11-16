@@ -1,37 +1,48 @@
 <?php
-/*
- * CONTROLADOR empresaGuardarNuevo
- */
- use Symfony\Component\HttpFoundation\Request ;
- use Symfony\Component\HttpFoundation\Response;
- use ServiciosPropios\BD\EntidadGerencia;
 
-$empresa->post('/empresa/guardar/nuevo', function(Request $request) use ($app) {
+//CONTROLADOR empresaGuardarNuevo
 
-  //DATOS DEL FORMULARIO
-  $campos = ['empresa_nombre'      => mb_strtoupper($request->get('empresa-nombre'),'utf-8'),
-             'empresa_observacion' => $request->get('empresa-observacion')];
+use Symfony\Component\HttpFoundation\Request ;
+use Symfony\Component\HttpFoundation\Response;
 
-  if($app['empresa']->nuevo($campos)){
+$empresa->post('/empresa/guardar/nuevo', function (Request $request) use ($app) {
 
-    //MENSAJE
-    $app['session']->getFlashBag()->add('success',
-        ['message' => $app['empresa']->getMensaje()]);
+    //DATOS DEL FORMULARIO
+    $campos = [
+        'empresa_nombre'      => mb_strtoupper($request->get('empresa-nombre'),'utf-8'),
+        'empresa_observacion' => $request->get('empresa-observacion'),
+    ];
 
-    //REDIRECCIONAR AL FORMULARIO LISTAR
-    return $app->redirect($app['url_generator']->generate('empresaListar'));
+    if ($app['empresa']->nuevo($campos)) {
 
-    }else{
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'success', [
+                'message' => $app['empresa']->getMensaje(),
+            ]
+        );
 
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          ['message' => $app['empresa']->getMensaje()]);
+        //REDIRECCIONAR AL FORMULARIO LISTAR
+        return $app->redirect($app['url_generator']->generate('empresaListar'));
 
-      //REENVIAR AL FORMULÁRIO DATOS
-      return $app['twig']->render('empresa/empresa_datos.html.twig',
-          ['empresa_nombre'      => $campos['empresa_nombre'],
-           'empresa_observacion' => $campos['empresa_observacion'],
-           'editar' => FALSE]);
+    } else {
+
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['empresa']->getMensaje(),
+            ]
+        );
+
+        //REENVIAR AL FORMULÁRIO DATOS
+        return $app['twig']->render(
+            'empresa/empresa_datos.html.twig', [
+                'empresa_nombre'      => $campos['empresa_nombre'],
+                'empresa_observacion' => $campos['empresa_observacion'],
+                'editar' => FALSE,
+            ]
+        );
+
       }
 
 })

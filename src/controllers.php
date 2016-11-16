@@ -13,12 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 })
 ->bind('homepage')
 ;*/
-
+/*
 $app->get('/actividad', function () use ($app) {
     return $app['twig']->render('/actividad/actividad_mantenimiento.html.twig', array());
 })
 ->bind('actividad');
-
+*/
 
 //LOGIN
 $app->mount('/', include __DIR__.'/../src/login/login_index.php');

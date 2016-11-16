@@ -1,7 +1,7 @@
 <?php
-/*
-* ENTIDAD EQUIPO
-*/
+
+//ENTIDAD EQUIPO
+
 namespace ServiciosPropios\BD;
 
 use Silex\Application;
@@ -9,54 +9,64 @@ use ServiciosPropios\BD\EntidadEquipo;
 
 class EntidadEquipo{
 
-  private $app;
-  private $totalEquipos = 0;
-  private $registros;
+    private $app;
 
-  public function __construct(Application $app){
-    $this->app = $app;
-  }
-  /*
-  * BUSCAR EQUIPO
-  */
-  public function buscar($condicion = array()){
+    private $registros = [];
+    private $mensaje   = "";
 
-      //SQL BASE
-      $sql  = " SELECT * ";
-      $sql .= " FROM mantenimientos_equipos ";
+    //CONTRUCTOR
+    public function __construct(Application $app)
+    {
 
-      if(empty($condicion)){
+        $this->app = $app;
+    }
+    /*
+        BUSCAR EQUIPO
+        $app['equipo']->buscar('condicion' => $valor);
+    */
+    public function buscar($condicion = [])
+    {
 
-        //CAMBIAR LA TABLA
-        $sql = str_replace('mantenimientos','vista',$sql);
-        //BUSCAR TODOS LOS EQUIPOS
-        $this->registros = $this->app['db']->fetchAll($sql);
+        //SQL BASE
+        $sql  = " SELECT * ";
+        $sql .= " FROM mantenimientos_equipos ";
 
-      }else{
+        if (empty($condicion)) {
 
-        switch ($condicion) {
-          case (isset($condicion['equipo_id'])):{
-            $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."'";
-            break;
-          }
-          case (isset($condicion['equipo_nombre'])):{
-            $sql .= " WHERE equipo_nombre = '".$condicion['equipo_nombre']."'";
-            break;
-          }
-          default:
-            # code...
-            break;
+            //CAMBIAR LA TABLA
+            $sql = str_replace("mantenimientos", "vista", $sql);
+            //BUSCAR TODOS LOS EQUIPOS
+            $this->registros = $this->app['db']->fetchAll($sql);
+
+        } else {
+
+            switch ($condicion) {
+                case (isset($condicion['equipo_id'])):
+                    $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."'";
+                    break;
+                case (isset($condicion['equipo_nombre'])):
+                    $sql .= " WHERE equipo_nombre = '".$condicion['equipo_nombre']."'";
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+
+            //BUSCAR
+            $this->registros = $this->app['db']->fetchAssoc($sql);
+
         }
 
-      //BUSCAR
-      $this->registros = $this->app['db']->fetchAssoc($sql);
+        if (empty($this->registros)) {
+
+            $this->mensaje = "No hay registro que mostrar";
+            return false;
+
+        } else {
+            return true;
+        }
 
     }
-
-    if(empty($this->registros)) return FALSE;
-    else return TRUE;
-
-  }
  /*
  *CREAR UN NUEVO EQUIPO E INCLUIRLE TODAS SUS ACTIVIDADES EN BLANCO
  *

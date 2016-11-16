@@ -1,41 +1,32 @@
 <?php
-/*
- *  CONTROLADOR gerenciaEliminar
- */
-$empresa->get('gerencia/eliminar/{id}', function($id) use($app){
 
-  try {
+//CONTROLADOR gerenciaEliminar
 
-      //ELIMINAR
-      $registroEliminado = $app['gerencia']->eliminar($id);
+$empresa->get('gerencia/eliminar/{id}', function ($id) use ($app) {
 
-      //VERIFICAR QUE SE ELIMINÓ
-      if( $registroEliminado <= 0 ){
+    if ($app['gerencia']->eliminar($id)) {
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('danger',
-            array('message' => 'No se pudo eliminar la Gerencia'));
+        $app['session']->getFlashBag()->add(
+            'success', [
+                'message' => $app['gerencia']->getMensaje(),
+             ]
+        );
 
-      }else{
+        //REDIRECCIONAR AL LISTADO
+        return $app->redirect($app['url_generator']->generate('gerenciaListar'));
+
+    } else {
 
         //MENSAJE
-        $app['session']->getFlashBag()->add('success',
-            array('message' => 'Se eliminó con éxito la Gerencia'));
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['gerencia']->getMensaje(),
+            ]
+        );
 
-      }
-
-      //REDIRECCIONAR AL LISTADO
-      return $app->redirect($app['url_generator']->generate('gerenciaListar'));
-
-    //CAPTURAR ERROR
-    } catch (Exception $e) {
-
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          array('message' => $e->getMessage()));
-
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
+        //MOSTRAR MENSAJE ERROR
+        return $app['twig']->render('mensaje_error.html.twig');
 
     }
 

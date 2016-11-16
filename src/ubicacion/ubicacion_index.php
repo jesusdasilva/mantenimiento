@@ -1,20 +1,22 @@
 <?php
-/*
-*CONTROLADOR PRINCIPAL UBICACIÓN
-*/
+
+//CONTROLADOR PRINCIPAL UBICACIÓN
+
 
 //CREAR EL OBJETO
 $ubicacion = $app['controllers_factory'];
 
 //VERIFICAR SI EL USUARIO ESTA LOGEADO
-$ubicacion->before(function() use ($app){
+$ubicacion->before( function() use ($app) {
 
-  // VERIFICAR SI LA VARIABLE indicador HA SIDO CREADA EN EL OBJETO SESIÓN
-  if($app['session']->get('usuarioIndicador') == null){
+    //VERIFICAR SI LA VARIABLE indicador HA SIDO CREADA EN EL OBJETO SESIÓN
+    if ($app['session']->get('usuarioIndicador') == null) {
 
-    //REDIRECCIONAR AL FORMULARIO LOGIN
-	  return $app->redirect($app['url_generator']->generate('login'));
-  }
+        //REDIRECCIONAR AL FORMULARIO LOGIN
+	     return $app->redirect($app['url_generator']->generate('login'));
+
+    }
+
 });
 
 //CONTROLADORES

@@ -1,27 +1,34 @@
 <?php
-/*
- *  CONTROLADOR empresaEliminar
- */
-$empresa->get('empresa/eliminar/{id}', function($id) use($app){
 
-  if($app['empresa']->eliminar($id)){
+//CONTROLADOR empresaEliminar
 
-    //MENSAJE
-    $app['session']->getFlashBag()->add('success',
-        ['message'=>$app['empresa']->getMensaje()]);
+$empresa->get('empresa/eliminar/{id}', function ($id) use ($app) {
 
-    //REDIRECCIONAR AL LISTADO
-    return $app->redirect($app['url_generator']->generate('empresaListar'));
+    if ($app['empresa']->eliminar($id)) {
 
-  }else{
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'success', [
+                'message' => $app['empresa']->getMensaje(),
+            ]
+        );
 
-      //MENSAJE
-      $app['session']->getFlashBag()->add('danger',
-          ['message'=>$app['empresa']->getMensaje()]);
+        //REDIRECCIONAR AL LISTADO
+        return $app->redirect($app['url_generator']->generate('empresaListar'));
 
-      //MOSTRAR MENSAJE ERROR
-      return $app['twig']->render('mensaje_error.html.twig');
+    } else {
+
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['empresa']->getMensaje(),
+            ]
+        );
+
+        //MOSTRAR MENSAJE ERROR
+        return $app['twig']->render('mensaje_error.html.twig');
 
     }
+
 })
 ->bind('empresaEliminar');

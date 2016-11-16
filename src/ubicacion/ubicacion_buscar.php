@@ -1,29 +1,35 @@
 <?php
-/*
- *  CONTROLADOR ubicacionBuscar
- */
-$ubicacion->get('/ubicacion/buscar/{id}',function($id) use($app){
 
-  try{
+//CONTROLADOR ubicacionBuscar
 
-      $registros = $app['ubicacion']->buscarId($id);
+$ubicacion->get('/ubicacion/buscar/{id}', function ($id) use ($app) {
 
-      //MOSTRAR DATOS
-      return $app['twig']->render('ubicacion/ubicacion_datos.html.twig',
-          array('ubicacion_id'          => $registros['ubicacion_id'],
-                'ubicacion_nombre'      => $registros['ubicacion_nombre'],
-                'ubicacion_observacion' => $registros['ubicacion_observacion'],
-                'editar'=>TRUE));
+    if ($app['ubicacion']->buscar(['ubicacion_id' => $id])) {
 
-  } catch (Exception $e) {
+        //MOSTRAR DATOS
+        return $app['twig']->render(
+            'ubicacion/ubicacion_datos.html.twig', [
+                'ubicacion_id'          => $app['ubicacion']->getId(),
+                'ubicacion_nombre'      => $app['ubicacion']->getNombre(),
+                'ubicacion_observacion' => $app['ubicacion']->getObservacion(),
+                'editar' => TRUE,
+            ]
+        );
 
-    //MENSAJE
-    $app['session']->getFlashBag()->add('danger',array('message' => $e->getMessage()));
+    } else {
 
-    //MOSTRAR MENSAJE ERROR
-    return $app['twig']->render('mensaje_error.html.twig');
+        //MENSAJE
+        $app['session']->getFlashBag()->add(
+            'danger', [
+                'message' => $app['ubicacion']->getMensaje(),
+            ]
+        );
+
+        //MOSTRAR MENSAJE ERROR
+        return $app['twig']->render('mensaje_error.html.twig');
 
   }
+
 
 })
 ->bind('ubicacionBuscar');

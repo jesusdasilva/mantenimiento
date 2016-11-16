@@ -1,24 +1,26 @@
 <?php
-/*
- *  CONTROLADOR gerenciaListar
- */
+
+//CONTROLADOR gerenciaListar
+
 $gerencia->get('/gerencia/listar', function() use ($app) {
 
-  if($app['gerencia']->buscar()){
+    if (!$app['gerencia']->buscar()) {
+
+      //MENSAJE
+      $app['session']->getFlashBag()->add(
+          'danger', [
+              'message'=>$app['gerencia']->getMensaje(),
+          ]
+      );
+
+    }
 
     //ENVIAR DATOS A LA PLANTILLA
-    return $app['twig']->render('gerencia/gerencia_listado.html.twig',
-        ['gerencias'=>$app['gerencia']->getTodas()]);
-
-  }else{
-
-    //MENSAJE
-    $app['session']->getFlashBag()->add('danger',
-        ['message'=>$app['gerencia']->getMensaje()]);
-
-    //MOSTRAR MENSAJE ERROR
-    return $app['twig']->render('mensaje_error.html.twig');
-  }
+    return $app['twig']->render(
+        'gerencia/gerencia_listado.html.twig', [
+            'gerencias' => $app['gerencia']->getTodas(),
+        ]
+    );
 
 })
 ->bind('gerenciaListar');

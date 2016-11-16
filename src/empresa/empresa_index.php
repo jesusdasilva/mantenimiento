@@ -1,20 +1,22 @@
 <?php
-/*
- * CONTROLADOR PRINCIPAL EMPRESA
- */
+
+// CONTROLADOR PRINCIPAL EMPRESA
+
 
 //CREAR EL OBJETO
 $empresa = $app['controllers_factory'];
 
 //VERIFICAR SI EL USUARIO ESTA LOGEADO
-$empresa->before(function() use ($app){
+$empresa->before( function() use ($app) {
 
-  // VERIFICAR SI LA VARIABLE indicador HA SIDO CREADA EN EL OBJETO SESIÓN
-  if($app['session']->get('usuarioIndicador') == null){
+    // VERIFICAR SI LA VARIABLE indicador HA SIDO CREADA EN EL OBJETO SESIÓN
+    if ($app['session']->get('usuarioIndicador') == null) {
 
-    //REDIRECCIONAR AL FORMULARIO LOGIN
-	  return $app->redirect($app['url_generator']->generate('login'));
-  }
+        //REDIRECCIONAR AL FORMULARIO LOGIN
+	      return $app->redirect($app['url_generator']->generate('login'));
+
+    }
+
 });
 
 //CONTROLADORES
