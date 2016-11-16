@@ -1,16 +1,15 @@
 <?php
-/*
- *  CONTROLADOR gerenciaNuevo
- */
+
+//CONTROLADOR gerenciaNuevo
+
 use Symfony\Component\HttpFoundation\Request ;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 $equipo->get('/equipo/nuevo', function() use ($app) {
-     /*
-     *ABRIR FORMULARIO DE DATOS EN BLANCO
-     */
+
+     //ABRIR FORMULARIO DE DATOS EN BLANCO
     return $app['twig']->render('equipo/equipo_nuevo_elegir_mantenimiento.html.twig');
 
 })
@@ -21,7 +20,7 @@ $equipo->get('/equipo/nuevo', function() use ($app) {
 $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
 
   try{
-    
+
       //DATOS DEL FORMULARIO
       $registrosEquipo = array('equipo_nombre' => mb_strtoupper($request->get('equipo-nombre'),'utf-8'),
                                'equipo_usuario_nombre' => '',

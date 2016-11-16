@@ -24,7 +24,7 @@ class EntidadGerencia{
         BUSCAR GERENCIA
         $app['gerencia']->buscar(array('campo'=> $valor));
     */
-    public function buscar($condicion = array())
+    public function buscar($condicion = [])
     {
         //SQL BASE
         $sql  = " SELECT gerencia_id, ";

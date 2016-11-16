@@ -1,30 +1,30 @@
 <?php
-/*
- *  CONTROLADOR inicio
- */
+
+//CONTROLADOR inicio
+
 $inicio->get('/inicio', function() use ($app) {
 
-  try{
+    if (!$app['equipo']->buscar()) {
+
+      //MENSAJE
+      $app['session']->getFlashBag()->add(
+          'danger', [
+              'message' => $app['equipo']->getMensaje(),
+          ]
+      );
+
+    }
 
     //MOSTAR LA PÁGINA DE INICIO
-    return $app['twig']->render('inicio/inicio.html.twig',
-        array('equipos' => $app['equipo']->listar(),
-              'totalEquipos'     => $app['equipo']->getCantidad(),
-              'totalEmpresas'    => $app['empresa']->cantidad(),
-              'totalGerencias'   => $app['gerencia']->cantidad(),
-              'totalUbicaciones' => $app['ubicacion']->cantidad()));
-
-  //CAPTURAR ERROR
-  }catch (Exception $e) {
-
-    //MENSAJE
-    $app['session']->getFlashBag()->add('danger',
-        array('message' => $e->getMessage()));
-
-    //MOSTRAR MENSAJE ERROR
-    return $app['twig']->render('mensaje_error.html.twig');
-
-  }
+    return $app['twig']->render(
+        'inicio/inicio.html.twig', [
+            'equipos' => $app['equipo']->getTodas(),
+            'totalEquipos'     => $app['equipo']->cantidad(),
+            'totalEmpresas'    => $app['empresa']->cantidad(),
+            'totalGerencias'   => $app['gerencia']->cantidad(),
+            'totalUbicaciones' => $app['ubicacion']->cantidad(),
+          ]
+    );
 
 })
 ->bind('inicio');

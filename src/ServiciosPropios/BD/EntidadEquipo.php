@@ -14,7 +14,9 @@ class EntidadEquipo{
     private $registros = [];
     private $mensaje   = "";
 
-    //CONTRUCTOR
+    /*
+        CONTRUCTOR
+    */
     public function __construct(Application $app)
     {
 
@@ -200,44 +202,46 @@ class EntidadEquipo{
     //RETORNAR LOS REGISTROS DE UN EQUIPO
     return $nombreEncontrado;
   }
-  /*
-  * BUSCAR UN EQUIPO POR NOMBRE  Y TRAER EL ID
-  */
-  private function buscarNombreTraerId($equipo_nombre){
+    /*
+        BUSCAR NOMBRE Y TRAER EL ID
+        $app['equipo']->buscarNombreTraerId($nombre_equipo);
+    */
+    public function buscarNombreTraerId($equipo_nombre)
+    {
+        if ($this->buscar(['equipo_nombre' => $nombre])) {
 
-    $registros = $this->buscarNombre($equipo_nombre);
+            return true;
 
-    return $registros['equipo_id'];
-  }
-  /*
-  * LISTADO DE TODOS LOS EQUIPOS
-  */
-   public function listar(){
+        } else {
 
-     //SQL
-     //$sql  = " SELECT equipo_id,equipo_nombre,empresa_nombre,checklist_so ";
-     $sql  = " SELECT * ";
-     $sql .= " FROM vista_equipos ";
-     $sql .= " ORDER BY equipo_nombre ";
+            $this->mensaje = "El id $equipo_nombre no se encuentra en la BD";
+            return false;
 
-     //BUSCAR TODAS LOS EQUIPOS
-     $equipos = $this->app['db']->fetchAll($sql);
-
-     //GUARDAR NÚMERO TOTAL DE EQUIPOS
-     $this->totalEquipos = count($equipos);
-
-     //RETORNAR LOS REGISTROS DE TODAS LAS EMPRESAS
-     return $equipos;
-
-   }
-   /*
-   *NUMERO TOTAL DE EQUIPOS
-   */
-   public function getCantidad(){
-
-     return $this->totalEquipos;
-
-   }
-
+        }
+    }
+    /*
+        NÚMERO TOTAL DE EQUIPOS
+        $app['equipo']->cantidad();
+    */
+    public function cantidad()
+    {
+        return ($this->buscar()) ? count($this->registros) : 0;
+    }
+    /*
+        GET MENSAJE
+        $app['equipo']->getMensaje();
+    */
+    public function getMensaje()
+    {
+        return $this->mensaje;
+    }
+    /*
+        GET TODAS LAS GERENCIAS
+        $app['equipo']->getTodas();
+    */
+    public function getTodas()
+    {
+        return $this->registros;
+    }
 
 }
