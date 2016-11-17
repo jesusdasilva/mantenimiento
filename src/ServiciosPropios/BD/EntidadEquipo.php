@@ -110,7 +110,7 @@ class EntidadEquipo{
         if ($this->buscar(['equipo_nombre' => $campos['equipos_nombre']])) {
 
           $this->mensaje = "El Equipo se encuentra repetida";
-          return FALSE;
+          return false;
 
         } else {
 
@@ -127,45 +127,17 @@ class EntidadEquipo{
             //VERIFICAR QUE SE GUARDÓ EL EQUIPO
             if ($registrosAfectados > 0) {
 
-                //ELEGIR SISTEMA OPERATIVO Y CARGAR LAS ACTIVIDADES
-                switch ($campo['equipo_so']) {
-                    case 'Windows XP 32bits':
-                        $actividades = $this->actividadesWXP32();
-                        break;
-                    case 'Windows XP 64bits':
-                        $actividades = $this->actividadesWXP64();
-                        break;
-                    case 'Windows 7 64bits':
-                        $actividades = $this->actividadesW7();
-                        break;
-                    case 'Linux':
-                        $actividades = $this->actividadesLinux();
-                        break;
-                    case 'Solaris':
-                        $actividades = $this->actividadesSolaris();
-                        break;
-                    default:
-                        $actividades = '';
-                        break;
-                    }
-               }
-
-               //INSERTAR LAS ACTIVIDADES
-               foreach ( $actividades as $actividad) {
-
-                   //GUARDAR ACTIVIDAD
-                   $registrosAfectados = $this->app['checklist']->nuevo(
-                       'mantenimientos_checklist',[
-                           'equipo_id' => $this->registros['equipos_id'],
-                           'cheacklist_nombre' => $actividad,
-                           'checklis_so' => $campo['checklist_so'],
-                           'checklist_estatus' => 0,
-                        ]
-                   );
+                if ($app['checklist']->agregarTodasActividades($campos['equipo_id'], $campos['checklist_so'])) {
+                    $this->mensaje = "Las actividades fueron agregadas";
+                    return true;
+                } else {
+                  $this->mensaje = "Error al guardar las actividades";
+                  return false;
 
                }
 
-    }
+           }
+
   }
 
   public function Nuevo2($registros){
