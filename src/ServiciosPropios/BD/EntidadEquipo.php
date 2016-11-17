@@ -6,6 +6,11 @@ namespace ServiciosPropios\BD;
 
 use Silex\Application;
 use ServiciosPropios\BD\EntidadEquipo;
+use ServiciosPropios\BD\EntidadEmpresa;
+use ServiciosPropios\BD\EntidadGerencia;
+use ServiciosPropios\BD\EntidadUbicacion;
+use ServiciosPropios\BD\EntidadChecklist;
+
 
 class EntidadEquipo{
 
@@ -94,7 +99,76 @@ class EntidadEquipo{
     }
   }
 */
-  public function Nuevo($registros){
+
+    /*
+        NUEVO EQUIPO
+        $app['equipo']->nuevo($campos);
+    */
+    public function nuevo($campos)
+    {
+        //VERIFICAR SI EL NOMBRE DE EQUIPO ESTÁ REPETIDO
+        if ($this->buscar(['equipo_nombre' => $campos['equipos_nombre']])) {
+
+          $this->mensaje = "El Equipo se encuentra repetida";
+          return FALSE;
+
+        } else {
+
+            //GUARDAR NUEVO REGISTRO EN TABLA mantenimientos_equipos
+            $registrosAfectados = $this->app['db']->insert(
+                'mantenimientos_equipos', [
+                    'equipo_nombre' => $campos['equipo_nombre'],
+                    'empresa_id'    => $app['empresa']->buscarNombreTaerId('NINGUNA'),
+                    'gerencia_id'   => $app['gerencia']->buscarNombreTaerId('NINGUNA'),
+                    'ubicacion_id'  => $app['ubicacion']->buscarNombreTaerId('NINGUNA'),
+                ]
+            );
+
+            //VERIFICAR QUE SE GUARDÓ EL EQUIPO
+            if ($registrosAfectados > 0) {
+
+                //ELEGIR SISTEMA OPERATIVO Y CARGAR LAS ACTIVIDADES
+                switch ($campo['equipo_so']) {
+                    case 'Windows XP 32bits':
+                        $actividades = $this->actividadesWXP32();
+                        break;
+                    case 'Windows XP 64bits':
+                        $actividades = $this->actividadesWXP64();
+                        break;
+                    case 'Windows 7 64bits':
+                        $actividades = $this->actividadesW7();
+                        break;
+                    case 'Linux':
+                        $actividades = $this->actividadesLinux();
+                        break;
+                    case 'Solaris':
+                        $actividades = $this->actividadesSolaris();
+                        break;
+                    default:
+                        $actividades = '';
+                        break;
+                    }
+               }
+
+               //INSERTAR LAS ACTIVIDADES
+               foreach ( $actividades as $actividad) {
+
+                   //GUARDAR ACTIVIDAD
+                   $registrosAfectados = $this->app['checklist']->nuevo(
+                       'mantenimientos_checklist',[
+                           'equipo_id' => $this->registros['equipos_id'],
+                           'cheacklist_nombre' => $actividad,
+                           'checklis_so' => $campo['checklist_so'],
+                           'checklist_estatus' => 0,
+                        ]
+                   );
+
+               }
+
+    }
+  }
+
+  public function Nuevo2($registros){
 
     //GUARDAR DATOS DEL EQUIPO
     $registrosAfectados = $this->app['db']->insert('mantenimientos_equipos',
