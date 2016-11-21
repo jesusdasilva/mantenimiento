@@ -172,7 +172,7 @@ class EntidadGerencia{
     */
     public function buscarNombreTraerId($gerencia_nombre)
     {
-        if ($this->buscar(['gerencia_nombre'=>$nombre])) {
+        if ($this->buscar(['gerencia_nombre'=>$gerencia_nombre])) {
 
             return true;
 

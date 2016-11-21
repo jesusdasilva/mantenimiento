@@ -172,7 +172,7 @@ class EntidadUbicacion{
     */
     public function buscarNombreTraerId($ubicacion_nombre)
     {
-        if ($this->buscar(['ubicacion_nombre' => $nombre])) {
+        if ($this->buscar(['ubicacion_nombre' => $ubicacion_nombre])) {
 
             return true;
 

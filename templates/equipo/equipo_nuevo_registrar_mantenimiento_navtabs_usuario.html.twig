@@ -3,13 +3,13 @@
 {#NOMBRE Y APELLIDO DEL USUARIO#}
 {{ form.inputText('Nombre de Usuario',
                   'equipo-usuario-nombre',
-                   registrosEquipo.equipo_usuario_nombre,
+                   registrosEquipo.equipo_usuario_nombre|default(''),
                    FALSE,
                   'Nombre y Apellido del usuario') }}
 {#INDICADOR#}
 {{ form.inputText('Indicador',
                   'equipo-usuario-indicador',
-                   registrosEquipo.equipo_usuario_indicador,
+                   registrosEquipo.equipo_usuario_indicador|default(''),
                    FALSE,
                   'Indicador PDVSA') }}
 {#EMPRESA#}
@@ -18,11 +18,11 @@
                 empresas,
                'empresa_id',
                'empresa_nombre',
-               registrosEquipo.empresa_id) }}
+               registrosEquipo.empresa_id|default('NINGUNA')) }}
 {#GERENCIA#}
 {{ form.select('Gerencia',
                'gerencia',
                 gerencias,
                'gerencia_id',
                'gerencia_nombre',
-               registrosEquipo.gerencia_id) }}
+               registrosEquipo.gerencia_id|default('NINGUNA')) }}

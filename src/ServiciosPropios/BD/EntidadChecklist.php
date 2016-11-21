@@ -29,11 +29,11 @@ class EntidadChecklist
     {
 
         //GUARDAR ACTIVIDAD
-        $registrosAfectados = $this->app['db']->nuevo(
+        $registrosAfectados = $this->app['db']->insert(
             'mantenimientos_checklist',[
-                'equipo_id'         => $campos['equipos_id'],
-                'cheacklist_nombre' => $campos['checklist_nombre'],
-                'checklis_so'       => $campos['checklist_so'],
+                'equipo_id'         => $campos['equipo_id'],
+                'checklist_nombre'  => $campos['checklist_nombre'],
+                'checklist_so'       => $campos['checklist_so'],
                 'checklist_estatus' => 0,
             ]
         );
@@ -54,32 +54,34 @@ class EntidadChecklist
       }
       /*
           AGREGAR TODAS LAS ACTIVIDADES A LA TABLA CHECKLIST
-          $app['checklist']->agregarTodasActividades($equipo_id, $checklis_so);
+          $app['checklist']->agregarTodasActividades($equipo_id, $checklist_so);
       */
-      public function agregarTodasActividades($equipo_id, $checklis_so)
+      public function agregarTodasActividades($equipo_id, $checklist_so)
       {
 
-          $actividades = $this->generarActividades($checklis_so);
+          $actividades = $this->generarActividades($checklist_so);
 
           foreach ($actividades as $actividad) {
 
             $campos = [
-                'equipo_id'         => $equipos_id,
-                'cheacklist_nombre' => $activida;,
-                'checklis_so'       => $checklist_so,
-                'checklist_estatus' => 0,
+                'equipo_id'          => $equipo_id,
+                'checklist_nombre'   => $actividad,
+                'checklist_so'       => $checklist_so,
+                'checklist_estatus'  => 0,
 
             ];
+
             //AREGAR LAS ACTIVIDADES A LA TABLA CHECKLIST
             if (!$this->nuevo($campos)) {
                 return false;
             }
 
           }
-          return true,
+          return true;
       }
       /*
           ACTIVIDADES
+          $this->generarActividades($checklist_so);
       */
       private function generarActividades($checklist_so)
       {
@@ -105,33 +107,35 @@ class EntidadChecklist
                   $actividades = '';
                   break;
               }
+              return $actividades;
 
       }
-
-    }
     /*
         CATÁLOGO DE ACTIVIDADES PARA WINDOWS XP 32 BITS
+        $this->actividadesWXP32();
     */
     private function actividadesWXP32()
     {
-        return array( '1' =>  'Revisión del nombre del equipo.',
-                      '2' =>  'Aplicar las políticas de PDVSA',
-                      '3' =>  'Revisión del Estado de Hibernación del equipo',
-                      '4' =>  'Setear la memoria virtual a la unidad D:',
-                      '5' =>  'Tamaño de la memoria Virtual a 10 GB',
-                      '6' =>  'Sufijos DNS configurado',
-                      '7' =>  'Servidor PLCGUA03 mapeada en unidad G:ppl',
-                      '8' =>  'Servidor PLCGUA03 mapeada en unidad I:dataplic',
-                      '9' =>  'Programas instalados en la unidad C',
-                      '10' => 'Data de usuario en Unidad D',
-                      '11' => 'Integridad del Disco Duro',
-                      '12' => 'Perfil de usuarios en D:Users',
-                      '13' => 'Licencias en Variables de Sistemas',
-                      '14' => 'Licencias en Variables de Usuario',
-                      '15' => 'Variables de Oracle en el Path del Sistema',
-                      '16' => 'Instalar Microsoft Framenwork NET 4',
-                      '17' => 'Actualizar el Framenwork NET 4',
-                      '18' => 'Revisar el estado del Antivirus');
+        return [
+            '1'  =>  'Revisión del nombre del equipo',
+            '2'  =>  'Aplicar las políticas de PDVSA',
+            '3'  =>  'Revisión del Estado de Hibernación del equipo',
+            '4'  =>  'Setear la memoria virtual a la unidad D:',
+            '5'  =>  'Tamaño de la memoria Virtual a 10 GB',
+            '6'  =>  'Sufijos DNS configurado',
+            '7'  =>  'Servidor PLCGUA03 mapeada en unidad G:ppl',
+            '8'  =>  'Servidor PLCGUA03 mapeada en unidad I:dataplic',
+            '9'  =>  'Programas instalados en la unidad C',
+            '10' => 'Data de usuario en Unidad D',
+            '11' => 'Integridad del Disco Duro',
+            '12' => 'Perfil de usuarios en D:Users',
+            '13' => 'Licencias en Variables de Sistemas',
+            '14' => 'Licencias en Variables de Usuario',
+            '15' => 'Variables de Oracle en el Path del Sistema',
+            '16' => 'Instalar Microsoft Framenwork NET 4',
+            '17' => 'Actualizar el Framenwork NET 4',
+            '18' => 'Revisar el estado del Antivirus',
+        ];
     }
     /*
         CATÁLOGO DE ACTIVIDADES PARA WINDOWS XP 64 BITS

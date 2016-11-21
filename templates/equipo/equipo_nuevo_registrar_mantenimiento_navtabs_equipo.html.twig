@@ -9,7 +9,7 @@
 {#ETIQUETA PDVSA #}
 {{ form.inputText('Etiqueta PDVSA',
                   'equipo-etiqueta',
-                   registrosEquipo.equipo_etiqueta,
+                   registrosEquipo.equipo_etiqueta|default(''),
                    FALSE,
                   'Etiqueta PDVSA que posee la estación de trabajo') }}
 {#UBICACIONES#}
@@ -18,4 +18,4 @@
                 ubicaciones,
                'ubicacion_id',
                'ubicacion_nombre',
-                registrosEquipo.ubicacion_id)}}
+                registrosEquipo.ubicacion_id|default('NINGUNA'))}}

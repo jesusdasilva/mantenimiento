@@ -172,7 +172,7 @@ class EntidadEmpresa
     */
     public function buscarNombreTraerId($empresa_nombre)
     {
-        if ($this->buscar(['empresa_nombre' => $nombre])) {
+        if ($this->buscar(['empresa_nombre' => $empresa_nombre])) {
 
             return TRUE;
 

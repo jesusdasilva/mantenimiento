@@ -3,6 +3,6 @@
 {#OBSERVACIONES#}
 {{ form.inputTextArea('Observaciones',
                       'equipo-observacion',
-                       registrosEquipo.equipo_observacion,
+                       registrosEquipo.equipo_observacion|default(''),
                        FALSE,
                       'Ingrese cualquier observación sobre el proceso de mantenimiento del Equipo') }}

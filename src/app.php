@@ -60,6 +60,9 @@ $app['ubicacion'] = function ()  use ($app) {
 $app['equipo'] = function ()  use ($app) {
     return new ServiciosPropios\BD\EntidadEquipo($app);
 };
+$app['checklist'] = function ()  use ($app) {
+    return new ServiciosPropios\BD\EntidadChecklist($app);
+};
 
 //USUARIOS
 $app['usuario'] = function ()  use ($app) {
