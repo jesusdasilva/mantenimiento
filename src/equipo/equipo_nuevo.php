@@ -26,7 +26,7 @@ $equipo->post('/equipo/nuevo', function(Request $request) use ($app) {
 
     if ($app['equipo']->nuevo($campos)) {
 
-        //REDIRECCIONAR AL FORMULARIO LISTAR
+        //ENVIAR LOS DATOS AL FORMULARIO
         return $app['twig']->render(
             'equipo/equipo_nuevo_registrar_mantenimiento.html.twig', [
                 'registrosEquipo' => $campos,

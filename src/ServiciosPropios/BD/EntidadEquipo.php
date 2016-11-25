@@ -152,12 +152,83 @@ class EntidadEquipo{
         return $this->mensaje;
     }
     /*
-        GET TODAS LAS GERENCIAS
+        GET TODOS LOS REGISTROS EQUIPOS
         $app['equipo']->getTodas();
     */
     public function getTodas()
     {
         return $this->registros;
     }
-
+    /*
+        GET ID DEL EQUIPO
+        $app['equipo']->getId();
+    */
+    public function getId()
+    {
+        return $this->registros['equipo_id'];
+    }
+    /*
+        GET NOMBRE DEL  EQUIPO
+        $app['equipo']->getNombre();
+    */
+    public function getNombre()
+    {
+        return $this->registros['equipo_nombre'];
+    }
+    /*
+        GET ETIQUETA PDVSA DEL EQUIPOS
+        $app['equipo']->getEtiqueta();
+    */
+    public function getEtiqueta()
+    {
+        return $this->registros['equipo_Etiqueta'];
+    }
+    /*
+        GET ID DE LA UBICACIÓN
+        $app['equipo']->getUbicacionId();
+    */
+    public function getUbicacionId()
+    {
+        return $this->registros['ubicacion_id'];
+    }
+    /*
+        GET NOMBRE DEL USUARIO
+        $app['equipo']->getUsuarioNombre();
+    */
+    public function getUsuarioNombre()
+    {
+        return $this->registros['equipo_usuario_nombre'];
+    }
+    /*
+        GET INDICADOR DEL USUARIO DEL EQUIPO
+        $app['equipo']->getUsuarioIndicador();
+    */
+    public function getUsuarioIndicador()
+    {
+        return $this->registros['equipo_usuario_indicador'];
+    }
+    /*
+        GET ID DE LA EMPRESA
+        $app['equipo']->getEmpresaId();
+    */
+    public function getEmpresaId()
+    {
+        return $this->registros['empresa_id'];
+    }
+    /*
+        GET ID DE LA GERENCIA
+        $app['equipo']->getGerenciaId();
+    */
+    public function getGerenciaId()
+    {
+        return $this->registros['gerencia_id'];
+    }
+    /*
+        GET OBSERVACIÓN
+        $app['equipo']->getObservacion();
+    */
+    public function getObservacion()
+    {
+        return $this->registros['equipo_observacion'];
+    }
 }

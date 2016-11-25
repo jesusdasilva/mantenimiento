@@ -20,6 +20,7 @@ $equipo->before(function() use ($app){
 //CONTROLADORES
 require_once __DIR__.'/equipo_nuevo.php';
 require_once __DIR__.'/equipo_listar.php';
+require_once __DIR__.'/equipo_buscar.php';
 
 //RETORNAR EL OBJETO
 return $equipo;
