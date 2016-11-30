@@ -24,7 +24,7 @@ class EntidadUbicacion{
         BUSCAR UBICACIÓN
         $app['ubicacion']->buscar(array('campo'=> $valor));
     */
-    public function buscar($condicion = array())
+    public function buscar($condicion = [])
     {
         //SQL BASE
         $sql  = " SELECT ubicacion_id, ";
@@ -36,6 +36,7 @@ class EntidadUbicacion{
 
             //CAMBIAR LA TABLA
             $sql = str_replace("mantenimientos", "vista", $sql);
+
             //BUSCAR TODAS LAS GUBICACIONES
             $this->registros = $this->app['db']->fetchAll($sql);
 
@@ -43,19 +44,25 @@ class EntidadUbicacion{
 
             //BUSCAR CON CONDICIÓN
             switch ($condicion) {
-                case (isset($condicion['ubicacion_id'])):
+                case (isset($condicion['excluir_nombre'])):{
+                    $sql .= " WHERE ubicacion_nombre != '".$condicion['excluir_nombre']."'";
+                    $this->registros = $this->app['db']->fetchAll($sql);
+                    break;
+                }
+                case (isset($condicion['ubicacion_id'])):{
                     $sql .= " WHERE ubicacion_id = '".$condicion['ubicacion_id']."'";
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
-                case (isset($condicion['ubicacion_nombre'])):
+                }
+                case (isset($condicion['ubicacion_nombre'])):{
                     $sql .= " WHERE ubicacion_nombre = '".$condicion['ubicacion_nombre']."'";
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
+                }
                 default:
                   # code...
                   break;
             }
-
-            //BUSCAR CON CONDICIÓN
-            $this->registros = $this->app['db']->fetchAssoc($sql);
 
         }
 

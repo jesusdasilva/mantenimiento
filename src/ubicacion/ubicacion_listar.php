@@ -4,7 +4,7 @@
 
 $ubicacion->get('/ubicacion/listar', function() use ($app) {
 
-    if (!$app['ubicacion']->buscar()) {
+    if (!$app['ubicacion']->buscar(['excluir_nombre'=>'NINGUNA'])) {
 
         //MENSAJE
         $app['session']->getFlashBag()->add(
