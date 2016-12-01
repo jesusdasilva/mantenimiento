@@ -36,7 +36,6 @@ class EntidadUbicacion{
 
             //CAMBIAR LA TABLA
             $sql = str_replace("mantenimientos", "vista", $sql);
-
             //BUSCAR TODAS LAS GUBICACIONES
             $this->registros = $this->app['db']->fetchAll($sql);
 
@@ -45,17 +44,25 @@ class EntidadUbicacion{
             //BUSCAR CON CONDICIÓN
             switch ($condicion) {
                 case (isset($condicion['excluir_nombre'])):{
+                    //CAMBIAR LA TABLA
+                    $sql = str_replace("mantenimientos", "vista", $sql);
+                    //CONDICIÓN
                     $sql .= " WHERE ubicacion_nombre != '".$condicion['excluir_nombre']."'";
+                    //BUSCAR
                     $this->registros = $this->app['db']->fetchAll($sql);
                     break;
                 }
                 case (isset($condicion['ubicacion_id'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE ubicacion_id = '".$condicion['ubicacion_id']."'";
+                    //BUSCAR
                     $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
                 }
                 case (isset($condicion['ubicacion_nombre'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE ubicacion_nombre = '".$condicion['ubicacion_nombre']."'";
+                    //BUSCAR
                     $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
                 }

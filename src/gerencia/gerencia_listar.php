@@ -4,7 +4,7 @@
 
 $gerencia->get('/gerencia/listar', function() use ($app) {
 
-    if (!$app['gerencia']->buscar()) {
+    if (!$app['gerencia']->buscar(['excluir_nombre' => 'NINGUNA'])) {
 
       //MENSAJE
       $app['session']->getFlashBag()->add(

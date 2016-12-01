@@ -4,7 +4,7 @@
 
 $empresa->get('/empresa/listar', function () use ($app) {
 
-    if (!$app['empresa']->buscar()) {
+    if (!$app['empresa']->buscar(['excluir_nombre' => 'NINGUNA'])) {
 
         //MENSAJE
         $app['session']->getFlashBag()->add(

@@ -43,19 +43,33 @@ class EntidadGerencia{
 
             //BUSCAR CON CONDICIÓN
             switch ($condicion) {
-                case (isset($condicion['gerencia_id'])):
+               case (isset($condicion['excluir_nombre'])):{
+                   //CAMBIAR LA TABLA
+                   $sql = str_replace("mantenimientos", "vista", $sql);
+                   //CONDICIÓN
+                   $sql .= " WHERE gerencia_nombre != '".$condicion['excluir_nombre']."'";
+                   //BUSCAR
+                   $this->registros = $this->app['db']->fetchAll($sql);
+                   break;
+                }
+                case (isset($condicion['gerencia_id'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE gerencia_id = '".$condicion['gerencia_id']."'";
+                    //BUSCAR
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
-                case (isset($condicion['gerencia_nombre'])):
+                }
+                case (isset($condicion['gerencia_nombre'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE gerencia_nombre = '".$condicion['gerencia_nombre']."'";
+                    //BUSCAR
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
+                }
                 default:
                   # code...
                   break;
             }
-
-            //BUSCAR CON CONDICIÓN
-            $this->registros = $this->app['db']->fetchAssoc($sql);
 
         }
 

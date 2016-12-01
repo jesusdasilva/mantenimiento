@@ -37,26 +37,40 @@ class EntidadEmpresa
 
             //CAMBIAR LA TABLA
             $sql = str_replace("mantenimientos", "vista", $sql);
-            //BUSCAR TODAS LAS EMPRESAS
+            //BUSCAR
             $this->registros = $this->app['db']->fetchAll($sql);
 
         } else {
 
             //BUSCAR CON CONDICIÓN
             switch ($condicion) {
-                case (isset($condicion['empresa_id'])):
+                case (isset($condicion['excluir_nombre'])):{
+                    //CAMBIAR LA TABLA
+                    $sql = str_replace("mantenimientos", "vista", $sql);
+                    //CONDICIÓN
+                    $sql .= " WHERE empresa_nombre != '".$condicion['excluir_nombre']."'";
+                    //BUSCAR
+                    $this->registros = $this->app['db']->fetchAll($sql);
+                    break;
+                }
+                case (isset($condicion['empresa_id'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE empresa_id = '".$condicion['empresa_id']."'";
+                    //BUSCAR
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
-                case (isset($condicion['empresa_nombre'])):
+                }
+                case (isset($condicion['empresa_nombre'])):{
+                    //CONDICIÓN
                     $sql .= " WHERE empresa_nombre = '".$condicion['empresa_nombre']."'";
+                    //BUSCAR
+                    $this->registros = $this->app['db']->fetchAssoc($sql);
                     break;
+                }
                 default:
                     # code...
                     break;
             }
-
-            //BUSCAR CON CONDICIÓN
-            $this->registros = $this->app['db']->fetchAssoc($sql);
 
         }
 
