@@ -9,10 +9,11 @@ $equipo->get('/equipo/buscar/{id}', function ($id) use ($app) {
       //ENVIAR LOS DATOS AL FORMULARIO
       return $app['twig']->render(
           'equipo/equipo_nuevo_registrar_mantenimiento.html.twig', [
-              'registrosEquipo' => $app['equipo']->getTodas(),
-              'ubicaciones'     => ($app['ubicacion']->buscar()) ? $app['ubicacion']->getTodas():'',
-              'empresas'        => ($app['empresa']->buscar())   ? $app['empresa']->getTodas():'',
-              'gerencias'       => ($app['gerencia']->buscar())  ? $app['gerencia']->getTodas():'',
+              'registrosEquipo' =>  $app['equipo']->getTodas(),
+              'ubicaciones'     => ($app['ubicacion']->buscar()) ? $app['ubicacion']->getTodas() :'',
+              'empresas'        => ($app['empresa']->buscar())   ? $app['empresa']->getTodas()   :'',
+              'gerencias'       => ($app['gerencia']->buscar())  ? $app['gerencia']->getTodas()  :'',
+              'checklist'       => ($app['checklist']->buscar()) ? $app['checklist']->getTodas() :'',
           ]
       );
 

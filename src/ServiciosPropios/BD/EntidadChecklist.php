@@ -22,6 +22,28 @@ class EntidadChecklist
         $this->app = $app;
     }
     /*
+        BUSCAR CHECKLIST
+        $app['checklist']->buscar();
+    */
+    public function buscar()
+    {
+        //SQL BASE
+        $sql  = " SELECT * ";
+        $sql .= " FROM mantenimientos_checklist ";
+
+        $this->registros = $this->app['db']->fetchAll($sql);
+
+        if (empty($this->registros)) {
+
+            $this->mensaje = "No hay registro que mostrar";
+            return false;
+
+        } else {
+            return true;
+        }
+
+    }
+    /*
         AGREGAR LAS ACTIVIDADES A LA TABALA CHECKLIST
         $app['checklist']->nuevo($campos);
     */
@@ -160,6 +182,12 @@ class EntidadChecklist
     */
     private function actividadesSun(){
         return array( 'prueba4');
+    }
+    /*
+        GET TODAS
+    */
+    public function getTodas(){
+        return $this->registros;
     }
 
 }
