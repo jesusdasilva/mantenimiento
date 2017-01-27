@@ -23,22 +23,27 @@ class EntidadChecklist
     }
     /*
         BUSCAR CHECKLIST
-        $app['checklist']->buscar();
+        $app['checklist']->buscar('condicion' => $valor);
     */
-    public function buscar()
+    public function buscar($condicion = [])
     {
         //SQL BASE
         $sql  = " SELECT * ";
         $sql .= " FROM mantenimientos_checklist ";
+        $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."'";
 
+        //BUSCAR
         $this->registros = $this->app['db']->fetchAll($sql);
 
+        //VERIFICAR QUE TRAJO REGISTROS
         if (empty($this->registros)) {
 
+            //MENSAJE DE ERROR
             $this->mensaje = "No hay registro que mostrar";
             return false;
 
         } else {
+            //SIN ERROR
             return true;
         }
 

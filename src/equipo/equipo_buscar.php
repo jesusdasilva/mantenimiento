@@ -13,7 +13,7 @@ $equipo->get('/equipo/buscar/{id}', function ($id) use ($app) {
               'ubicaciones'     => ($app['ubicacion']->buscar()) ? $app['ubicacion']->getTodas() :'',
               'empresas'        => ($app['empresa']->buscar())   ? $app['empresa']->getTodas()   :'',
               'gerencias'       => ($app['gerencia']->buscar())  ? $app['gerencia']->getTodas()  :'',
-              'checklist'       => ($app['checklist']->buscar()) ? $app['checklist']->getTodas() :'',
+              'checklist'       => ($app['checklist']->buscar(['equipo_id' => $id,])) ? $app['checklist']->getTodas() :'',
           ]
       );
 
