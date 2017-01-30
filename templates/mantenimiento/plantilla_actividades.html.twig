@@ -6,7 +6,7 @@
   <div class="col-md-6">
     {% if registrosEquipo is defined  %}
       <label class="checkbox-inline" for="{{checkboxes_id}}">
-        <input name="{{checkboxes_id}}" id="{{checkboxes_id}}"  type="checkbox" {% if checkbox_status is defined and checkbox_status == 'true' %}  value = "true" checked {% else %} value = "false" {% endif %}>
+        <input name="{{checkboxes_id}}" id="{{checkboxes_id}}"  type="checkbox" {% if checkbox_status is defined and checkbox_status == true %}  value = "true" checked {% else %} value = "false" {% endif %}>
         {{titulo}}
       </label>
     {% else %}

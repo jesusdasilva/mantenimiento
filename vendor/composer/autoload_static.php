@@ -2231,6 +2231,7 @@ class ComposerStaticInitd8f675aec09caa8fbdb7d987f51a117a
         'Twig_Loader_String' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Loader/String.php',
         'Twig_Markup' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Markup.php',
         'Twig_Node' => __DIR__ . '/..' . '/twig/twig/lib/Twig/Node.php',
+        'Twig_NodeCaptureInterface' => __DIR__ . '/..' . '/twig/twig/lib/Twig/NodeCaptureInterface.php',
         'Twig_NodeInterface' => __DIR__ . '/..' . '/twig/twig/lib/Twig/NodeInterface.php',
         'Twig_NodeOutputInterface' => __DIR__ . '/..' . '/twig/twig/lib/Twig/NodeOutputInterface.php',
         'Twig_NodeTraverser' => __DIR__ . '/..' . '/twig/twig/lib/Twig/NodeTraverser.php',

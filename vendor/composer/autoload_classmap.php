@@ -1966,6 +1966,7 @@ return array(
     'Twig_Loader_String' => $vendorDir . '/twig/twig/lib/Twig/Loader/String.php',
     'Twig_Markup' => $vendorDir . '/twig/twig/lib/Twig/Markup.php',
     'Twig_Node' => $vendorDir . '/twig/twig/lib/Twig/Node.php',
+    'Twig_NodeCaptureInterface' => $vendorDir . '/twig/twig/lib/Twig/NodeCaptureInterface.php',
     'Twig_NodeInterface' => $vendorDir . '/twig/twig/lib/Twig/NodeInterface.php',
     'Twig_NodeOutputInterface' => $vendorDir . '/twig/twig/lib/Twig/NodeOutputInterface.php',
     'Twig_NodeTraverser' => $vendorDir . '/twig/twig/lib/Twig/NodeTraverser.php',

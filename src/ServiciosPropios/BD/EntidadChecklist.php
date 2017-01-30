@@ -30,7 +30,8 @@ class EntidadChecklist
         //SQL BASE
         $sql  = " SELECT * ";
         $sql .= " FROM mantenimientos_checklist ";
-        $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."'";
+        $sql .= " WHERE equipo_id = '".$condicion['equipo_id']."' ";
+        $sql .= " ORDER BY checklist_id ";
 
         //BUSCAR
         $this->registros = $this->app['db']->fetchAll($sql);

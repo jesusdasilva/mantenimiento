@@ -4,7 +4,7 @@
 
 {# 1 REVISION NOMBRE DEL EQUIPO#}
 {% set checkboxes_id = 'checklist-revision-nombre-equipo' %}
-{% set checkbox_status = 'true' %}
+{% set checkbox_status = checklist.0.checklist_estatus %}
 {% include 'mantenimiento/w7_x64_actividades/01_revision_nombre_equipo.html.twig' %}
 
 {# 2 APLICAR LAS POLITICAS DE PDVSA#}
